@@ -37,7 +37,7 @@
         .main-container{position:relative;z-index:2;max-width:800px;width:100%;margin:0 auto;padding:40px 20px;text-align:center;box-sizing:border-box}
         .hero{margin-bottom:30px}
         
-        /* --- ESTILO NUEVO DEL TÍTULO ANIMADO (Reemplaza al .hero-name original) --- */
+        /* --- ESTILO NUEVO DEL TÍTULO ANIMADO --- */
         #animated-title {
             font-family: var(--font-display);
             font-size: clamp(2.8rem, 7vw, 5.5rem);
@@ -46,20 +46,17 @@
             line-height: 1.4;
             display: inline-block;
             padding: .2em .3em;
-            /* Degradado de amarillo a rosa */
             background: linear-gradient(180deg, #f5e56c 0, #f0d060 18%, #e8b848 35%, #e09040 50%, #d06060 65%, #c04080 80%, #b537f2 100%);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            /* Resplandores */
             filter: drop-shadow(0 0 15px rgba(245,229,108,.5)) drop-shadow(0 0 40px rgba(200,100,180,.3)) drop-shadow(0 0 80px rgba(181,55,242,.3));
             animation: titleGlow 4s ease-in-out infinite;
             will-change: filter;
-            /* Soporte para el cursor intermitente */
             position: relative;
         }
         #cursor-title {
-            display: none; /* Se activa vía JS */
+            display: none;
             width: 3px;
             height: 0.8em;
             background-color: #ffcc00;
@@ -302,7 +299,6 @@
 
     <main class="main-container">
         <header class="hero">
-            <!-- Título reemplazado por el elemento animado -->
             <h1 id="animated-title"></h1>
             <span id="cursor-title"></span>
         </header>
@@ -314,7 +310,7 @@
                     <div class="line response">Type <span class="highlight">help</span> to see what's here.</div>
                     <div class="line response">───</div>
                 </div>
-                <div class="terminal-input-line"><span class="terminal-prompt-text" aria-hidden="true">sorispace:~$</span><input type="text" class="terminal-input" id="terminalInput" autofocus autocomplete="off" spellcheck="false" aria-label="Terminal command input"></div>
+                <div class="terminal-input-line"><span class="terminal-prompt-text" aria-hidden="true">sori@space:~$</span><input type="text" class="terminal-input" id="terminalInput" autofocus autocomplete="off" spellcheck="false" aria-label="Terminal command input"></div>
                 <div class="loading-bar" id="loadingBar" role="status"><span id="loadingText">Loading...</span><div class="bar-track"><div class="bar-fill" id="barFill" style="width:0%"></div></div></div>
             </div>
         </section>
@@ -790,7 +786,7 @@
         function addCommandLine(c) {
             const l = document.createElement('div');
             l.className = 'line cmd-line';
-            l.textContent = 'sorispace:~$ ' + c;
+            l.textContent = 'sori@space:~$ ' + c;
             to.appendChild(l);
             tc.scrollTop = tc.scrollHeight;
         }
