@@ -1,4 +1,4 @@
-# Astro in the Cloud 🌟
+# Sori Space 🌟
 
 Official repository for my personal website and portfolio.
 
