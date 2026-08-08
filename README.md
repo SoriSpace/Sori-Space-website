@@ -3,7 +3,7 @@
 Official repository for my personal website and portfolio.
 
 ## 🌐 Live Site
-* **Domain:** [https://astrointhecloud.com](https://astrointhecloud.com)
+* **Domain:** [https://astrointhecloud.com](https://sorispace.com)
 * **Hosting:** GitHub Pages
 * **DNS & Email:** Configured via Strikingly
 
