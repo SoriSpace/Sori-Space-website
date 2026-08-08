@@ -36,8 +36,46 @@
         .lang-btn:hover{border-color:rgba(255,255,255,.4);color:#d0c0f0}
         .main-container{position:relative;z-index:2;max-width:800px;width:100%;margin:0 auto;padding:40px 20px;text-align:center;box-sizing:border-box}
         .hero{margin-bottom:30px}
-        .hero-name{font-family:var(--font-display);font-size:clamp(2.8rem,7vw,5.5rem);font-weight:700;letter-spacing:.03em;line-height:1.4;display:inline-block;padding:.2em .3em;background:linear-gradient(180deg,#f5e56c 0,#f0d060 18%,#e8b848 35%,#e09040 50%,#d06060 65%,#c04080 80%,#b537f2 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 15px rgba(245,229,108,.5)) drop-shadow(0 0 40px rgba(200,100,180,.3)) drop-shadow(0 0 80px rgba(181,55,242,.3));animation:titleGlow 4s ease-in-out infinite;will-change:filter}
-        @keyframes titleGlow{0%,100%{filter:drop-shadow(0 0 15px rgba(245,229,108,.5)) drop-shadow(0 0 40px rgba(200,100,180,.3)) drop-shadow(0 0 80px rgba(181,55,242,.3))}50%{filter:drop-shadow(0 0 28px rgba(245,229,108,.7)) drop-shadow(0 0 60px rgba(200,100,180,.5)) drop-shadow(0 0 110px rgba(181,55,242,.4))}}
+        
+        /* --- ESTILO NUEVO DEL TÍTULO ANIMADO (Reemplaza al .hero-name original) --- */
+        #animated-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.8rem, 7vw, 5.5rem);
+            font-weight: 700;
+            letter-spacing: .03em;
+            line-height: 1.4;
+            display: inline-block;
+            padding: .2em .3em;
+            /* Degradado de amarillo a rosa */
+            background: linear-gradient(180deg, #f5e56c 0, #f0d060 18%, #e8b848 35%, #e09040 50%, #d06060 65%, #c04080 80%, #b537f2 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            /* Resplandores */
+            filter: drop-shadow(0 0 15px rgba(245,229,108,.5)) drop-shadow(0 0 40px rgba(200,100,180,.3)) drop-shadow(0 0 80px rgba(181,55,242,.3));
+            animation: titleGlow 4s ease-in-out infinite;
+            will-change: filter;
+            /* Soporte para el cursor intermitente */
+            position: relative;
+        }
+        #cursor-title {
+            display: none; /* Se activa vía JS */
+            width: 3px;
+            height: 0.8em;
+            background-color: #ffcc00;
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+            margin-left: 5px;
+        }
+        @keyframes titleGlow {
+            0%,100%{filter:drop-shadow(0 0 15px rgba(245,229,108,.5)) drop-shadow(0 0 40px rgba(200,100,180,.3)) drop-shadow(0 0 80px rgba(181,55,242,.3))}
+            50%{filter:drop-shadow(0 0 28px rgba(245,229,108,.7)) drop-shadow(0 0 60px rgba(200,100,180,.5)) drop-shadow(0 0 110px rgba(181,55,242,.4))}
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
         .terminal-wrapper{text-align:center}
         .terminal-container{display:inline-block;text-align:left;padding:25px 30px;max-width:650px;width:100%;min-height:160px;max-height:320px;overflow-y:auto;font-family:var(--font-mono);font-size:1rem;font-weight:700;line-height:1.9;color:#b0a0d0;scrollbar-width:thin;scrollbar-color:rgba(181,55,242,.3) transparent}
         .terminal-container::-webkit-scrollbar{width:4px}
@@ -197,7 +235,7 @@
             .fragment-title{font-size:1.3rem}
             .fragment-desc{font-size:.85rem;padding:0 4px}
             .hero{margin-bottom:25px}
-            .hero-name{font-size:clamp(2.2rem,8vw,3.5rem)}
+            #animated-title {font-size:clamp(2.2rem,8vw,3.5rem);}
             .fragments{gap:35px}
             .terminal-container{padding:15px 12px;font-size:.8rem;max-height:220px;min-height:120px}
             .lang-toggle{top:10px;right:10px}
@@ -242,7 +280,7 @@
             .fragment{padding:16px 10px}
             .fragment-title{font-size:1.1rem}
             .fragment-desc{font-size:.8rem}
-            .hero-name{font-size:clamp(1.8rem,7vw,2.8rem)}
+            #animated-title {font-size:clamp(1.8rem,7vw,2.8rem);}
             .terminal-container{padding:12px 8px;font-size:.75rem;max-height:180px}
             .lang-btn{padding:3px 6px;font-size:.5rem}
             .tag{font-size:.5rem;padding:3px 8px}
@@ -263,7 +301,11 @@
     <div class="lang-toggle" role="group" aria-label="Language selector"><button class="lang-btn active" data-lang="en" id="btnEN" aria-pressed="true">EN</button><button class="lang-btn" data-lang="es" id="btnES" aria-pressed="false">ES</button></div>
 
     <main class="main-container">
-        <header class="hero"><h1 class="hero-name">SoriSpace</h1></header>
+        <header class="hero">
+            <!-- Título reemplazado por el elemento animado -->
+            <h1 id="animated-title"></h1>
+            <span id="cursor-title"></span>
+        </header>
 
         <section class="terminal-wrapper" id="terminalWrapper" aria-label="Terminal interface">
             <div class="terminal-container" id="terminal" role="log" aria-live="polite">
@@ -557,6 +599,48 @@
     </main>
 
     <script>
+        // ==========================================
+        // NUEVO: ANIMACIÓN DEL TÍTULO (Encrypt + Reveal)
+        // ==========================================
+        (function() {
+            const titleEl = document.getElementById('animated-title');
+            const cursorEl = document.getElementById('cursor-title');
+            const finalText = "SoriSpace";
+            let interval;
+
+            function encrypt() {
+                let text = "";
+                const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&";
+                for (let i = 0; i < finalText.length; i++) {
+                    text += Math.random() > 0.5 ? finalText[i] : chars[Math.floor(Math.random() * chars.length)];
+                }
+                titleEl.innerText = text;
+            }
+
+            function revealTitle() {
+                clearInterval(interval);
+                cursorEl.style.display = "inline-block"; // Mostrar cursor
+                let i = 0;
+                interval = setInterval(() => {
+                    i++;
+                    titleEl.innerText = finalText.substring(0, i);
+                    if (i === finalText.length) {
+                        clearInterval(interval);
+                        cursorEl.style.display = "none"; // Ocultar cursor al final
+                        // Efecto glitch final pequeño
+                        setTimeout(() => { titleEl.style.opacity = "0.3"; }, 500);
+                        setTimeout(() => { titleEl.style.opacity = "1"; }, 600);
+                        setTimeout(() => { titleEl.style.opacity = "0.6"; }, 700);
+                        setTimeout(() => { titleEl.style.opacity = "1"; }, 800);
+                    }
+                }, 180);
+            }
+
+            // Iniciar el proceso
+            interval = setInterval(encrypt, 60);
+            setTimeout(revealTitle, 3000);
+        })();
+
         // ===== FUNCIONES DE NAVEGACIÓN =====
         function showDetail(category) {
             document.querySelectorAll('.category-view, .detail-view').forEach(el => {
