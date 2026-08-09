@@ -565,9 +565,11 @@
         }
 
         function showWelcome() {
+            // Incluimos la instrucción "Press help" antes del prompt
             const welcomeLines = [
                 "Welcome to my Bohemian World!",
-                "All systems are ready! Let's begin?"
+                "All systems are ready! Let's begin?",
+                "Press <span class='highlight'>help</span> to see available commands."
             ];
 
             let lineIndex = 0;
