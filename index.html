@@ -17,11 +17,12 @@
         *{margin:0;padding:0;box-sizing:border-box}
         html{width:100%;overflow-x:hidden; height: 100%;}
         
-        /* --- CORRECCIÓN DE ESTABILIDAD --- */
+        /* --- CORRECCIÓN DE ESTABILIDAD Y SCROLL --- */
         body{
             width:100%; height: 100vh; /* Altura fija de pantalla */
             max-width:100vw; max-height: 100vh;
-            overflow-x:hidden; overflow-y: hidden; /* Elimina la barra lateral */
+            overflow-x:hidden; 
+            overflow-y: auto; /* Permite hacer scroll vertical */
             background:var(--bg-deep);color:var(--text);font-family:var(--font-mono);
             cursor:crosshair;display:flex;align-items:center;justify-content:center;perspective:800px;
             position: relative;
@@ -78,7 +79,7 @@
         .terminal-container::-webkit-scrollbar-thumb{background:rgba(181,55,242,.3);border-radius:4px}
         .terminal-output{margin-bottom:10px}
         .terminal-output .line{white-space:pre-wrap;word-break:break-word}
-        .terminal-output .cmd-line{color:var(--neon-cyan)} /* AHORA LOS COMANDOS SON CIAN */
+        .terminal-output .cmd-line{color:var(--neon-cyan)}
         .terminal-output .response{color:#b0a0d0}
         .terminal-output .error{color:var(--neon-pink)}
         .terminal-output .highlight{color:var(--neon-cyan)}
@@ -87,7 +88,7 @@
         .terminal-output .dim{color:#6a5a90;font-weight:400}
         .terminal-input-line{display:flex;align-items:center;gap:8px;flex-wrap:wrap; opacity: 0; transition: opacity 1s ease;}
         .terminal-input-line.active{opacity:1}
-        .terminal-prompt-text{color:var(--neon-cyan);white-space:nowrap} /* EL PROMPT ES CIAN */
+        .terminal-prompt-text{color:var(--neon-cyan);white-space:nowrap}
         .terminal-input{flex:1;min-width:100px;background:transparent;border:none;color:#c0b0e0;font-family:inherit;font-size:inherit;font-weight:700;outline:0;caret-color:var(--neon-cyan)}
         .content-section{display:none;animation:channelFadeIn .5s ease-out}
         .content-section.active{display:block}
