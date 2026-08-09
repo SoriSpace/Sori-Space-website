@@ -15,33 +15,28 @@
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
-        html{width:100%;overflow-x:hidden}
-        body{width:100%;max-width:100vw;overflow-x:hidden;background:var(--bg-deep);color:var(--text);font-family:var(--font-mono);min-height:100vh;cursor:crosshair;display:flex;align-items:center;justify-content:center;perspective:800px}
+        html{width:100%;overflow-x:hidden; height: 100%;}
+        
+        /* --- CORRECCIÓN DE ESTABILIDAD --- */
+        body{
+            width:100%; height: 100vh; /* Altura fija de pantalla */
+            max-width:100vw; max-height: 100vh;
+            overflow-x:hidden; overflow-y: hidden; /* Elimina la barra lateral */
+            background:var(--bg-deep);color:var(--text);font-family:var(--font-mono);
+            cursor:crosshair;display:flex;align-items:center;justify-content:center;perspective:800px;
+            position: relative;
+        }
+        
         :root{--bg-deep:#0d0221;--neon-pink:#ff2d95;--neon-cyan:#00e5ff;--neon-purple:#b537f2;--neon-green:#4ade80;--neon-orange:#ff8c42;--neon-yellow:#f5e56c;--neon-blue:#4488ff;--mac-silver:#c8d6e0;--blog-teal:#2dd4bf;--grid-color:rgba(181,55,242,.3);--text:#e0d0f0;--font-display:'Caveat',cursive;--font-mono:'Courier New','Consolas',monospace}
         
-        /* --- LAYER 0: The deepest background --- */
         .sky{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;background:linear-gradient(180deg,#0d0221 0,#1a0a3a 40%,#1a0a3a 60%,#0d0221 100%)}
-        
-        /* --- LAYER 1: Matrix Rain --- */
-        #matrix-canvas {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 1;
-            pointer-events: none;
-            opacity: 0.25;
-        }
-
-        /* --- LAYER 2: Stars and Grid --- */
+        #matrix-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none;opacity:0.25; will-change: transform;}
         .stars{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:2}
         .star{position:absolute;background:#fff;border-radius:50%;animation:twinkle 3s ease-in-out infinite;will-change:opacity}
         @keyframes twinkle{0%,100%{opacity:.2}50%{opacity:.7}}
-
         .grid-floor{position:fixed;bottom:0;left:0;width:100%;height:70%;pointer-events:none;z-index:2;perspective:400px;overflow:hidden}
         .grid-lines{position:absolute;bottom:-50%;left:50%;transform:translateX(-50%) rotateX(60deg);width:200%;height:200%;background-image:repeating-linear-gradient(0deg,transparent,transparent 40px,var(--grid-color) 40px,var(--grid-color) 41px),repeating-linear-gradient(90deg,transparent,transparent 40px,var(--grid-color) 40px,var(--grid-color) 41px);mask-image:linear-gradient(to top,rgba(0,0,0,.8) 0,rgba(0,0,0,.4) 30%,rgba(0,0,0,0) 60%);animation:gridMove 20s linear infinite}
         @keyframes gridMove{0%{transform:translateX(-50%) rotateX(60deg) translateY(0)}100%{transform:translateX(-50%) rotateX(60deg) translateY(40px)}}
-
-        /* --- EFFECTS --- */
         .noise{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:100;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:180px 180px;animation:noiseShift .4s steps(3) infinite;will-change:transform}
         @keyframes noiseShift{0%,100%{transform:translate(0,0)}33%{transform:translate(-3px,2px)}66%{transform:translate(2px,-1px)}}
         .scanlines{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:99;opacity:.08;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.5) 3px,rgba(0,0,0,.5) 4px)}
@@ -55,7 +50,6 @@
         .main-container:hover{transform:rotateY(3deg) rotateX(0deg) scale(1.02);}
         .hero{margin-bottom:30px}
         
-        /* --- TITLE STYLE --- */
         #animated-title {
             font-family: var(--font-display);
             font-size: clamp(2.8rem, 7vw, 5.5rem);
@@ -74,16 +68,7 @@
             position: relative;
         }
         @keyframes titlePulse{0%,100%{filter:drop-shadow(0 0 10px rgba(245,229,108,.2))}50%{filter:drop-shadow(0 0 25px rgba(245,229,108,.8)) drop-shadow(0 0 50px rgba(255,45,149,.4))}}
-        
-        #cursor-title {
-            display: none;
-            width: 3px;
-            height: 0.8em;
-            background-color: #ffcc00;
-            animation: blink 1s step-end infinite;
-            vertical-align: middle;
-            margin-left: 5px;
-        }
+        #cursor-title{display:none;width:3px;height:0.8em;background-color:#ffcc00;animation:blink 1s step-end infinite;vertical-align:middle;margin-left:5px;}
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
         .terminal-wrapper{text-align:center}
@@ -117,33 +102,24 @@
         .fragment:hover::before{opacity:1}
         .fragment:hover{transform:translateY(-6px);border-color:rgba(255,255,255,.2)}
         .fragment-about{border-left:3px solid var(--neon-purple)}
-        .fragment-about::before{background:radial-gradient(ellipse at 20% 50%,rgba(181,55,242,.1) 0,transparent 60%)}
         .fragment-about:hover{box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 50px rgba(181,55,242,.15),inset 0 0 30px rgba(181,55,242,.03)}
         .fragment-certs{border-left:3px solid #f0c040}
-        .fragment-certs::before{background:radial-gradient(ellipse at 20% 50%,rgba(240,192,64,.08) 0,transparent 60%)}
         .fragment-certs:hover{box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 50px rgba(240,192,64,.12),inset 0 0 30px rgba(240,192,64,.03)}
         .fragment-certs .fragment-id{color:#f0c040}
         .fragment-alfa{border-left:3px solid var(--neon-orange)}
-        .fragment-alfa::before{background:radial-gradient(ellipse at 20% 50%,rgba(255,140,66,.1) 0,transparent 60%)}
         .fragment-alfa:hover{box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 50px rgba(255,140,66,.15),inset 0 0 30px rgba(255,140,66,.03)}
         .fragment-pi{border-left:3px solid var(--neon-cyan)}
-        .fragment-pi::before{background:radial-gradient(ellipse at 20% 50%,rgba(0,229,255,.1) 0,transparent 60%)}
         .fragment-pi:hover{box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 50px rgba(0,229,255,.15),inset 0 0 30px rgba(0,229,255,.03)}
         .fragment-aws{border-left:3px solid var(--neon-blue)}
-        .fragment-aws::before{background:radial-gradient(ellipse at 20% 50%,rgba(68,136,255,.1) 0,transparent 60%)}
         .fragment-aws:hover{box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 50px rgba(68,136,255,.15),inset 0 0 30px rgba(68,136,255,.03)}
         .fragment-meta{border-left:3px solid var(--neon-pink)}
-        .fragment-meta::before{background:radial-gradient(ellipse at 20% 50%,rgba(255,45,149,.1) 0,transparent 60%)}
         .fragment-meta:hover{box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 50px rgba(255,45,149,.15),inset 0 0 30px rgba(255,45,149,.03)}
         .fragment-setup-combined{border-left:3px solid var(--neon-green)}
-        .fragment-setup-combined::before{background:radial-gradient(ellipse at 20% 50%,rgba(74,222,128,.08) 0,transparent 60%)}
         .fragment-setup-combined:hover{box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 50px rgba(74,222,128,.15),inset 0 0 30px rgba(74,222,128,.03)}
         .fragment-setup-combined .fragment-id{color:var(--neon-green)}
         .fragment-music{border-left:3px solid var(--neon-yellow)}
-        .fragment-music::before{background:radial-gradient(ellipse at 20% 50%,rgba(245,229,108,.1) 0,transparent 60%)}
         .fragment-music:hover{box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 50px rgba(245,229,108,.15),inset 0 0 30px rgba(245,229,108,.03)}
         .fragment-blog{border-left:3px solid var(--blog-teal)}
-        .fragment-blog::before{background:radial-gradient(ellipse at 20% 50%,rgba(45,212,191,.08) 0,transparent 60%)}
         .fragment-blog:hover{box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 50px rgba(45,212,191,.15),inset 0 0 30px rgba(45,212,191,.03)}
         .fragment-blog .fragment-id{color:var(--blog-teal)}
         .fragment-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px}
@@ -308,9 +284,7 @@
     </style>
 </head>
 <body>
-    <!-- MATRIX RAIN CANVAS -->
     <canvas id="matrix-canvas"></canvas>
-
     <div class="sky"></div><div class="stars" id="stars"></div><div class="grid-floor"><div class="grid-lines"></div></div><div class="noise"></div><div class="scanlines"></div><div class="vignette"></div><div class="mouse-glow" id="mouseGlow"></div>
     <div class="lang-toggle" role="group" aria-label="Language selector"><button class="lang-btn active" data-lang="en" id="btnEN" aria-pressed="true">EN</button><button class="lang-btn" data-lang="es" id="btnES" aria-pressed="false">ES</button></div>
 
@@ -336,229 +310,130 @@
             <div id="projects-container">
                 <div id="main-categories" class="category-view">
                     <div class="fragments">
-                        <!-- Alfa Anónimo -->
                         <article class="fragment fragment-alfa" onclick="window.open('https://alfaanonimo.com','_blank')">
-                            <div class="fragment-header">
-                                <span class="fragment-id">PROJECT-AA-01</span>
-                                <span class="fragment-status status-live">● Live</span>
-                            </div>
+                            <div class="fragment-header"><span class="fragment-id">PROJECT-AA-01</span><span class="fragment-status status-live">● Live</span></div>
                             <h2 class="fragment-title">Alfa Anónimo</h2>
                             <p class="fragment-desc" data-en="Built a platform for selling courses. Social media to checkout. Learned about payments, user experience, and what it takes to ship something that actually helps people grow." data-es="Construí una plataforma para vender cursos. De redes sociales al checkout. Aprendí sobre pagos, experiencia de usuario, y lo que se necesita para lanzar algo que realmente ayuda a las personas a crecer.">Built a platform for selling courses. Social media to checkout. Learned about payments, user experience, and what it takes to ship something that actually helps people grow.</p>
-                            <div class="fragment-tags">
-                                <span class="tag">Web Platform</span>
-                                <span class="tag">SMB</span>
-                                <span class="tag">Multi-tool</span>
-                            </div>
+                            <div class="fragment-tags"><span class="tag">Web Platform</span><span class="tag">SMB</span><span class="tag">Multi-tool</span></div>
                             <a href="https://alfaanonimo.com" target="_blank" rel="noopener noreferrer" class="project-btn btn-alfa">Open Project</a>
                         </article>
 
-                        <!-- Retro-Game Rhapsody -->
                         <article class="fragment fragment-pi" onclick="window.open('https://github.com/MrsOri','_blank')">
-                            <div class="fragment-header">
-                                <span class="fragment-id">PROJECT-RPI-02</span>
-                                <span class="fragment-status status-experiment-cyan">● Experiment</span>
-                            </div>
+                            <div class="fragment-header"><span class="fragment-id">PROJECT-RPI-02</span><span class="fragment-status status-experiment-cyan">● Experiment</span></div>
                             <h2 class="fragment-title">Retro-Game Rhapsody</h2>
                             <p class="fragment-desc" data-en="Turned a Raspberry Pi into a retro gaming console. Learned about hardware, emulation, power, and heat." data-es="Convertí una Raspberry Pi en una consola de juegos retro. Aprendí sobre hardware, emulación, energía y temperatura.">Turned a Raspberry Pi into a retro gaming console. Learned about hardware, emulation, power, and heat.</p>
-                            <div class="fragment-tags" style="margin-top:15px;">
-                                <span class="tag">Raspberry Pi</span>
-                                <span class="tag">Linux</span>
-                                <span class="tag">Hardware</span>
-                            </div>
+                            <div class="fragment-tags" style="margin-top:15px;"><span class="tag">Raspberry Pi</span><span class="tag">Linux</span><span class="tag">Hardware</span></div>
                             <a href="https://github.com/MrsOri" target="_blank" rel="noopener noreferrer" class="project-btn btn-pi">Open Project</a>
                         </article>
 
-                        <!-- Cloud Architecture -->
                         <div id="aws-category" class="category-view">
                             <article class="fragment fragment-aws">
-                                <div class="fragment-header">
-                                    <span class="fragment-id">PROJECT-AWS-03</span>
-                                    <span class="fragment-status status-completed">● Completed</span>
-                                </div>
+                                <div class="fragment-header"><span class="fragment-id">PROJECT-AWS-03</span><span class="fragment-status status-completed">● Completed</span></div>
                                 <h2 class="fragment-title">Cloud Architecture</h2>
                                 <p class="fragment-desc" data-en="Cloud experiments across different providers. Learned about infrastructure by doing and testing." data-es="Experimentos en la nube con diferentes proveedores. Aprendí sobre infraestructura haciendo y probando.">Cloud experiments across different providers. Learned about infrastructure by doing and testing.</p>
-                                <div class="fragment-tags" style="margin-top:18px;">
-                                    <span class="tag">AWS</span>
-                                    <span class="tag">GCP</span>
-                                    <span class="tag">Azure</span>
-                                </div>
+                                <div class="fragment-tags" style="margin-top:18px;"><span class="tag">AWS</span><span class="tag">GCP</span><span class="tag">Azure</span></div>
                                 <a href="#" onclick="showDetail('aws'); return false;" class="project-btn btn-aws">View All Projects</a>
                             </article>
                         </div>
 
-                        <!-- SecOps & Telemetry -->
                         <div id="cyber-category" class="category-view">
                             <article class="fragment fragment-meta" style="border-left-color: var(--neon-pink);">
-                                <div class="fragment-header">
-                                    <span class="fragment-id">PROJECT-CYBER-01</span>
-                                    <span class="fragment-status status-experiment-pink">● Experiment</span>
-                                </div>
+                                <div class="fragment-header"><span class="fragment-id">PROJECT-CYBER-01</span><span class="fragment-status status-experiment-pink">● Experiment</span></div>
                                 <h2 class="fragment-title" style="color: #f0e0ff;">SecOps & Telemetry</h2>
                                 <p class="fragment-desc" data-en="I wanted to understand how systems get hacked. That's why I created a safe environment to test, watch, and rebuild." data-es="Quería entender cómo hackean los sistemas. Por eso creé un entorno seguro para probar, observar y reconstruir.">I wanted to understand how systems get hacked. That's why I created a safe environment to test, watch, and rebuild.</p>
-                                <div class="fragment-tags" style="margin-top:18px;">
-                                    <span class="tag">AI Security</span>
-                                    <span class="tag">Purple Team</span>
-                                    <span class="tag">Cloud Security</span>
-                                </div>
+                                <div class="fragment-tags" style="margin-top:18px;"><span class="tag">AI Security</span><span class="tag">Purple Team</span><span class="tag">Cloud Security</span></div>
                                 <a href="#" onclick="showDetail('cyber'); return false;" class="project-btn btn-cyber">Learn More</a>
                             </article>
                         </div>
 
-                        <!-- Scripting Engine -->
                         <div id="code-category" class="category-view">
                             <article class="fragment" style="border-left: 3px solid var(--neon-yellow);">
-                                <div class="fragment-header">
-                                    <span class="fragment-id">PROJECT-CODESCRP-01</span>
-                                    <span class="fragment-status status-active-yellow">● Active</span>
-                                </div>
+                                <div class="fragment-header"><span class="fragment-id">PROJECT-CODESCRP-01</span><span class="fragment-status status-active-yellow">● Active</span></div>
                                 <h2 class="fragment-title" style="color: #f0e0ff;">Scripting Engine</h2>
                                 <p class="fragment-desc" data-en="Trying Python scripts, automation, and tools that connect systems applied with AI. Less manual work, more time for the important stuff: gaming and listening to music." data-es="Probando scripts en Python, automatización y herramientas que conectan sistemas aplicadas con IA. Menos trabajo manual, más tiempo para lo importante: jugar y escuchar música.">Trying Python scripts, automation, and tools that connect systems applied with AI. Less manual work, more time for the important stuff: gaming and listening to music.</p>
-                                <div class="fragment-tags" style="margin-top:18px;">
-                                    <span class="tag">Orchestration</span>
-                                    <span class="tag">Coding</span>
-                                    <span class="tag">Automation</span>
-                                    <span class="tag">Scripting</span>
-                                </div>
+                                <div class="fragment-tags" style="margin-top:18px;"><span class="tag">Orchestration</span><span class="tag">Coding</span><span class="tag">Automation</span><span class="tag">Scripting</span></div>
                                 <a href="#" onclick="showDetail('code'); return false;" class="project-btn btn-code">View All Projects</a>
                             </article>
                         </div>
 
-                        <!-- Proyecto Secreto -->
                         <article class="fragment fragment-meta" style="border-left: 3px solid var(--neon-green) !important; border-left-color: var(--neon-green) !important; box-shadow: 0 30px 80px rgba(0,0,0,.6), 0 0 50px rgba(74,222,128,.15), inset 0 0 30px rgba(74,222,128,.03) !important;">
-                            <div class="fragment-header">
-                                <span class="fragment-id" style="color: var(--neon-green);">PROJECT-GHOST-04</span>
-                                <span class="fragment-status status-stealth-green">● Stealth</span>
-                            </div>
+                            <div class="fragment-header"><span class="fragment-id" style="color: var(--neon-green);">PROJECT-GHOST-04</span><span class="fragment-status status-stealth-green">● Stealth</span></div>
                             <h2 class="fragment-title scramble-text" style="color: var(--neon-green); text-shadow: 0 0 20px rgba(74,222,128,.4);">■■■■■■■■■■</h2>
                             <p class="fragment-desc" data-en="Something new is in the works. Can't say more yet, but it's going to be interesting. Stick around." data-es="Algo nuevo está en camino. No puedo decir más todavía, pero va a ser interesante. Quédate cerca.">Something new is in the works. Can't say more yet, but it's going to be interesting. Stick around.</p>
-                            <div class="locked-indicator" style="color: var(--neon-green); text-shadow: 0 0 15px rgba(74,222,128,.5);">
-                                <span class="locked-icon" style="border-color: var(--neon-green); box-shadow: 0 0 10px rgba(74,222,128,.6);"></span>
-                                ENCRYPTED · ASK DIRECTLY
-                            </div>
+                            <div class="locked-indicator" style="color: var(--neon-green); text-shadow: 0 0 15px rgba(74,222,128,.5);"><span class="locked-icon" style="border-color: var(--neon-green); box-shadow: 0 0 10px rgba(74,222,128,.6);"></span>ENCRYPTED · ASK DIRECTLY</div>
                         </article>
                     </div>
                 </div>
 
-                <!-- AWS DETAIL -->
                 <div id="aws-detail" class="detail-view">
                     <button class="back-btn" onclick="showCategory('aws')" style="margin-bottom:20px;">← Back to Projects</button>
                     <div class="fragments" style="gap:30px;">
                         <h2 style="color:#f0e0ff;">Cloud Architecture</h2>
                         <p style="color:#9080b0; text-align:center; margin-bottom:20px;">Cloud experiments across different providers. Learned about infrastructure by doing and testing.</p>
-
                         <article class="fragment" style="border-left:3px solid var(--neon-blue);">
-                            <div class="fragment-header">
-                                <span class="fragment-id" style="color:var(--neon-blue);">S3-001</span>
-                                <span class="fragment-status" style="color:#4ade80; border-color:rgba(74,222,128,.3);">Live Demo</span>
-                            </div>
+                            <div class="fragment-header"><span class="fragment-id" style="color:var(--neon-blue);">S3-001</span><span class="fragment-status" style="color:#4ade80; border-color:rgba(74,222,128,.3);">Live Demo</span></div>
                             <h3 style="color:#b0c8d8;">Hosting a Static Website in S3</h3>
                             <p style="color:#9080b0; font-size:.9rem; line-height:1.7;">Setup a static site using S3, configured public access, and learned about ACLs and permissions the hard way.</p>
-                            <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;">
-                                <a href="https://github.com/SoriSpace/Hosting-a-website-in-S3" target="_blank" class="tag tag-link" style="border-color:var(--neon-blue); color:var(--neon-blue);">Repo</a>
-                                <a href="https://github.com/SoriSpace/Hosting-a-website-in-S3" target="_blank" class="tag tag-link" style="border-color:var(--neon-blue); color:var(--neon-blue);">Live Site</a>
-                            </div>
+                            <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;"><a href="https://github.com/SoriSpace/Hosting-a-website-in-S3" target="_blank" class="tag tag-link" style="border-color:var(--neon-blue); color:var(--neon-blue);">Repo</a><a href="https://github.com/SoriSpace/Hosting-a-website-in-S3" target="_blank" class="tag tag-link" style="border-color:var(--neon-blue); color:var(--neon-blue);">Live Site</a></div>
                         </article>
-
                         <article class="fragment" style="border-left:3px solid rgba(255,255,255,.06); opacity:.4;">
-                            <div class="fragment-header">
-                                <span class="fragment-id" style="color:#605070;">EC2-001</span>
-                                <span class="fragment-status" style="color:#605070; border-color:rgba(255,255,255,.06);">Coming Soon</span>
-                            </div>
+                            <div class="fragment-header"><span class="fragment-id" style="color:#605070;">EC2-001</span><span class="fragment-status" style="color:#605070; border-color:rgba(255,255,255,.06);">Coming Soon</span></div>
                             <h3 style="color:#605070;">EC2 Instance Lab</h3>
                             <p style="color:#605070; font-size:.9rem; line-height:1.7;">Deploying a web server on EC2, security groups, and SSH access.</p>
                         </article>
-
                         <article class="fragment" style="border-left:3px solid rgba(255,255,255,.06); opacity:.4;">
-                            <div class="fragment-header">
-                                <span class="fragment-id" style="color:#605070;">IAM-001</span>
-                                <span class="fragment-status" style="color:#605070; border-color:rgba(255,255,255,.06);">Coming Soon</span>
-                            </div>
+                            <div class="fragment-header"><span class="fragment-id" style="color:#605070;">IAM-001</span><span class="fragment-status" style="color:#605070; border-color:rgba(255,255,255,.06);">Coming Soon</span></div>
                             <h3 style="color:#605070;">IAM Policy Experiments</h3>
                             <p style="color:#605070; font-size:.9rem; line-height:1.7;">Understanding least privilege, roles, and policies.</p>
                         </article>
-
                         <div style="text-align:center; margin-top:10px; opacity:.3; font-size:.6rem; color:#605070; letter-spacing:.1em;">MORE EXPERIMENTS COMING SOON</div>
                     </div>
                 </div>
 
-                <!-- SECOPS & TELEMETRY DETAIL -->
                 <div id="cyber-detail" class="detail-view">
                     <button class="back-btn" onclick="showCategory('cyber')" style="margin-bottom:20px;">← Back to Projects</button>
                     <div class="fragments" style="gap:30px;">
                         <h2 style="color:#f0e0ff;">SecOps & Telemetry</h2>
                         <p style="color:#9080b0; text-align:center; margin-bottom:20px;">I wanted to understand how systems get hacked. That's why I created a safe environment to test, watch, and rebuild.</p>
-
                         <article class="fragment" style="border-left:3px solid var(--neon-pink);">
-                            <div class="fragment-header">
-                                <span class="fragment-id" style="color:var(--neon-pink);">SOC-001</span>
-                                <span class="fragment-status" style="color:#f0c040; border-color:rgba(240,192,64,.4);">In Progress</span>
-                            </div>
+                            <div class="fragment-header"><span class="fragment-id" style="color:var(--neon-pink);">SOC-001</span><span class="fragment-status" style="color:#f0c040; border-color:rgba(240,192,64,.4);">In Progress</span></div>
                             <h3 style="color:#b0c8d8;">SOC Lab</h3>
                             <p style="color:#9080b0; font-size:.9rem; line-height:1.7;">Setting up a Security Operations Center lab with ELK stack. Log analysis, alerting, and incident response.</p>
-                            <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;">
-                                <a href="#" class="tag tag-link" style="border-color:var(--neon-pink); color:var(--neon-pink);">Coming Soon</a>
-                            </div>
+                            <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;"><a href="#" class="tag tag-link" style="border-color:var(--neon-pink); color:var(--neon-pink);">Coming Soon</a></div>
                         </article>
-
                         <article class="fragment" style="border-left:3px solid var(--neon-purple);">
-                            <div class="fragment-header">
-                                <span class="fragment-id" style="color:var(--neon-purple);">FOR-001</span>
-                                <span class="fragment-status" style="color:#605070; border-color:rgba(255,255,255,.06);">Planning</span>
-                            </div>
+                            <div class="fragment-header"><span class="fragment-id" style="color:var(--neon-purple);">FOR-001</span><span class="fragment-status" style="color:#605070; border-color:rgba(255,255,255,.06);">Planning</span></div>
                             <h3 style="color:#b0c8d8;">Autopsy Forensics</h3>
                             <p style="color:#9080b0; font-size:.9rem; line-height:1.7;">Using Autopsy for forensic investigation. Disk imaging, timeline analysis, and learning how digital evidence is collected and examined.</p>
-                            <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;">
-                                <a href="#" class="tag tag-link" style="border-color:var(--neon-purple); color:var(--neon-purple);">Coming Soon</a>
-                            </div>
+                            <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;"><a href="#" class="tag tag-link" style="border-color:var(--neon-purple); color:var(--neon-purple);">Coming Soon</a></div>
                         </article>
-
                         <article class="fragment" style="border-left:3px solid var(--neon-cyan);">
-                            <div class="fragment-header">
-                                <span class="fragment-id" style="color:var(--neon-cyan);">NET-001</span>
-                                <span class="fragment-status" style="color:#605070; border-color:rgba(255,255,255,.06);">Planning</span>
-                            </div>
+                            <div class="fragment-header"><span class="fragment-id" style="color:var(--neon-cyan);">NET-001</span><span class="fragment-status" style="color:#605070; border-color:rgba(255,255,255,.06);">Planning</span></div>
                             <h3 style="color:#b0c8d8;">Network Security Lab</h3>
                             <p style="color:#9080b0; font-size:.9rem; line-height:1.7;">Configuring firewalls, IDS/IPS, and packet analysis with Wireshark and Snort.</p>
-                            <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;">
-                                <a href="#" class="tag tag-link" style="border-color:var(--neon-cyan); color:var(--neon-cyan);">Coming Soon</a>
-                            </div>
+                            <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;"><a href="#" class="tag tag-link" style="border-color:var(--neon-cyan); color:var(--neon-cyan);">Coming Soon</a></div>
                         </article>
-
                         <div style="text-align:center; margin-top:10px; opacity:.3; font-size:.6rem; color:#605070; letter-spacing:.1em;">MORE EXPERIMENTS COMING SOON</div>
                     </div>
                 </div>
 
-                <!-- SCRIPTING ENGINE DETAIL -->
                 <div id="code-detail" class="detail-view">
                     <button class="back-btn" onclick="showCategory('code')" style="margin-bottom:20px;">← Back to Projects</button>
                     <div class="fragments" style="gap:30px;">
                         <h2 style="color:#f0e0ff;">Scripting Engine</h2>
                         <p style="color:#9080b0; text-align:center; margin-bottom:20px;">Trying Python scripts, automation, and tools that connect systems applied with AI. Less manual work, more time for the important stuff: gaming and listening to music.</p>
-
                         <article class="fragment" style="border-left:3px solid var(--neon-yellow);">
-                            <div class="fragment-header">
-                                <span class="fragment-id" style="color:var(--neon-yellow);">ORC-001</span>
-                                <span class="fragment-status" style="color:#4ade80; border-color:rgba(74,222,128,.3);">Active</span>
-                            </div>
+                            <div class="fragment-header"><span class="fragment-id" style="color:var(--neon-yellow);">ORC-001</span><span class="fragment-status" style="color:#4ade80; border-color:rgba(74,222,128,.3);">Active</span></div>
                             <h3 style="color:#b0c8d8;">Orchestration Stack</h3>
                             <p style="color:#9080b0; font-size:.9rem; line-height:1.7;">Automating workflows with Python, Caddy, Tailscale, n8n, and Telegram. Connecting services so they work together seamlessly.</p>
-                            <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;">
-                                <a href="#" class="tag tag-link" style="border-color:var(--neon-yellow); color:var(--neon-yellow);">Coming Soon</a>
-                            </div>
+                            <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;"><a href="#" class="tag tag-link" style="border-color:var(--neon-yellow); color:var(--neon-yellow);">Coming Soon</a></div>
                         </article>
-
                         <article class="fragment" style="border-left:3px solid var(--neon-green);">
-                            <div class="fragment-header">
-                                <span class="fragment-id" style="color:var(--neon-green);">AUTO-001</span>
-                                <span class="fragment-status" style="color:#4ade80; border-color:rgba(74,222,128,.3);">Active</span>
-                            </div>
+                            <div class="fragment-header"><span class="fragment-id" style="color:var(--neon-green);">AUTO-001</span><span class="fragment-status" style="color:#4ade80; border-color:rgba(74,222,128,.3);">Active</span></div>
                             <h3 style="color:#b0c8d8;">Automation Scripts</h3>
                             <p style="color:#9080b0; font-size:.9rem; line-height:1.7;">A conglomerate of Python scripts for daily tasks. File organization, data parsing, system automation, and more.</p>
-                            <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;">
-                                <a href="#" class="tag tag-link" style="border-color:var(--neon-green); color:var(--neon-green);">Coming Soon</a>
-                            </div>
+                            <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;"><a href="#" class="tag tag-link" style="border-color:var(--neon-green); color:var(--neon-green);">Coming Soon</a></div>
                         </article>
-
                         <div style="text-align:center; margin-top:10px; opacity:.3; font-size:.6rem; color:#605070; letter-spacing:.1em;">MORE EXPERIMENTS COMING SOON</div>
                     </div>
                 </div>
@@ -567,34 +442,18 @@
 
         <div class="content-section" id="section-setup" role="tabpanel"><button class="back-btn" onclick="goBack()" aria-label="Return to terminal">← Back to terminal</button><div class="fragments"><article class="fragment fragment-setup-combined"><div class="fragment-header"><span class="fragment-id">BHM-PC-001</span><span class="fragment-status status-active">● Active</span></div><h2 class="fragment-title">My Tools & Vibes</h2><div class="setup-grid"><div class="setup-column"><div class="setup-subtitle rig">The Rig</div><p class="fragment-desc" style="font-size:.8rem;margin-bottom:10px;">Custom-built battlestation.</p><ul class="spec-list"><li><span>CPU</span><span>Intel I7-14700F</span></li><li><span>GPU</span><span>RTX 4060 8GB</span></li><li><span>RAM</span><span>32GB</span></li><li><span>Storage</span><span>1TB NVMe + 2TB SSD</span></li><li><span>OS</span><span>Win 11 / Ubuntu</span></li></ul></div><div class="setup-column"><div class="setup-subtitle lab">The Lab</div><p class="fragment-desc" style="font-size:.8rem;margin-bottom:10px;">MacBook Pro mobile center.</p><ul class="spec-list"><li><span>Model</span><span>MacBook Pro</span></li><li><span>RAM</span><span>48GB Unified</span></li><li><span>Storage</span><span>1TB SSD</span></li><li><span>OS</span><span>macOS</span></li></ul></div></div><p class="setup-footer-text" data-en="Windows on the desk. macOS on the move. Linux on both. Three operating systems, one brain." data-es="Windows en el escritorio. macOS en movimiento. Linux en ambos. Tres sistemas operativos, un cerebro.">Windows on the desk. macOS on the move. Linux on both. Three operating systems, one brain.</p></article>
 
-        <!-- Sound System -->
         <article class="fragment fragment-music">
-            <div class="fragment-header">
-                <span class="fragment-id">SIGNAL-MU-001</span>
-                <span class="fragment-status status-playing">● Playing</span>
-            </div>
+            <div class="fragment-header"><span class="fragment-id">SIGNAL-MU-001</span><span class="fragment-status status-playing">● Playing</span></div>
             <h2 class="fragment-title">Sound System</h2>
             <p class="fragment-desc" data-en="Every project has its own soundtrack. Code runs on electronic. Late nights need lo-fi. Hardware work demands rock. The right music at the right time." data-es="Cada proyecto tiene su propia banda sonora. El código corre con electrónica. Las madrugadas necesitan lo-fi. El hardware exige rock. La música correcta en el momento correcto.">Every project has its own soundtrack. Code runs on electronic. Late nights need lo-fi. Hardware work demands rock. The right music at the right time.</p>
-
             <div style="margin: 20px auto; max-width: 500px; border-radius: 12px; overflow: hidden; box-shadow: 0 0 30px rgba(255,85,0,0.15); background: rgba(0,0,0,0.3);">
-                <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay; encrypted-media" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/soundcloud%253Aplaylists%253A1629833398&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true">
-                </iframe>
+                <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay; encrypted-media" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/soundcloud%253Aplaylists%253A1629833398&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true"></iframe>
             </div>
-
             <div style="font-size: 10px; color: #605070; text-align: center; margin-top: 8px; letter-spacing: 0.1em; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif; font-weight: 100; line-break: anywhere; word-break: normal; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
-                <a href="https://soundcloud.com/mariana-lugo-221507793" title="Mrs Ori" target="_blank" style="color: #605070; text-decoration: none;">Mrs Ori</a> · 
-                <a href="https://soundcloud.com/mariana-lugo-221507793/sets/mrs-oris-melodies" title="Mrs Ori's Rhapsodies" target="_blank" style="color: #605070; text-decoration: none;">Mrs Ori's Rhapsodies</a>
+                <a href="https://soundcloud.com/mariana-lugo-221507793" title="Mrs Ori" target="_blank" style="color: #605070; text-decoration: none;">Mrs Ori</a> · <a href="https://soundcloud.com/mariana-lugo-221507793/sets/mrs-oris-melodies" title="Mrs Ori's Rhapsodies" target="_blank" style="color: #605070; text-decoration: none;">Mrs Ori's Rhapsodies</a>
             </div>
-            <div style="text-align: center; margin-top: 4px;">
-                <a href="https://soundcloud.com/mariana-lugo-221507793/sets/mrs-oris-melodies" target="_blank" style="display: inline-block; padding: 5px 14px; border: 1px solid rgba(255,85,0,0.25); border-radius: 16px; color: #ff5500; text-decoration: none; font-size: 10px; font-weight: bold; letter-spacing: 0.08em; transition: all 0.3s;">🎵 Open in SoundCloud</a>
-            </div>
-
-            <div class="fragment-tags" style="margin-top:16px;">
-                <span class="tag">Electronic</span>
-                <span class="tag">Lo-Fi</span>
-                <span class="tag">Rock</span>
-                <span class="tag">Synthwave</span>
-            </div>
+            <div style="text-align: center; margin-top: 4px;"><a href="https://soundcloud.com/mariana-lugo-221507793/sets/mrs-oris-melodies" target="_blank" style="display: inline-block; padding: 5px 14px; border: 1px solid rgba(255,85,0,0.25); border-radius: 16px; color: #ff5500; text-decoration: none; font-size: 10px; font-weight: bold; letter-spacing: 0.08em; transition: all 0.3s;">🎵 Open in SoundCloud</a></div>
+            <div class="fragment-tags" style="margin-top:16px;"><span class="tag">Electronic</span><span class="tag">Lo-Fi</span><span class="tag">Rock</span><span class="tag">Synthwave</span></div>
         </article>
     </div></div>
 
@@ -602,15 +461,11 @@
 
         <div class="content-section" id="section-contact" role="tabpanel"><button class="back-btn" onclick="goBack()" aria-label="Return to terminal">← Back to terminal</button><div class="fragments"><article class="fragment fragment-about"><div class="fragment-header"><span class="fragment-id">COFFEE-TIME-01</span><span class="fragment-status status-transmitting">● Transmitting</span></div><h2 class="fragment-title">Let's Connect</h2><p class="fragment-desc">Find me here.</p><div class="social-links"><a href="https://youtube.com/@SoriSpace" target="_blank" rel="noopener noreferrer" class="tag tag-link">YouTube</a><a href="https://github.com/SoriSpace" target="_blank" rel="noopener noreferrer" class="tag tag-link">GitHub</a><a href="https://discord.gg/emE7ewSTj" target="_blank" rel="noopener noreferrer" class="tag tag-link">Discord</a><a href="https://www.linkedin.com/in/mariana-lugo/" target="_blank" rel="noopener noreferrer" class="tag tag-link">LinkedIn</a></div></article></div></div>
 
-        <footer class="footer">
-            <p>SoriSpace — Building things, one space at a time.</p>
-        </footer>
+        <footer class="footer"><p>SoriSpace — Building things, one space at a time.</p></footer>
     </main>
 
     <script>
-        // ==========================================
-        // MATRIX RAIN BACKGROUND
-        // ==========================================
+        // Matrix Rain
         (function() {
             const canvas = document.getElementById('matrix-canvas');
             const ctx = canvas.getContext('2d');
@@ -631,9 +486,7 @@
             }, 30);
         })();
 
-        // ==========================================
-        // BOOT SEQUENCE: REMOVE LINES ONE BY ONE
-        // ==========================================
+        // Boot Sequence
         const titleEl = document.getElementById('animated-title');
         const cursorEl = document.getElementById('cursor-title');
         const terminalOutput = document.getElementById('terminalOutput');
@@ -683,7 +536,6 @@
 
         function startBoot() {
             let index = 0;
-            
             function addMessage() {
                 if (index < bootMessages.length) {
                     typeLine(bootMessages[index], () => {
@@ -746,9 +598,7 @@
 
         setTimeout(startBoot, 400);
 
-        // ==========================================
-        // TERMINAL COMMANDS & PORTFOLIO
-        // ==========================================
+        // Terminal Commands & Navigation
         const ti = document.getElementById('terminalInput');
         const tc = document.getElementById('terminal');
         const tw = document.getElementById('terminalWrapper');
@@ -837,9 +687,7 @@
 
         tc.addEventListener('click', () => ti.focus());
 
-        // ==========================================
-        // LANGUAGE & OTHER EFFECTS
-        // ==========================================
+        // Language & Other Effects
         (function(){
             const sc = document.getElementById('stars');
             for (let i = 0; i < 150; i++) {
@@ -879,5 +727,4 @@
         console.log("🚀 SoriSpace — Building things, one space at a time.");
     </script>
 </body>
-</html>
 </html>
