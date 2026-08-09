@@ -14,36 +14,33 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* --- RESET --- */
         *{margin:0;padding:0;box-sizing:border-box}
-        html{width:100%;overflow-x:hidden; height: 100%;}
+        html{width:100%;overflow-x:hidden;}
         
-        /* --- CUERPO PRINCIPAL (SCROLL LIBRE) --- */
         body{
             width:100%; 
             min-height: 100vh;
-            height: auto !important; /* Permite que la página crezca naturalmente */
-            max-width:100vw; 
+            height: auto;
             overflow-x:hidden; 
-            overflow-y: auto; /* Scroll total sin bloqueos */
+            overflow-y: auto; /* Normal scroll */
             background:var(--bg-deep);color:var(--text);font-family:var(--font-mono);
-            cursor:crosshair;display:flex;align-items:flex-start; /* Alinea arriba */
-            justify-content:center;perspective:800px;
+            cursor:crosshair;display:flex;align-items:center;
+            justify-content:center;
             position: relative;
-            padding: 40px 0 120px 0; /* Espacio extra para que no se corte el final */
+            padding: 40px 0 80px 0;
         }
         
         :root{--bg-deep:#0d0221;--neon-pink:#ff2d95;--neon-cyan:#00e5ff;--neon-purple:#b537f2;--neon-green:#4ade80;--neon-orange:#ff8c42;--neon-yellow:#f5e56c;--neon-blue:#4488ff;--mac-silver:#c8d6e0;--blog-teal:#2dd4bf;--grid-color:rgba(181,55,242,.3);--text:#e0d0f0;--font-display:'Caveat',cursive;--font-mono:'Courier New','Consolas',monospace}
         
         .sky{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;background:linear-gradient(180deg,#0d0221 0,#1a0a3a 40%,#1a0a3a 60%,#0d0221 100%)}
-        #matrix-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none;opacity:0.25; will-change: transform;}
+        #matrix-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none;opacity:0.25;}
         .stars{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:2}
-        .star{position:absolute;background:#fff;border-radius:50%;animation:twinkle 3s ease-in-out infinite;will-change:opacity}
+        .star{position:absolute;background:#fff;border-radius:50%;animation:twinkle 3s ease-in-out infinite;}
         @keyframes twinkle{0%,100%{opacity:.2}50%{opacity:.7}}
-        .grid-floor{position:fixed;bottom:0;left:0;width:100%;height:70%;pointer-events:none;z-index:2;perspective:400px;overflow:hidden}
+        .grid-floor{position:fixed;bottom:0;left:0;width:100%;height:70%;pointer-events:none;z-index:2;overflow:hidden}
         .grid-lines{position:absolute;bottom:-50%;left:50%;transform:translateX(-50%) rotateX(60deg);width:200%;height:200%;background-image:repeating-linear-gradient(0deg,transparent,transparent 40px,var(--grid-color) 40px,var(--grid-color) 41px),repeating-linear-gradient(90deg,transparent,transparent 40px,var(--grid-color) 40px,var(--grid-color) 41px);mask-image:linear-gradient(to top,rgba(0,0,0,.8) 0,rgba(0,0,0,.4) 30%,rgba(0,0,0,0) 60%);animation:gridMove 20s linear infinite}
         @keyframes gridMove{0%{transform:translateX(-50%) rotateX(60deg) translateY(0)}100%{transform:translateX(-50%) rotateX(60deg) translateY(40px)}}
-        .noise{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:100;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:180px 180px;animation:noiseShift .4s steps(3) infinite;will-change:transform}
+        .noise{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:100;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:180px 180px;animation:noiseShift .4s steps(3) infinite;}
         @keyframes noiseShift{0%,100%{transform:translate(0,0)}33%{transform:translate(-3px,2px)}66%{transform:translate(2px,-1px)}}
         .scanlines{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:99;opacity:.08;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.5) 3px,rgba(0,0,0,.5) 4px)}
         .vignette{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:98;background:radial-gradient(ellipse at center,transparent 50%,rgba(5,0,15,.6) 100%)}
@@ -52,8 +49,7 @@
         .lang-btn:first-child{border-radius:4px 0 0 4px}.lang-btn:last-child{border-radius:0 4px 4px 0}
         .lang-btn.active{background:rgba(181,55,242,.25);border-color:var(--neon-purple);color:#fff;text-shadow:0 0 8px rgba(181,55,242,.5)}
         .lang-btn:hover{border-color:rgba(255,255,255,.4);color:#d0c0f0}
-        .main-container{position:relative;z-index:10;max-width:800px;width:100%;margin:0 auto;padding:20px 20px;text-align:center;box-sizing:border-box;transform:rotateX(2deg) rotateY(-2deg);transition:transform 0.1s ease-out; height: auto !important;}
-        .main-container:hover{transform:rotateY(3deg) rotateX(0deg) scale(1.02);}
+        .main-container{position:relative;z-index:10;max-width:800px;width:100%;margin:0 auto;padding:20px 20px;text-align:center;box-sizing:border-box; height: auto !important;}
         .hero{margin-bottom:30px}
         
         #animated-title {
@@ -70,7 +66,6 @@
             -webkit-text-fill-color: transparent;
             filter: drop-shadow(0 0 10px rgba(245,229,108,.2));
             animation: titlePulse 3s ease-in-out infinite;
-            will-change: filter;
             position: relative;
         }
         @keyframes titlePulse{0%,100%{filter:drop-shadow(0 0 10px rgba(245,229,108,.2))}50%{filter:drop-shadow(0 0 25px rgba(245,229,108,.8)) drop-shadow(0 0 50px rgba(255,45,149,.4))}}
