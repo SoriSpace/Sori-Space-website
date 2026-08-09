@@ -486,7 +486,42 @@
     </main>
 
     <script>
-        // Matrix Rain
+        // ==========================================
+        // NAVEGACIÓN DE PROYECTOS (¡LO PRIMERO!)
+        // ==========================================
+        function showDetail(category) {
+            // Ocultar todas las vistas
+            document.querySelectorAll('.category-view, .detail-view').forEach(el => {
+                el.style.display = 'none';
+            });
+            // Mostrar la vista detallada correcta
+            document.getElementById(category + '-detail').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showCategory(category) {
+            // Ocultar todas las vistas detalladas
+            document.querySelectorAll('.detail-view').forEach(el => {
+                el.style.display = 'none';
+            });
+            // Mostrar todas las categorías nuevamente
+            document.querySelectorAll('.category-view').forEach(el => {
+                el.style.display = 'block';
+            });
+            document.getElementById('main-categories').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goBack() {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            document.getElementById('terminalWrapper').style.display = 'block';
+            document.getElementById('terminalInput').focus();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ==========================================
+        // MATRIX RAIN BACKGROUND
+        // ==========================================
         (function() {
             const canvas = document.getElementById('matrix-canvas');
             const ctx = canvas.getContext('2d');
@@ -507,7 +542,9 @@
             }, 30);
         })();
 
-        // Boot Sequence
+        // ==========================================
+        // BOOT SEQUENCE
+        // ==========================================
         const titleEl = document.getElementById('animated-title');
         const cursorEl = document.getElementById('cursor-title');
         const terminalOutput = document.getElementById('terminalOutput');
@@ -620,7 +657,9 @@
 
         setTimeout(startBoot, 400);
 
-        // Terminal Commands & Navigation
+        // ==========================================
+        // TERMINAL COMMANDS & LOGIC
+        // ==========================================
         const ti = document.getElementById('terminalInput');
         const tc = document.getElementById('terminal');
         const tw = document.getElementById('terminalWrapper');
@@ -661,13 +700,6 @@
             if (sec) sec.classList.add('active');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         };
-
-        function goBack() {
-            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
-            tw.style.display = 'block';
-            ti.focus();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
 
         ti.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
