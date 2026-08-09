@@ -16,15 +16,32 @@
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
         html{width:100%;overflow-x:hidden}
-        body{width:100%;max-width:100vw;overflow-x:hidden;background:var(--bg-deep);color:var(--text);font-family:var(--font-mono);min-height:100vh;cursor:crosshair;display:flex;align-items:center;justify-content:center}
+        body{width:100%;max-width:100vw;overflow-x:hidden;background:var(--bg-deep);color:var(--text);font-family:var(--font-mono);min-height:100vh;cursor:crosshair;display:flex;align-items:center;justify-content:center;perspective:800px}
         :root{--bg-deep:#0d0221;--neon-pink:#ff2d95;--neon-cyan:#00e5ff;--neon-purple:#b537f2;--neon-green:#4ade80;--neon-orange:#ff8c42;--neon-yellow:#f5e56c;--neon-blue:#4488ff;--mac-silver:#c8d6e0;--blog-teal:#2dd4bf;--grid-color:rgba(181,55,242,.3);--text:#e0d0f0;--font-display:'Caveat',cursive;--font-mono:'Courier New','Consolas',monospace}
+        
+        /* --- LAYER 0: The deepest background --- */
         .sky{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;background:linear-gradient(180deg,#0d0221 0,#1a0a3a 40%,#1a0a3a 60%,#0d0221 100%)}
-        .grid-floor{position:fixed;bottom:0;left:0;width:100%;height:70%;pointer-events:none;z-index:0;perspective:400px;overflow:hidden}
-        .grid-lines{position:absolute;bottom:-50%;left:50%;transform:translateX(-50%) rotateX(60deg);width:200%;height:200%;background-image:repeating-linear-gradient(0deg,transparent,transparent 40px,var(--grid-color) 40px,var(--grid-color) 41px),repeating-linear-gradient(90deg,transparent,transparent 40px,var(--grid-color) 40px,var(--grid-color) 41px);mask-image:linear-gradient(to top,rgba(0,0,0,.8) 0,rgba(0,0,0,.4) 30%,rgba(0,0,0,0) 60%);animation:gridMove 20s linear infinite}
-        @keyframes gridMove{0%{transform:translateX(-50%) rotateX(60deg) translateY(0)}100%{transform:translateX(-50%) rotateX(60deg) translateY(40px)}}
-        .stars{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
+        
+        /* --- LAYER 1: Matrix Rain --- */
+        #matrix-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.25;
+        }
+
+        /* --- LAYER 2: Stars and Grid --- */
+        .stars{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:2}
         .star{position:absolute;background:#fff;border-radius:50%;animation:twinkle 3s ease-in-out infinite;will-change:opacity}
         @keyframes twinkle{0%,100%{opacity:.2}50%{opacity:.7}}
+
+        .grid-floor{position:fixed;bottom:0;left:0;width:100%;height:70%;pointer-events:none;z-index:2;perspective:400px;overflow:hidden}
+        .grid-lines{position:absolute;bottom:-50%;left:50%;transform:translateX(-50%) rotateX(60deg);width:200%;height:200%;background-image:repeating-linear-gradient(0deg,transparent,transparent 40px,var(--grid-color) 40px,var(--grid-color) 41px),repeating-linear-gradient(90deg,transparent,transparent 40px,var(--grid-color) 40px,var(--grid-color) 41px);mask-image:linear-gradient(to top,rgba(0,0,0,.8) 0,rgba(0,0,0,.4) 30%,rgba(0,0,0,0) 60%);animation:gridMove 20s linear infinite}
+        @keyframes gridMove{0%{transform:translateX(-50%) rotateX(60deg) translateY(0)}100%{transform:translateX(-50%) rotateX(60deg) translateY(40px)}}
+
+        /* --- EFFECTS --- */
         .noise{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:100;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:180px 180px;animation:noiseShift .4s steps(3) infinite;will-change:transform}
         @keyframes noiseShift{0%,100%{transform:translate(0,0)}33%{transform:translate(-3px,2px)}66%{transform:translate(2px,-1px)}}
         .scanlines{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:99;opacity:.08;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.5) 3px,rgba(0,0,0,.5) 4px)}
@@ -34,15 +51,16 @@
         .lang-btn:first-child{border-radius:4px 0 0 4px}.lang-btn:last-child{border-radius:0 4px 4px 0}
         .lang-btn.active{background:rgba(181,55,242,.25);border-color:var(--neon-purple);color:#fff;text-shadow:0 0 8px rgba(181,55,242,.5)}
         .lang-btn:hover{border-color:rgba(255,255,255,.4);color:#d0c0f0}
-        .main-container{position:relative;z-index:2;max-width:800px;width:100%;margin:0 auto;padding:40px 20px;text-align:center;box-sizing:border-box}
+        .main-container{position:relative;z-index:10;max-width:800px;width:100%;margin:0 auto;padding:40px 20px;text-align:center;box-sizing:border-box;transform:rotateX(2deg) rotateY(-2deg);transition:transform 0.1s ease-out}
+        .main-container:hover{transform:rotateY(3deg) rotateX(0deg) scale(1.02);}
         .hero{margin-bottom:30px}
         
-        /* --- ESTILO NUEVO DEL TÍTULO ANIMADO --- */
+        /* --- TITLE STYLE --- */
         #animated-title {
             font-family: var(--font-display);
             font-size: clamp(2.8rem, 7vw, 5.5rem);
             font-weight: 700;
-            letter-spacing: .03em;
+            letter-spacing: .05em;
             line-height: 1.4;
             display: inline-block;
             padding: .2em .3em;
@@ -50,11 +68,13 @@
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 15px rgba(245,229,108,.5)) drop-shadow(0 0 40px rgba(200,100,180,.3)) drop-shadow(0 0 80px rgba(181,55,242,.3));
-            animation: titleGlow 4s ease-in-out infinite;
+            filter: drop-shadow(0 0 10px rgba(245,229,108,.2));
+            animation: titlePulse 3s ease-in-out infinite;
             will-change: filter;
             position: relative;
         }
+        @keyframes titlePulse{0%,100%{filter:drop-shadow(0 0 10px rgba(245,229,108,.2))}50%{filter:drop-shadow(0 0 25px rgba(245,229,108,.8)) drop-shadow(0 0 50px rgba(255,45,149,.4))}}
+        
         #cursor-title {
             display: none;
             width: 3px;
@@ -64,14 +84,7 @@
             vertical-align: middle;
             margin-left: 5px;
         }
-        @keyframes titleGlow {
-            0%,100%{filter:drop-shadow(0 0 15px rgba(245,229,108,.5)) drop-shadow(0 0 40px rgba(200,100,180,.3)) drop-shadow(0 0 80px rgba(181,55,242,.3))}
-            50%{filter:drop-shadow(0 0 28px rgba(245,229,108,.7)) drop-shadow(0 0 60px rgba(200,100,180,.5)) drop-shadow(0 0 110px rgba(181,55,242,.4))}
-        }
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
         .terminal-wrapper{text-align:center}
         .terminal-container{display:inline-block;text-align:left;padding:25px 30px;max-width:650px;width:100%;min-height:160px;max-height:320px;overflow-y:auto;font-family:var(--font-mono);font-size:1rem;font-weight:700;line-height:1.9;color:#b0a0d0;scrollbar-width:thin;scrollbar-color:rgba(181,55,242,.3) transparent}
@@ -87,7 +100,8 @@
         .terminal-output .gold{color:var(--neon-yellow)}
         .terminal-output .success{color:#4ade80}
         .terminal-output .dim{color:#6a5a90;font-weight:400}
-        .terminal-input-line{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+        .terminal-input-line{display:flex;align-items:center;gap:8px;flex-wrap:wrap; opacity: 0; transition: opacity 1s ease;}
+        .terminal-input-line.active{opacity:1}
         .terminal-prompt-text{color:var(--neon-green);white-space:nowrap}
         .terminal-input{flex:1;min-width:100px;background:transparent;border:none;color:#c0b0e0;font-family:inherit;font-size:inherit;font-weight:700;outline:0;caret-color:var(--neon-cyan)}
         .content-section{display:none;animation:channelFadeIn .5s ease-out}
@@ -294,6 +308,9 @@
     </style>
 </head>
 <body>
+    <!-- MATRIX RAIN CANVAS -->
+    <canvas id="matrix-canvas"></canvas>
+
     <div class="sky"></div><div class="stars" id="stars"></div><div class="grid-floor"><div class="grid-lines"></div></div><div class="noise"></div><div class="scanlines"></div><div class="vignette"></div><div class="mouse-glow" id="mouseGlow"></div>
     <div class="lang-toggle" role="group" aria-label="Language selector"><button class="lang-btn active" data-lang="en" id="btnEN" aria-pressed="true">EN</button><button class="lang-btn" data-lang="es" id="btnES" aria-pressed="false">ES</button></div>
 
@@ -305,12 +322,8 @@
 
         <section class="terminal-wrapper" id="terminalWrapper" aria-label="Terminal interface">
             <div class="terminal-container" id="terminal" role="log" aria-live="polite">
-                <div class="terminal-output" id="terminalOutput">
-                    <div class="line response">I'm glad you're here! Let's begin?</div>
-                    <div class="line response">Type <span class="highlight">help</span> to see what's here.</div>
-                    <div class="line response">───</div>
-                </div>
-                <div class="terminal-input-line"><span class="terminal-prompt-text" aria-hidden="true">sori@space:~$</span><input type="text" class="terminal-input" id="terminalInput" autofocus autocomplete="off" spellcheck="false" aria-label="Terminal command input"></div>
+                <div class="terminal-output" id="terminalOutput"></div>
+                <div class="terminal-input-line" id="terminalInputLine"><span class="terminal-prompt-text" aria-hidden="true">sori@space:~$</span><input type="text" class="terminal-input" id="terminalInput" autofocus autocomplete="off" spellcheck="false" aria-label="Terminal command input"></div>
                 <div class="loading-bar" id="loadingBar" role="status"><span id="loadingText">Loading...</span><div class="bar-track"><div class="bar-fill" id="barFill" style="width:0%"></div></div></div>
             </div>
         </section>
@@ -596,173 +609,175 @@
 
     <script>
         // ==========================================
-        // NUEVO: ANIMACIÓN DEL TÍTULO (Encrypt + Reveal)
+        // MATRIX RAIN BACKGROUND
         // ==========================================
         (function() {
-            const titleEl = document.getElementById('animated-title');
-            const cursorEl = document.getElementById('cursor-title');
-            const finalText = "SoriSpace";
-            let interval;
-
-            function encrypt() {
-                let text = "";
-                const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&";
-                for (let i = 0; i < finalText.length; i++) {
-                    text += Math.random() > 0.5 ? finalText[i] : chars[Math.floor(Math.random() * chars.length)];
+            const canvas = document.getElementById('matrix-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            const chars = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン0123456789@#$%&';
+            const fontSize = 18; const columns = canvas.width / fontSize; const drops = [];
+            const colors = ['#00e5ff', '#b537f2', '#ff2d95'];
+            for(let x = 0; x < columns; x++) drops[x] = 1;
+            setInterval(() => {
+                ctx.fillStyle = 'rgba(13, 2, 33, 0.1)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+                for(let i = 0; i < drops.length; i++) {
+                    ctx.fillStyle = colors[Math.floor(Math.random() * colors.length)];
+                    ctx.font = fontSize + 'px monospace';
+                    ctx.fillText(chars[Math.floor(Math.random() * chars.length)], i * fontSize, drops[i] * fontSize);
+                    if(drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                    drops[i]++;
                 }
-                titleEl.innerText = text;
-            }
-
-            function revealTitle() {
-                clearInterval(interval);
-                cursorEl.style.display = "inline-block"; // Mostrar cursor
-                let i = 0;
-                interval = setInterval(() => {
-                    i++;
-                    titleEl.innerText = finalText.substring(0, i);
-                    if (i === finalText.length) {
-                        clearInterval(interval);
-                        cursorEl.style.display = "none"; // Ocultar cursor al final
-                        // Efecto glitch final pequeño
-                        setTimeout(() => { titleEl.style.opacity = "0.3"; }, 500);
-                        setTimeout(() => { titleEl.style.opacity = "1"; }, 600);
-                        setTimeout(() => { titleEl.style.opacity = "0.6"; }, 700);
-                        setTimeout(() => { titleEl.style.opacity = "1"; }, 800);
-                    }
-                }, 180);
-            }
-
-            // Iniciar el proceso
-            interval = setInterval(encrypt, 60);
-            setTimeout(revealTitle, 3000);
+            }, 30);
         })();
 
-        // ===== FUNCIONES DE NAVEGACIÓN =====
-        function showDetail(category) {
-            document.querySelectorAll('.category-view, .detail-view').forEach(el => {
-                el.style.display = 'none';
-            });
-            document.getElementById(category + '-detail').style.display = 'block';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        // ==========================================
+        // BOOT SEQUENCE: REMOVE LINES ONE BY ONE
+        // ==========================================
+        const titleEl = document.getElementById('animated-title');
+        const cursorEl = document.getElementById('cursor-title');
+        const terminalOutput = document.getElementById('terminalOutput');
+        const terminalInputLine = document.getElementById('terminalInputLine');
+        const finalText = "SoriSpace";
+        const bootMessages = [
+            "[SYSTEM] Loading kernel... OK",
+            "[NETWORK] Interface eth0: UP",
+            "[SECURITY] User sori authenticated.",
+            "[FILESYSTEM] Mounting volumes... DONE"
+        ];
+
+        function writeTitle() {
+            cursorEl.style.display = "inline-block";
+            let i = 0;
+            const interval = setInterval(() => {
+                i++;
+                titleEl.innerText = finalText.substring(0, i);
+                if (i === finalText.length) {
+                    clearInterval(interval);
+                    setTimeout(() => { titleEl.style.opacity = "0.4"; }, 300);
+                    setTimeout(() => { titleEl.style.opacity = "1"; }, 400);
+                    setTimeout(() => { titleEl.style.opacity = "0.7"; }, 500);
+                    setTimeout(() => { titleEl.style.opacity = "1"; }, 600);
+                    cursorEl.style.display = "none";
+                    setTimeout(showWelcome, 1000);
+                }
+            }, 150);
         }
 
-        function showCategory(category) {
-            document.querySelectorAll('.detail-view').forEach(el => {
-                el.style.display = 'none';
-            });
-            document.querySelectorAll('.category-view').forEach(el => {
-                el.style.display = 'block';
-            });
-            document.getElementById('main-categories').style.display = 'block';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        function typeLine(text, callback) {
+            const div = document.createElement('div');
+            div.className = 'line response';
+            div.style.color = '#4ade80';
+            terminalOutput.appendChild(div);
+            let i = 0;
+            const interval = setInterval(() => {
+                div.innerHTML = text.substring(0, i+1);
+                i++;
+                terminalOutput.scrollTop = terminalOutput.scrollHeight;
+                if (i === text.length) {
+                    clearInterval(interval);
+                    if (callback) callback();
+                }
+            }, 25);
         }
 
-        function goBack() {
-            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
-            document.getElementById('terminalWrapper').style.display = 'block';
-            document.getElementById('terminalInput').focus();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // ===== EFECTO SCRAMBLE =====
-        (function() {
-            const st = document.querySelector('.scramble-text');
-            if (st) {
-                const original = '■■■■■■■■■■';
-                const chars = '!@#$%^&*()_+-=[]{}|;:,.<>?/~`¢£¥€';
-                let intervalId;
-                const fragment = st.closest('.fragment-meta');
-                if (fragment) {
-                    fragment.addEventListener('mouseenter', function() {
-                        let i = 0;
-                        clearInterval(intervalId);
-                        intervalId = setInterval(() => {
-                            st.textContent = original.split('').map((c, idx) => {
-                                return idx < i ? original[idx] : chars[Math.floor(Math.random() * chars.length)];
-                            }).join('');
-                            i += 1/3;
-                            if (i >= original.length) {
-                                clearInterval(intervalId);
-                                st.textContent = original;
-                            }
-                        }, 40);
+        function startBoot() {
+            let index = 0;
+            
+            function addMessage() {
+                if (index < bootMessages.length) {
+                    typeLine(bootMessages[index], () => {
+                        index++;
+                        setTimeout(addMessage, 400);
                     });
-                    fragment.addEventListener('mouseleave', function() {
-                        clearInterval(intervalId);
-                        st.textContent = original;
-                    });
+                } else {
+                    setTimeout(removeLines, 800);
                 }
             }
-        })();
 
-        // ===== ESTRELLAS Y MOUSE =====
-        (function(){
-            const sc = document.getElementById('stars');
-            for (let i = 0; i < 150; i++) {
-                const s = document.createElement('div');
-                s.className = 'star';
-                let l, t;
-                const z = Math.random();
-                if (z < 0.30) { l = Math.random() * 100; t = Math.random() * 22; }
-                else if (z < 0.55) { l = Math.random() * 100; t = 55 + Math.random() * 45; }
-                else if (z < 0.75) { l = Math.random() * 10; t = 22 + Math.random() * 78; }
-                else { l = 90 + Math.random() * 10; t = 22 + Math.random() * 78; }
-                s.style.left = l + '%';
-                s.style.top = t + '%';
-                const sz = Math.random() * 2.2 + 0.8;
-                s.style.width = sz + 'px';
-                s.style.height = sz + 'px';
-                s.style.animationDelay = Math.random() * 5 + 's';
-                s.style.animationDuration = (Math.random() * 3 + 2) + 's';
-                s.style.opacity = Math.random() * 0.45 + 0.12;
-                sc.appendChild(s);
+            function removeLines() {
+                const lines = terminalOutput.querySelectorAll('.line.response');
+                if (lines.length > 0) {
+                    lines[0].style.transition = 'opacity 0.4s ease';
+                    lines[0].style.opacity = '0';
+                    setTimeout(() => {
+                        lines[0].remove();
+                        setTimeout(removeLines, 300);
+                    }, 400);
+                } else {
+                    setTimeout(writeTitle, 500);
+                }
             }
 
-            const mg = document.getElementById('mouseGlow');
-            document.addEventListener('mousemove', e => {
-                mg.style.left = e.clientX + 'px';
-                mg.style.top = e.clientY + 'px';
-                mg.style.opacity = '1';
-            });
-            document.addEventListener('mouseleave', () => {
-                mg.style.opacity = '0';
-            });
-        })();
+            addMessage();
+        }
 
-        // ===== TERMINAL =====
-        const to = document.getElementById('terminalOutput');
+        function showWelcome() {
+            const welcomeLines = [
+                "Welcome to my Bohemian World!",
+                "All systems are ready! Let's begin?"
+            ];
+
+            let lineIndex = 0;
+            function writeWelcomeLine() {
+                if (lineIndex < welcomeLines.length) {
+                    const div = document.createElement('div');
+                    div.className = 'line response';
+                    div.style.color = '#b0a0d0';
+                    terminalOutput.appendChild(div);
+                    let i = 0;
+                    const interval = setInterval(() => {
+                        div.innerHTML = welcomeLines[lineIndex].substring(0, i+1);
+                        i++;
+                        terminalOutput.scrollTop = terminalOutput.scrollHeight;
+                        if (i === welcomeLines[lineIndex].length) {
+                            clearInterval(interval);
+                            lineIndex++;
+                            setTimeout(writeWelcomeLine, 400);
+                        }
+                    }, 30);
+                } else {
+                    terminalInputLine.classList.add('active');
+                    document.getElementById('terminalInput').focus();
+                }
+            }
+            setTimeout(writeWelcomeLine, 500);
+        }
+
+        setTimeout(startBoot, 400);
+
+        // ==========================================
+        // TERMINAL COMMANDS & PORTFOLIO
+        // ==========================================
         const ti = document.getElementById('terminalInput');
         const tc = document.getElementById('terminal');
         const tw = document.getElementById('terminalWrapper');
         const lb = document.getElementById('loadingBar');
         const lt = document.getElementById('loadingText');
         const bf = document.getElementById('barFill');
-        const sm = {
-            about: 'section-about',
-            certs: 'section-certs',
-            projects: 'section-projects',
-            setup: 'section-setup',
-            blog: 'section-blog',
-            contact: 'section-contact'
-        };
+        const sm = { about: 'section-about', certs: 'section-certs', projects: 'section-projects', setup: 'section-setup', blog: 'section-blog', contact: 'section-contact' };
+
+        function addOutput(html, c = 'response') {
+            const l = document.createElement('div');
+            l.className = 'line ' + c;
+            l.innerHTML = html;
+            terminalOutput.appendChild(l);
+            tc.scrollTop = tc.scrollHeight;
+        }
+
+        function addCommandLine(c) {
+            const l = document.createElement('div');
+            l.className = 'line cmd-line';
+            l.textContent = 'sori@space:~$ ' + c;
+            terminalOutput.appendChild(l);
+            tc.scrollTop = tc.scrollHeight;
+        }
 
         window.animateLoading = function(cb) {
-            lb.classList.add('active');
-            bf.style.width = '0%';
-            lt.textContent = 'Loading...';
-            let p = 0;
-            const iv = setInterval(() => {
+            lb.classList.add('active'); bf.style.width = '0%'; lt.textContent = 'Loading...';
+            let p = 0; const iv = setInterval(() => {
                 p += Math.random() * 25 + 10;
-                if (p >= 100) {
-                    p = 100;
-                    clearInterval(iv);
-                    lt.textContent = 'Access granted. Opening section...';
-                    setTimeout(() => {
-                        lb.classList.remove('active');
-                        bf.style.width = '0%';
-                        if (cb) cb();
-                    }, 300);
-                }
+                if (p >= 100) { p = 100; clearInterval(iv); lt.textContent = 'Access granted. Opening section...'; setTimeout(() => { lb.classList.remove('active'); bf.style.width = '0%'; if (cb) cb(); }, 300); }
                 bf.style.width = p + '%';
             }, 80);
         };
@@ -775,20 +790,11 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         };
 
-        function addOutput(html, c = 'response') {
-            const l = document.createElement('div');
-            l.className = 'line ' + c;
-            l.innerHTML = html;
-            to.appendChild(l);
-            tc.scrollTop = tc.scrollHeight;
-        }
-
-        function addCommandLine(c) {
-            const l = document.createElement('div');
-            l.className = 'line cmd-line';
-            l.textContent = 'sori@space:~$ ' + c;
-            to.appendChild(l);
-            tc.scrollTop = tc.scrollHeight;
+        function goBack() {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            tw.style.display = 'block';
+            ti.focus();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         ti.addEventListener('keydown', function(e) {
@@ -797,16 +803,13 @@
                 if (c === '') return;
                 addCommandLine(c);
                 ti.value = '';
-                if (c === 'clear') { to.innerHTML = ''; return; }
+                if (c === 'clear') { terminalOutput.innerHTML = ''; return; }
                 if (c === 'exit') {
                     addOutput('<span class="gold">Terminating session...</span>');
                     addOutput('<span class="dim">Session closed. Come back anytime.</span>');
                     setTimeout(() => {
                         try { window.open('', '_self', ''); window.close(); } catch (e) {}
-                        if (!window.closed) {
-                            addOutput('<span class="dim">(Browser security prevents auto-close. You can close this tab manually.)</span>');
-                            ti.focus();
-                        }
+                        if (!window.closed) { addOutput('<span class="dim">(Browser security prevents auto-close. You can close this tab manually.)</span>'); ti.focus(); }
                     }, 1000);
                     return;
                 }
@@ -834,36 +837,42 @@
 
         tc.addEventListener('click', () => ti.focus());
 
-        // ===== IDIOMA =====
-        let cl = 'en';
-        const bE = document.getElementById('btnEN');
-        const bS = document.getElementById('btnES');
+        // ==========================================
+        // LANGUAGE & OTHER EFFECTS
+        // ==========================================
+        (function(){
+            const sc = document.getElementById('stars');
+            for (let i = 0; i < 150; i++) {
+                const s = document.createElement('div'); s.className = 'star';
+                let l, t; const z = Math.random();
+                if (z < 0.30) { l = Math.random() * 100; t = Math.random() * 22; }
+                else if (z < 0.55) { l = Math.random() * 100; t = 55 + Math.random() * 45; }
+                else if (z < 0.75) { l = Math.random() * 10; t = 22 + Math.random() * 78; }
+                else { l = 90 + Math.random() * 10; t = 22 + Math.random() * 78; }
+                s.style.left = l + '%'; s.style.top = t + '%';
+                const sz = Math.random() * 2.2 + 0.8; s.style.width = sz + 'px'; s.style.height = sz + 'px';
+                s.style.animationDelay = Math.random() * 5 + 's';
+                s.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                s.style.opacity = Math.random() * 0.45 + 0.12; sc.appendChild(s);
+            }
+            const mg = document.getElementById('mouseGlow');
+            document.addEventListener('mousemove', e => { mg.style.left = e.clientX + 'px'; mg.style.top = e.clientY + 'px'; mg.style.opacity = '1'; });
+            document.addEventListener('mouseleave', () => { mg.style.opacity = '0'; });
+        })();
 
+        let cl = 'en'; const bE = document.getElementById('btnEN'); const bS = document.getElementById('btnES');
         function switchLang(l) {
-            cl = l;
-            bE.classList.toggle('active', l === 'en');
-            bS.classList.toggle('active', l === 'es');
-            bE.setAttribute('aria-pressed', l === 'en');
-            bS.setAttribute('aria-pressed', l === 'es');
-            document.querySelectorAll('[data-en][data-es]').forEach(el => {
-                const t = el.getAttribute('data-' + l);
-                if (t !== null) el.textContent = t;
-            });
+            cl = l; bE.classList.toggle('active', l === 'en'); bS.classList.toggle('active', l === 'es');
+            bE.setAttribute('aria-pressed', l === 'en'); bS.setAttribute('aria-pressed', l === 'es');
+            document.querySelectorAll('[data-en][data-es]').forEach(el => { const t = el.getAttribute('data-' + l); if (t !== null) el.textContent = t; });
         }
+        bE.addEventListener('click', () => switchLang('en')); bS.addEventListener('click', () => switchLang('es'));
 
-        bE.addEventListener('click', () => switchLang('en'));
-        bS.addEventListener('click', () => switchLang('es'));
-
-        // ===== CLICK EN FRAGMENTOS =====
         document.querySelectorAll('.fragment').forEach(f => {
             f.addEventListener('click', function(e) {
                 if (e.target.closest('a')) return;
                 this.style.transform = 'scale(.97)';
                 setTimeout(() => { this.style.transform = ''; }, 150);
-                const fl = document.createElement('div');
-                fl.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:300;background:rgba(255,255,255,.03);transition:opacity .6s;';
-                document.body.appendChild(fl);
-                setTimeout(() => { fl.style.opacity = '0'; setTimeout(() => fl.remove(), 600); }, 30);
             });
         });
 
