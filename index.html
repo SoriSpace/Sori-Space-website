@@ -487,15 +487,18 @@
 
     <script>
         // ==========================================
-        // NAVEGACIÓN DE PROYECTOS (¡LO PRIMERO!)
+        // NAVEGACIÓN DE PROYECTOS (¡AHORA ESTÁ AL PRINCIPIO!)
         // ==========================================
         function showDetail(category) {
-            // Ocultar todas las vistas
-            document.querySelectorAll('.category-view, .detail-view').forEach(el => {
+            // Ocultar la vista principal de categorías
+            document.getElementById('main-categories').style.display = 'none';
+            // Ocultar cualquier detalle que esté abierto
+            document.querySelectorAll('.detail-view').forEach(el => {
                 el.style.display = 'none';
             });
             // Mostrar la vista detallada correcta
             document.getElementById(category + '-detail').style.display = 'block';
+            // Ir arriba de la página
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -504,10 +507,7 @@
             document.querySelectorAll('.detail-view').forEach(el => {
                 el.style.display = 'none';
             });
-            // Mostrar todas las categorías nuevamente
-            document.querySelectorAll('.category-view').forEach(el => {
-                el.style.display = 'block';
-            });
+            // Volver a mostrar la vista de categorías principal
             document.getElementById('main-categories').style.display = 'block';
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
