@@ -311,6 +311,7 @@
             <div id="projects-container">
                 <div id="main-categories" class="category-view">
                     <div class="fragments">
+                        <!-- Alfa Anónimo -->
                         <article class="fragment fragment-alfa" onclick="window.open('https://alfaanonimo.com','_blank')">
                             <div class="fragment-header"><span class="fragment-id">PROJECT-AA-01</span><span class="fragment-status status-live">● Live</span></div>
                             <h2 class="fragment-title">Alfa Anónimo</h2>
@@ -319,6 +320,7 @@
                             <a href="https://alfaanonimo.com" target="_blank" rel="noopener noreferrer" class="project-btn btn-alfa">Open Project</a>
                         </article>
 
+                        <!-- Retro-Game Rhapsody -->
                         <article class="fragment fragment-pi" onclick="window.open('https://github.com/MrsOri','_blank')">
                             <div class="fragment-header"><span class="fragment-id">PROJECT-RPI-02</span><span class="fragment-status status-experiment-cyan">● Experiment</span></div>
                             <h2 class="fragment-title">Retro-Game Rhapsody</h2>
@@ -327,6 +329,7 @@
                             <a href="https://github.com/MrsOri" target="_blank" rel="noopener noreferrer" class="project-btn btn-pi">Open Project</a>
                         </article>
 
+                        <!-- Cloud Architecture (Categoría) -->
                         <div id="aws-category" class="category-view">
                             <article class="fragment fragment-aws">
                                 <div class="fragment-header"><span class="fragment-id">PROJECT-AWS-03</span><span class="fragment-status status-completed">● Completed</span></div>
@@ -337,6 +340,7 @@
                             </article>
                         </div>
 
+                        <!-- SecOps & Telemetry (Categoría) -->
                         <div id="cyber-category" class="category-view">
                             <article class="fragment fragment-meta" style="border-left-color: var(--neon-pink);">
                                 <div class="fragment-header"><span class="fragment-id">PROJECT-CYBER-01</span><span class="fragment-status status-experiment-pink">● Experiment</span></div>
@@ -347,6 +351,7 @@
                             </article>
                         </div>
 
+                        <!-- Scripting Engine (Categoría) -->
                         <div id="code-category" class="category-view">
                             <article class="fragment" style="border-left: 3px solid var(--neon-yellow);">
                                 <div class="fragment-header"><span class="fragment-id">PROJECT-CODESCRP-01</span><span class="fragment-status status-active-yellow">● Active</span></div>
@@ -357,6 +362,7 @@
                             </article>
                         </div>
 
+                        <!-- Proyecto Secreto -->
                         <article class="fragment fragment-meta" style="border-left: 3px solid var(--neon-green) !important; border-left-color: var(--neon-green) !important; box-shadow: 0 30px 80px rgba(0,0,0,.6), 0 0 50px rgba(74,222,128,.15), inset 0 0 30px rgba(74,222,128,.03) !important;">
                             <div class="fragment-header"><span class="fragment-id" style="color: var(--neon-green);">PROJECT-GHOST-04</span><span class="fragment-status status-stealth-green">● Stealth</span></div>
                             <h2 class="fragment-title scramble-text" style="color: var(--neon-green); text-shadow: 0 0 20px rgba(74,222,128,.4);">■■■■■■■■■■</h2>
@@ -366,75 +372,89 @@
                     </div>
                 </div>
 
+                <!-- AWS DETAIL VIEW -->
                 <div id="aws-detail" class="detail-view">
                     <button class="back-btn" onclick="showCategory('aws')" style="margin-bottom:20px;">← Back to Projects</button>
                     <div class="fragments" style="gap:30px;">
                         <h2 style="color:#f0e0ff;">Cloud Architecture</h2>
                         <p style="color:#9080b0; text-align:center; margin-bottom:20px;">Cloud experiments across different providers. Learned about infrastructure by doing and testing.</p>
+
                         <article class="fragment" style="border-left:3px solid var(--neon-blue);">
                             <div class="fragment-header"><span class="fragment-id" style="color:var(--neon-blue);">S3-001</span><span class="fragment-status" style="color:#4ade80; border-color:rgba(74,222,128,.3);">Live Demo</span></div>
                             <h3 style="color:#b0c8d8;">Hosting a Static Website in S3</h3>
                             <p style="color:#9080b0; font-size:.9rem; line-height:1.7;">Setup a static site using S3, configured public access, and learned about ACLs and permissions the hard way.</p>
                             <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;"><a href="https://github.com/SoriSpace/Hosting-a-website-in-S3" target="_blank" class="tag tag-link" style="border-color:var(--neon-blue); color:var(--neon-blue);">Repo</a><a href="https://github.com/SoriSpace/Hosting-a-website-in-S3" target="_blank" class="tag tag-link" style="border-color:var(--neon-blue); color:var(--neon-blue);">Live Site</a></div>
                         </article>
+
                         <article class="fragment" style="border-left:3px solid rgba(255,255,255,.06); opacity:.4;">
                             <div class="fragment-header"><span class="fragment-id" style="color:#605070;">EC2-001</span><span class="fragment-status" style="color:#605070; border-color:rgba(255,255,255,.06);">Coming Soon</span></div>
                             <h3 style="color:#605070;">EC2 Instance Lab</h3>
                             <p style="color:#605070; font-size:.9rem; line-height:1.7;">Deploying a web server on EC2, security groups, and SSH access.</p>
                         </article>
+
                         <article class="fragment" style="border-left:3px solid rgba(255,255,255,.06); opacity:.4;">
                             <div class="fragment-header"><span class="fragment-id" style="color:#605070;">IAM-001</span><span class="fragment-status" style="color:#605070; border-color:rgba(255,255,255,.06);">Coming Soon</span></div>
                             <h3 style="color:#605070;">IAM Policy Experiments</h3>
                             <p style="color:#605070; font-size:.9rem; line-height:1.7;">Understanding least privilege, roles, and policies.</p>
                         </article>
+
                         <div style="text-align:center; margin-top:10px; opacity:.3; font-size:.6rem; color:#605070; letter-spacing:.1em;">MORE EXPERIMENTS COMING SOON</div>
                     </div>
                 </div>
 
+                <!-- SECOPS & TELEMETRY DETAIL VIEW -->
                 <div id="cyber-detail" class="detail-view">
                     <button class="back-btn" onclick="showCategory('cyber')" style="margin-bottom:20px;">← Back to Projects</button>
                     <div class="fragments" style="gap:30px;">
                         <h2 style="color:#f0e0ff;">SecOps & Telemetry</h2>
                         <p style="color:#9080b0; text-align:center; margin-bottom:20px;">I wanted to understand how systems get hacked. That's why I created a safe environment to test, watch, and rebuild.</p>
+
                         <article class="fragment" style="border-left:3px solid var(--neon-pink);">
                             <div class="fragment-header"><span class="fragment-id" style="color:var(--neon-pink);">SOC-001</span><span class="fragment-status" style="color:#f0c040; border-color:rgba(240,192,64,.4);">In Progress</span></div>
                             <h3 style="color:#b0c8d8;">SOC Lab</h3>
                             <p style="color:#9080b0; font-size:.9rem; line-height:1.7;">Setting up a Security Operations Center lab with ELK stack. Log analysis, alerting, and incident response.</p>
                             <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;"><a href="#" class="tag tag-link" style="border-color:var(--neon-pink); color:var(--neon-pink);">Coming Soon</a></div>
                         </article>
+
                         <article class="fragment" style="border-left:3px solid var(--neon-purple);">
                             <div class="fragment-header"><span class="fragment-id" style="color:var(--neon-purple);">FOR-001</span><span class="fragment-status" style="color:#605070; border-color:rgba(255,255,255,.06);">Planning</span></div>
                             <h3 style="color:#b0c8d8;">Autopsy Forensics</h3>
                             <p style="color:#9080b0; font-size:.9rem; line-height:1.7;">Using Autopsy for forensic investigation. Disk imaging, timeline analysis, and learning how digital evidence is collected and examined.</p>
                             <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;"><a href="#" class="tag tag-link" style="border-color:var(--neon-purple); color:var(--neon-purple);">Coming Soon</a></div>
                         </article>
+
                         <article class="fragment" style="border-left:3px solid var(--neon-cyan);">
                             <div class="fragment-header"><span class="fragment-id" style="color:var(--neon-cyan);">NET-001</span><span class="fragment-status" style="color:#605070; border-color:rgba(255,255,255,.06);">Planning</span></div>
                             <h3 style="color:#b0c8d8;">Network Security Lab</h3>
                             <p style="color:#9080b0; font-size:.9rem; line-height:1.7;">Configuring firewalls, IDS/IPS, and packet analysis with Wireshark and Snort.</p>
                             <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;"><a href="#" class="tag tag-link" style="border-color:var(--neon-cyan); color:var(--neon-cyan);">Coming Soon</a></div>
                         </article>
+
                         <div style="text-align:center; margin-top:10px; opacity:.3; font-size:.6rem; color:#605070; letter-spacing:.1em;">MORE EXPERIMENTS COMING SOON</div>
                     </div>
                 </div>
 
+                <!-- SCRIPTING ENGINE DETAIL VIEW -->
                 <div id="code-detail" class="detail-view">
                     <button class="back-btn" onclick="showCategory('code')" style="margin-bottom:20px;">← Back to Projects</button>
                     <div class="fragments" style="gap:30px;">
                         <h2 style="color:#f0e0ff;">Scripting Engine</h2>
                         <p style="color:#9080b0; text-align:center; margin-bottom:20px;">Trying Python scripts, automation, and tools that connect systems applied with AI. Less manual work, more time for the important stuff: gaming and listening to music.</p>
+
                         <article class="fragment" style="border-left:3px solid var(--neon-yellow);">
                             <div class="fragment-header"><span class="fragment-id" style="color:var(--neon-yellow);">ORC-001</span><span class="fragment-status" style="color:#4ade80; border-color:rgba(74,222,128,.3);">Active</span></div>
                             <h3 style="color:#b0c8d8;">Orchestration Stack</h3>
                             <p style="color:#9080b0; font-size:.9rem; line-height:1.7;">Automating workflows with Python, Caddy, Tailscale, n8n, and Telegram. Connecting services so they work together seamlessly.</p>
                             <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;"><a href="#" class="tag tag-link" style="border-color:var(--neon-yellow); color:var(--neon-yellow);">Coming Soon</a></div>
                         </article>
+
                         <article class="fragment" style="border-left:3px solid var(--neon-green);">
                             <div class="fragment-header"><span class="fragment-id" style="color:var(--neon-green);">AUTO-001</span><span class="fragment-status" style="color:#4ade80; border-color:rgba(74,222,128,.3);">Active</span></div>
                             <h3 style="color:#b0c8d8;">Automation Scripts</h3>
                             <p style="color:#9080b0; font-size:.9rem; line-height:1.7;">A conglomerate of Python scripts for daily tasks. File organization, data parsing, system automation, and more.</p>
                             <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;"><a href="#" class="tag tag-link" style="border-color:var(--neon-green); color:var(--neon-green);">Coming Soon</a></div>
                         </article>
+
                         <div style="text-align:center; margin-top:10px; opacity:.3; font-size:.6rem; color:#605070; letter-spacing:.1em;">MORE EXPERIMENTS COMING SOON</div>
                     </div>
                 </div>
