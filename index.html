@@ -17,16 +17,18 @@
         *{margin:0;padding:0;box-sizing:border-box}
         html{width:100%;overflow-x:hidden; height: 100%;}
         
-        /* --- BASE ESTABLE --- */
         body{
-            width:100%; height: 100vh; /* Altura fija */
-            max-width:100vw; max-height: 100vh;
+            width:100%; 
+            min-height: 100vh;
+            height: auto !important; /* Permite que la página crezca */
+            max-width:100vw; 
             overflow-x:hidden; 
-            overflow-y: auto; /* PERMITE SCROLL GENERAL */
+            overflow-y: auto; /* Scroll libre para toda la página */
             background:var(--bg-deep);color:var(--text);font-family:var(--font-mono);
-            cursor:crosshair;display:flex;align-items:center;justify-content:center;perspective:800px;
+            cursor:crosshair;display:flex;align-items:flex-start; /* Alinea arriba para no cortar */
+            justify-content:center;perspective:800px;
             position: relative;
-            min-height: 100vh; /* Asegura altura completa */
+            padding: 40px 0 100px 0; /* Espacio extra abajo */
         }
         
         :root{--bg-deep:#0d0221;--neon-pink:#ff2d95;--neon-cyan:#00e5ff;--neon-purple:#b537f2;--neon-green:#4ade80;--neon-orange:#ff8c42;--neon-yellow:#f5e56c;--neon-blue:#4488ff;--mac-silver:#c8d6e0;--blog-teal:#2dd4bf;--grid-color:rgba(181,55,242,.3);--text:#e0d0f0;--font-display:'Caveat',cursive;--font-mono:'Courier New','Consolas',monospace}
@@ -48,7 +50,7 @@
         .lang-btn:first-child{border-radius:4px 0 0 4px}.lang-btn:last-child{border-radius:0 4px 4px 0}
         .lang-btn.active{background:rgba(181,55,242,.25);border-color:var(--neon-purple);color:#fff;text-shadow:0 0 8px rgba(181,55,242,.5)}
         .lang-btn:hover{border-color:rgba(255,255,255,.4);color:#d0c0f0}
-        .main-container{position:relative;z-index:10;max-width:800px;width:100%;margin:0 auto;padding:40px 20px;text-align:center;box-sizing:border-box;transform:rotateX(2deg) rotateY(-2deg);transition:transform 0.1s ease-out; min-height: 0;}
+        .main-container{position:relative;z-index:10;max-width:800px;width:100%;margin:0 auto;padding:40px 20px;text-align:center;box-sizing:border-box;transform:rotateX(2deg) rotateY(-2deg);transition:transform 0.1s ease-out; height: auto; min-height: 0;}
         .main-container:hover{transform:rotateY(3deg) rotateX(0deg) scale(1.02);}
         .hero{margin-bottom:30px}
         
@@ -730,5 +732,4 @@
         console.log("🚀 SoriSpace — Building things, one space at a time.");
     </script>
 </body>
-</html>
 </html>
