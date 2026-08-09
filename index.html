@@ -487,27 +487,21 @@
 
     <script>
         // ==========================================
-        // NAVEGACIÓN DE PROYECTOS (¡AHORA ESTÁ AL PRINCIPIO!)
+        // NAVEGACIÓN DE PROYECTOS (AHORA FUNCIONA)
         // ==========================================
         function showDetail(category) {
-            // Ocultar la vista principal de categorías
             document.getElementById('main-categories').style.display = 'none';
-            // Ocultar cualquier detalle que esté abierto
             document.querySelectorAll('.detail-view').forEach(el => {
                 el.style.display = 'none';
             });
-            // Mostrar la vista detallada correcta
             document.getElementById(category + '-detail').style.display = 'block';
-            // Ir arriba de la página
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function showCategory(category) {
-            // Ocultar todas las vistas detalladas
             document.querySelectorAll('.detail-view').forEach(el => {
                 el.style.display = 'none';
             });
-            // Volver a mostrar la vista de categorías principal
             document.getElementById('main-categories').style.display = 'block';
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -540,6 +534,39 @@
                     drops[i]++;
                 }
             }, 30);
+        })();
+
+        // ==========================================
+        // EFECTO GHOST (Scramble)
+        // ==========================================
+        (function() {
+            const st = document.querySelector('.scramble-text');
+            if (st) {
+                const original = '■■■■■■■■■■';
+                const chars = '!@#$%^&*()_+-=[]{}|;:,.<>?/~`¢£¥€';
+                let intervalId;
+                const fragment = st.closest('.fragment-meta');
+                if (fragment) {
+                    fragment.addEventListener('mouseenter', function() {
+                        let i = 0;
+                        clearInterval(intervalId);
+                        intervalId = setInterval(() => {
+                            st.textContent = original.split('').map((c, idx) => {
+                                return idx < i ? original[idx] : chars[Math.floor(Math.random() * chars.length)];
+                            }).join('');
+                            i += 1/3;
+                            if (i >= original.length) {
+                                clearInterval(intervalId);
+                                st.textContent = original;
+                            }
+                        }, 40);
+                    });
+                    fragment.addEventListener('mouseleave', function() {
+                        clearInterval(intervalId);
+                        st.textContent = original;
+                    });
+                }
+            }
         })();
 
         // ==========================================
@@ -781,4 +808,5 @@
         console.log("🚀 SoriSpace — Building things, one space at a time.");
     </script>
 </body>
+</html>
 </html>
