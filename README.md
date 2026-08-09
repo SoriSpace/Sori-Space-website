@@ -5,7 +5,7 @@ Official repository for my personal website and portfolio.
 ## 🌐 Live Site
 * **Domain:** https://sorispace.com
 * **Hosting:** GitHub Pages
-* **DNS & Email:** Configured via Strikingly
+* **DNS & Email:** Configured via porkbun
 
 ## 🛠️ Tech Stack
 * **Frontend:** HTML5, CSS3, JavaScript
