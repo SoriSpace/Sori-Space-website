@@ -15,32 +15,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
-        html{width:100%;overflow-x:hidden;}
-        
-        body{
-            width:100%; 
-            min-height: 100vh;
-            height: auto;
-            overflow-x:hidden; 
-            overflow-y: auto; 
-            background:var(--bg-deep);color:var(--text);font-family:var(--font-mono);
-            cursor:crosshair;display:flex;align-items:center;
-            justify-content:center;
-            position: relative;
-            padding: 40px 0 80px 0;
-        }
-        
-        :root{--bg-deep:#0d0221;--neon-pink:#ff2d95;--neon-cyan:#00e5ff;--neon-purple:#b537f2;--neon-green:#4ade80;--neon-orange:#ff8c42;--neon-yellow:#f5e56c;--neon-blue:#4488ff;--mac-silver:#c8d6e0;--blog-teal:#2dd4bf;--grid-color:rgba(181,55,242,.3);--text:#e0d0f0;--font-display:'Caveat',cursive;--font-mono:'Courier New','Consolas',monospace}
-        
+        html{width:100%;overflow-x:hidden}
+        body{width:100%;max-width:100vw;overflow-x:hidden;background:var(--bg-deep);color:var(--text);font-family:var(--font-mono);min-height:100vh;cursor:crosshair;display:flex;align-items:center;justify-content:center}
+        :root{--bg-deep:#0d0221;--neon-pink:#ff2d95;--neon-cyan:#00e5ff;--neon-purple:#b537f2;--neon-green:#4ade80;--neon-orange:#ff8c42;--neon-yellow:#f5e56c;--neon-blue:#4488ff;--neon-turquoise:#00f5d4;--mac-silver:#c8d6e0;--blog-teal:#2dd4bf;--grid-color:rgba(181,55,242,.3);--text:#e0d0f0;--font-display:'Caveat',cursive;--font-mono:'Courier New','Consolas',monospace}
         .sky{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;background:linear-gradient(180deg,#0d0221 0,#1a0a3a 40%,#1a0a3a 60%,#0d0221 100%)}
-        #matrix-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none;opacity:0.25;}
-        .stars{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:2}
-        .star{position:absolute;background:#fff;border-radius:50%;animation:twinkle 3s ease-in-out infinite;}
-        @keyframes twinkle{0%,100%{opacity:.2}50%{opacity:.7}}
-        .grid-floor{position:fixed;bottom:0;left:0;width:100%;height:70%;pointer-events:none;z-index:2;overflow:hidden}
+        .grid-floor{position:fixed;bottom:0;left:0;width:100%;height:70%;pointer-events:none;z-index:0;perspective:400px;overflow:hidden}
         .grid-lines{position:absolute;bottom:-50%;left:50%;transform:translateX(-50%) rotateX(60deg);width:200%;height:200%;background-image:repeating-linear-gradient(0deg,transparent,transparent 40px,var(--grid-color) 40px,var(--grid-color) 41px),repeating-linear-gradient(90deg,transparent,transparent 40px,var(--grid-color) 40px,var(--grid-color) 41px);mask-image:linear-gradient(to top,rgba(0,0,0,.8) 0,rgba(0,0,0,.4) 30%,rgba(0,0,0,0) 60%);animation:gridMove 20s linear infinite}
         @keyframes gridMove{0%{transform:translateX(-50%) rotateX(60deg) translateY(0)}100%{transform:translateX(-50%) rotateX(60deg) translateY(40px)}}
-        .noise{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:100;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:180px 180px;animation:noiseShift .4s steps(3) infinite;}
+        .stars{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
+        .star{position:absolute;background:#fff;border-radius:50%;animation:twinkle 3s ease-in-out infinite;will-change:opacity}
+        @keyframes twinkle{0%,100%{opacity:.2}50%{opacity:.7}}
+        .noise{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:100;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:180px 180px;animation:noiseShift .4s steps(3) infinite;will-change:transform}
         @keyframes noiseShift{0%,100%{transform:translate(0,0)}33%{transform:translate(-3px,2px)}66%{transform:translate(2px,-1px)}}
         .scanlines{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:99;opacity:.08;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.5) 3px,rgba(0,0,0,.5) 4px)}
         .vignette{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:98;background:radial-gradient(ellipse at center,transparent 50%,rgba(5,0,15,.6) 100%)}
@@ -49,29 +34,10 @@
         .lang-btn:first-child{border-radius:4px 0 0 4px}.lang-btn:last-child{border-radius:0 4px 4px 0}
         .lang-btn.active{background:rgba(181,55,242,.25);border-color:var(--neon-purple);color:#fff;text-shadow:0 0 8px rgba(181,55,242,.5)}
         .lang-btn:hover{border-color:rgba(255,255,255,.4);color:#d0c0f0}
-        .main-container{position:relative;z-index:10;max-width:800px;width:100%;margin:0 auto;padding:20px 20px;text-align:center;box-sizing:border-box; height: auto !important;}
+        .main-container{position:relative;z-index:2;max-width:800px;width:100%;margin:0 auto;padding:40px 20px;text-align:center;box-sizing:border-box}
         .hero{margin-bottom:30px}
-        
-        #animated-title {
-            font-family: var(--font-display);
-            font-size: clamp(2.8rem, 7vw, 5.5rem);
-            font-weight: 700;
-            letter-spacing: .05em;
-            line-height: 1.4;
-            display: inline-block;
-            padding: .2em .3em;
-            background: linear-gradient(180deg, #f5e56c 0, #f0d060 18%, #e8b848 35%, #e09040 50%, #d06060 65%, #c04080 80%, #b537f2 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 10px rgba(245,229,108,.2));
-            animation: titlePulse 3s ease-in-out infinite;
-            position: relative;
-        }
-        @keyframes titlePulse{0%,100%{filter:drop-shadow(0 0 10px rgba(245,229,108,.2))}50%{filter:drop-shadow(0 0 25px rgba(245,229,108,.8)) drop-shadow(0 0 50px rgba(255,45,149,.4))}}
-        #cursor-title{display:none;width:3px;height:0.8em;background-color:#ffcc00;animation:blink 1s step-end infinite;vertical-align:middle;margin-left:5px;}
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-
+        .hero-name{font-family:var(--font-display);font-size:clamp(2.8rem,7vw,5.5rem);font-weight:700;letter-spacing:.03em;line-height:1.4;display:inline-block;padding:.2em .3em;background:linear-gradient(180deg,#f5e56c 0,#f0d060 18%,#e8b848 35%,#e09040 50%,#d06060 65%,#c04080 80%,#b537f2 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 15px rgba(245,229,108,.5)) drop-shadow(0 0 40px rgba(200,100,180,.3)) drop-shadow(0 0 80px rgba(181,55,242,.3));animation:titleGlow 4s ease-in-out infinite;will-change:filter}
+        @keyframes titleGlow{0%,100%{filter:drop-shadow(0 0 15px rgba(245,229,108,.5)) drop-shadow(0 0 40px rgba(200,100,180,.3)) drop-shadow(0 0 80px rgba(181,55,242,.3))}50%{filter:drop-shadow(0 0 28px rgba(245,229,108,.7)) drop-shadow(0 0 60px rgba(200,100,180,.5)) drop-shadow(0 0 110px rgba(181,55,242,.4))}}
         .terminal-wrapper{text-align:center}
         .terminal-container{display:inline-block;text-align:left;padding:25px 30px;max-width:650px;width:100%;min-height:160px;max-height:320px;overflow-y:auto;font-family:var(--font-mono);font-size:1rem;font-weight:700;line-height:1.9;color:#b0a0d0;scrollbar-width:thin;scrollbar-color:rgba(181,55,242,.3) transparent}
         .terminal-container::-webkit-scrollbar{width:4px}
@@ -79,16 +45,15 @@
         .terminal-container::-webkit-scrollbar-thumb{background:rgba(181,55,242,.3);border-radius:4px}
         .terminal-output{margin-bottom:10px}
         .terminal-output .line{white-space:pre-wrap;word-break:break-word}
-        .terminal-output .cmd-line{color:var(--neon-cyan)}
+        .terminal-output .cmd-line{color:var(--neon-green)}
         .terminal-output .response{color:#b0a0d0}
         .terminal-output .error{color:var(--neon-pink)}
         .terminal-output .highlight{color:var(--neon-cyan)}
         .terminal-output .gold{color:var(--neon-yellow)}
         .terminal-output .success{color:#4ade80}
         .terminal-output .dim{color:#6a5a90;font-weight:400}
-        .terminal-input-line{display:flex;align-items:center;gap:8px;flex-wrap:wrap; opacity: 0; transition: opacity 1s ease;}
-        .terminal-input-line.active{opacity:1}
-        .terminal-prompt-text{color:var(--neon-cyan);white-space:nowrap}
+        .terminal-input-line{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+        .terminal-prompt-text{color:var(--neon-green);white-space:nowrap}
         .terminal-input{flex:1;min-width:100px;background:transparent;border:none;color:#c0b0e0;font-family:inherit;font-size:inherit;font-weight:700;outline:0;caret-color:var(--neon-cyan)}
         .content-section{display:none;animation:channelFadeIn .5s ease-out}
         .content-section.active{display:block}
@@ -103,24 +68,41 @@
         .fragment:hover::before{opacity:1}
         .fragment:hover{transform:translateY(-6px);border-color:rgba(255,255,255,.2)}
         .fragment-about{border-left:3px solid var(--neon-purple)}
+        .fragment-about::before{background:radial-gradient(ellipse at 20% 50%,rgba(181,55,242,.1) 0,transparent 60%)}
         .fragment-about:hover{box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 50px rgba(181,55,242,.15),inset 0 0 30px rgba(181,55,242,.03)}
         .fragment-certs{border-left:3px solid #f0c040}
+        .fragment-certs::before{background:radial-gradient(ellipse at 20% 50%,rgba(240,192,64,.08) 0,transparent 60%)}
         .fragment-certs:hover{box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 50px rgba(240,192,64,.12),inset 0 0 30px rgba(240,192,64,.03)}
         .fragment-certs .fragment-id{color:#f0c040}
         .fragment-alfa{border-left:3px solid var(--neon-orange)}
+        .fragment-alfa::before{background:radial-gradient(ellipse at 20% 50%,rgba(255,140,66,.1) 0,transparent 60%)}
         .fragment-alfa:hover{box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 50px rgba(255,140,66,.15),inset 0 0 30px rgba(255,140,66,.03)}
-        .fragment-pi{border-left:3px solid var(--neon-cyan)}
-        .fragment-pi:hover{box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 50px rgba(0,229,255,.15),inset 0 0 30px rgba(0,229,255,.03)}
-        .fragment-aws{border-left:3px solid var(--neon-blue)}
-        .fragment-aws:hover{box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 50px rgba(68,136,255,.15),inset 0 0 30px rgba(68,136,255,.03)}
-        .fragment-meta{border-left:3px solid var(--neon-pink)}
-        .fragment-meta:hover{box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 50px rgba(255,45,149,.15),inset 0 0 30px rgba(255,45,149,.03)}
+        /* === Build Basement en AZUL === */
+        .fragment-basement{border-left:3px solid var(--neon-blue)}
+        .fragment-basement::before{background:radial-gradient(ellipse at 20% 50%,rgba(68,136,255,.1) 0,transparent 60%)}
+        .fragment-basement:hover{box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 50px rgba(68,136,255,.15),inset 0 0 30px rgba(68,136,255,.03)}
+        /* === Cloud Architecture en AMARILLO === */
+        .fragment-cloud{border-left:3px solid var(--neon-yellow)}
+        .fragment-cloud::before{background:radial-gradient(ellipse at 20% 50%,rgba(245,229,108,.1) 0,transparent 60%)}
+        .fragment-cloud:hover{box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 50px rgba(245,229,108,.15),inset 0 0 30px rgba(245,229,108,.03)}
+        .fragment-cloud .fragment-id{color:var(--neon-yellow)}
+        /* === SecOps en TURQUESA === */
+        .fragment-meta{border-left:3px solid var(--neon-turquoise)}
+        .fragment-meta::before{background:radial-gradient(ellipse at 20% 50%,rgba(0,245,212,.1) 0,transparent 60%)}
+        .fragment-meta:hover{box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 50px rgba(0,245,212,.15),inset 0 0 30px rgba(0,245,212,.03)}
+        /* === Scripting Engine en FUCSIA === */
+        .fragment-scripting{border-left:3px solid var(--neon-pink)}
+        .fragment-scripting::before{background:radial-gradient(ellipse at 20% 50%,rgba(255,45,149,.1) 0,transparent 60%)}
+        .fragment-scripting:hover{box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 50px rgba(255,45,149,.15),inset 0 0 30px rgba(255,45,149,.03)}
         .fragment-setup-combined{border-left:3px solid var(--neon-green)}
+        .fragment-setup-combined::before{background:radial-gradient(ellipse at 20% 50%,rgba(74,222,128,.08) 0,transparent 60%)}
         .fragment-setup-combined:hover{box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 50px rgba(74,222,128,.15),inset 0 0 30px rgba(74,222,128,.03)}
         .fragment-setup-combined .fragment-id{color:var(--neon-green)}
         .fragment-music{border-left:3px solid var(--neon-yellow)}
+        .fragment-music::before{background:radial-gradient(ellipse at 20% 50%,rgba(245,229,108,.1) 0,transparent 60%)}
         .fragment-music:hover{box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 50px rgba(245,229,108,.15),inset 0 0 30px rgba(245,229,108,.03)}
         .fragment-blog{border-left:3px solid var(--blog-teal)}
+        .fragment-blog::before{background:radial-gradient(ellipse at 20% 50%,rgba(45,212,191,.08) 0,transparent 60%)}
         .fragment-blog:hover{box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 50px rgba(45,212,191,.15),inset 0 0 30px rgba(45,212,191,.03)}
         .fragment-blog .fragment-id{color:var(--blog-teal)}
         .fragment-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px}
@@ -132,6 +114,11 @@
         .status-experiment-pink{color:var(--neon-pink);border-color:var(--neon-pink);box-shadow:0 0 10px rgba(255,45,149,.2)}
         .status-active-yellow{color:var(--neon-yellow);border-color:var(--neon-yellow);box-shadow:0 0 10px rgba(245,229,108,.2);animation:statusPulse 2.5s ease-in-out infinite}
         .status-stealth-green{color:var(--neon-green);border-color:var(--neon-green);box-shadow:0 0 10px rgba(74,222,128,.2)}
+        .status-active{color:#4ade80;border-color:rgba(74,222,128,.4);box-shadow:0 0 10px rgba(74,222,128,.2)}
+        .status-learning{color:#f0c040;border-color:rgba(240,192,64,.4);box-shadow:0 0 10px rgba(240,192,64,.2)}
+        .status-transmitting{color:var(--neon-purple);border-color:var(--neon-purple);box-shadow:0 0 10px rgba(181,55,242,.2)}
+        .status-drafting{color:var(--blog-teal);border-color:var(--blog-teal);box-shadow:0 0 10px rgba(45,212,191,.2)}
+        .status-playing{color:var(--neon-yellow);border-color:var(--neon-yellow);box-shadow:0 0 10px rgba(245,229,108,.2);animation:statusPulse 2s ease-in-out infinite}
         @keyframes statusPulse{0%,100%{box-shadow:0 0 10px rgba(74,222,128,.2)}50%{box-shadow:0 0 25px rgba(74,222,128,.5)}}
         .fragment-title{font-size:1.8rem;font-weight:700;letter-spacing:.06em;margin-bottom:14px;color:#f0e0ff;text-shadow:0 0 15px rgba(200,180,255,.3);word-break:break-word}
         .fragment-desc{font-size:.95rem;line-height:1.8;color:#a090c0;margin-bottom:20px;max-width:600px;margin-left:auto;margin-right:auto;word-break:break-word;width:100%}
@@ -156,14 +143,18 @@
         .project-btn:hover{transform:translateX(4px);box-shadow:0 0 25px rgba(255,255,255,.05)}
         .btn-alfa{color:var(--neon-orange);border-color:rgba(255,140,66,.3)}
         .btn-alfa:hover{background:rgba(255,140,66,.1);border-color:var(--neon-orange);box-shadow:0 0 25px rgba(255,140,66,.15)}
-        .btn-pi{color:var(--neon-cyan);border-color:rgba(0,229,255,.3)}
-        .btn-pi:hover{background:rgba(0,229,255,.1);border-color:var(--neon-cyan);box-shadow:0 0 25px rgba(0,229,255,.15)}
-        .btn-aws{color:var(--neon-blue);border-color:rgba(68,136,255,.3)}
-        .btn-aws:hover{background:rgba(68,136,255,.1);border-color:var(--neon-blue);box-shadow:0 0 25px rgba(68,136,255,.15)}
-        .btn-cyber{color:var(--neon-pink);border-color:rgba(255,45,149,.3)}
-        .btn-cyber:hover{background:rgba(255,45,149,.1);border-color:var(--neon-pink);box-shadow:0 0 25px rgba(255,45,149,.15)}
-        .btn-code{color:var(--neon-yellow);border-color:rgba(245,229,108,.3)}
-        .btn-code:hover{background:rgba(245,229,108,.1);border-color:var(--neon-yellow);box-shadow:0 0 25px rgba(245,229,108,.15)}
+        /* === Build Basement button en AZUL === */
+        .btn-basement{color:var(--neon-blue);border-color:rgba(68,136,255,.3)}
+        .btn-basement:hover{background:rgba(68,136,255,.1);border-color:var(--neon-blue);box-shadow:0 0 25px rgba(68,136,255,.15)}
+        /* === Cloud Architecture button en AMARILLO === */
+        .btn-cloud{color:var(--neon-yellow);border-color:rgba(245,229,108,.3)}
+        .btn-cloud:hover{background:rgba(245,229,108,.1);border-color:var(--neon-yellow);box-shadow:0 0 25px rgba(245,229,108,.15)}
+        /* === SecOps button en TURQUESA === */
+        .btn-cyber{color:var(--neon-turquoise);border-color:rgba(0,245,212,.3)}
+        .btn-cyber:hover{background:rgba(0,245,212,.1);border-color:var(--neon-turquoise);box-shadow:0 0 25px rgba(0,245,212,.15)}
+        /* === Scripting button en FUCSIA === */
+        .btn-code{color:var(--neon-pink);border-color:rgba(255,45,149,.3)}
+        .btn-code:hover{background:rgba(255,45,149,.1);border-color:var(--neon-pink);box-shadow:0 0 25px rgba(255,45,149,.15)}
         .subproject{background:rgba(68,136,255,.05);border-left:3px solid var(--neon-blue);border-radius:4px;padding:16px 18px;margin:16px 0 12px 0;text-align:left;transition:all .3s;width:100%;box-sizing:border-box;overflow-wrap:break-word;word-wrap:break-word}
         .subproject:hover{background:rgba(68,136,255,.08)}
         .subproject-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
@@ -216,6 +207,7 @@
         .detail-view .fragment{padding:30px}
         .detail-view h2{font-size:2rem;text-align:center;letter-spacing:.06em;margin-bottom:6px;color:#f0e0ff!important}
         .detail-view h3{font-size:1.3rem;margin-bottom:8px;color:#b0c8d8}
+        .cmd-counter{font-size:.6rem;color:#605070;letter-spacing:.1em;padding-top:8px;border-top:1px solid rgba(255,255,255,.04);margin-top:6px;text-align:right}
 
         @media(max-width:768px){
             .main-container{padding:20px 12px}
@@ -223,7 +215,7 @@
             .fragment-title{font-size:1.3rem}
             .fragment-desc{font-size:.85rem;padding:0 4px}
             .hero{margin-bottom:25px}
-            #animated-title {font-size:clamp(2.2rem,8vw,3.5rem);}
+            .hero-name{font-size:clamp(2.2rem,8vw,3.5rem)}
             .fragments{gap:35px}
             .terminal-container{padding:15px 12px;font-size:.8rem;max-height:220px;min-height:120px}
             .lang-toggle{top:10px;right:10px}
@@ -261,6 +253,7 @@
             .terminal-input{min-width:60px}
             .terminal-prompt-text{font-size:.8rem}
             .scramble-text{font-size:1.3rem}
+            .cmd-counter{font-size:.5rem}
         }
 
         @media(max-width:480px){
@@ -268,7 +261,7 @@
             .fragment{padding:16px 10px}
             .fragment-title{font-size:1.1rem}
             .fragment-desc{font-size:.8rem}
-            #animated-title {font-size:clamp(1.8rem,7vw,2.8rem);}
+            .hero-name{font-size:clamp(1.8rem,7vw,2.8rem)}
             .terminal-container{padding:12px 8px;font-size:.75rem;max-height:180px}
             .lang-btn{padding:3px 6px;font-size:.5rem}
             .tag{font-size:.5rem;padding:3px 8px}
@@ -281,217 +274,448 @@
             .fragment-status{font-size:.45rem;padding:2px 8px}
             .back-btn{font-size:.55rem;padding:4px 10px}
             .scramble-text{font-size:1.1rem}
+            .cmd-counter{font-size:.45rem}
         }
     </style>
 </head>
 <body>
-    <canvas id="matrix-canvas"></canvas>
-    <div class="sky"></div><div class="stars" id="stars"></div><div class="grid-floor"><div class="grid-lines"></div></div><div class="noise"></div><div class="scanlines"></div><div class="vignette"></div><div class="mouse-glow" id="mouseGlow"></div>
-    <div class="lang-toggle" role="group" aria-label="Language selector"><button class="lang-btn active" data-lang="en" id="btnEN" aria-pressed="true">EN</button><button class="lang-btn" data-lang="es" id="btnES" aria-pressed="false">ES</button></div>
+    <div class="sky"></div>
+    <div class="stars" id="stars"></div>
+    <div class="grid-floor"><div class="grid-lines"></div></div>
+    <div class="noise"></div>
+    <div class="scanlines"></div>
+    <div class="vignette"></div>
+    <div class="mouse-glow" id="mouseGlow"></div>
+
+    <div class="lang-toggle" role="group" aria-label="Language selector">
+        <button class="lang-btn active" data-lang="en" id="btnEN" aria-pressed="true">EN</button>
+        <button class="lang-btn" data-lang="es" id="btnES" aria-pressed="false">ES</button>
+    </div>
 
     <main class="main-container">
         <header class="hero">
-            <h1 id="animated-title"></h1>
-            <span id="cursor-title"></span>
+            <h1 class="hero-name">SoriSpace</h1>
         </header>
 
         <section class="terminal-wrapper" id="terminalWrapper" aria-label="Terminal interface">
             <div class="terminal-container" id="terminal" role="log" aria-live="polite">
-                <div class="terminal-output" id="terminalOutput"></div>
-                <div class="terminal-input-line" id="terminalInputLine"><span class="terminal-prompt-text" aria-hidden="true">sori@space:~$</span><input type="text" class="terminal-input" id="terminalInput" autofocus autocomplete="off" spellcheck="false" aria-label="Terminal command input"></div>
-                <div class="loading-bar" id="loadingBar" role="status"><span id="loadingText">Loading...</span><div class="bar-track"><div class="bar-fill" id="barFill" style="width:0%"></div></div></div>
+                <div class="terminal-output" id="terminalOutput">
+                    <div class="line response">Welcome to my Bohemian World.</div>
+                    <div class="line response">Type <span class="highlight">help</span> to see what's here.</div>
+                    <div class="line response">───</div>
+                </div>
+                <div class="terminal-input-line">
+                    <span class="terminal-prompt-text" aria-hidden="true">sorispace:~$</span>
+                    <input type="text" class="terminal-input" id="terminalInput" autofocus autocomplete="off" spellcheck="false" aria-label="Terminal command input">
+                </div>
+                <div class="loading-bar" id="loadingBar" role="status">
+                    <span id="loadingText">Loading...</span>
+                    <div class="bar-track"><div class="bar-fill" id="barFill" style="width:0%"></div></div>
+                </div>
+                <div class="cmd-counter" id="cmdCounter">COMMANDS EXECUTED: 0</div>
             </div>
         </section>
 
-        <div class="content-section" id="section-about" role="tabpanel"><button class="back-btn" onclick="goBack()" aria-label="Return to terminal">← Back to terminal</button><div class="fragments"><article class="fragment fragment-about"><div class="fragment-header"><span class="fragment-id">PPF-00-000</span><span class="fragment-status status-transmitting">● Transmitting</span></div><h2 class="fragment-title">About Me</h2><p class="fragment-desc" data-en="I'm a builder. Websites, hardware, everything in between. I go where the ideas and curiosity take me. If something sparks my interest, I dive in and figure it out." data-es="Soy una constructora. Webs, hardware, todo lo que hay en medio. Voy a donde me llevan las ideas y la curiosidad. Si algo despierta mi interés, me sumerjo y lo resuelvo.">I'm a builder. Websites, hardware, everything in between. I go where the ideas and curiosity take me. If something sparks my interest, I dive in and figure it out.</p><div class="social-links"><a href="https://youtube.com/@SoriSpace" target="_blank" rel="noopener noreferrer" class="tag tag-link">YouTube</a><a href="https://github.com/SoriSpace" target="_blank" rel="noopener noreferrer" class="tag tag-link">GitHub</a><a href="https://discord.gg/emE7ewSTj" target="_blank" rel="noopener noreferrer" class="tag tag-link">Discord</a><a href="https://www.linkedin.com/in/mariana-lugo/" target="_blank" rel="noopener noreferrer" class="tag tag-link">LinkedIn</a></div></article></div></div>
+        <div class="content-section" id="section-about" role="tabpanel">
+            <button class="back-btn" onclick="goBack()" aria-label="Return to terminal">← Back to terminal</button>
+            <div class="fragments">
+                <article class="fragment fragment-about">
+                    <div class="fragment-header">
+                        <span class="fragment-id">PPF-00-000</span>
+                        <span class="fragment-status status-transmitting">● Transmitting</span>
+                    </div>
+                    <h2 class="fragment-title">About Me</h2>
+                    <p class="fragment-desc" data-en="I'm a builder. Websites, hardware, everything in between. I go where the ideas and curiosity take me. If something sparks my interest, I dive in and figure it out." data-es="Soy una constructora. Webs, hardware, todo lo que hay en medio. Voy a donde me llevan las ideas y la curiosidad. Si algo despierta mi interés, me sumerjo y lo resuelvo.">I'm a builder. Websites, hardware, everything in between. I go where the ideas and curiosity take me. If something sparks my interest, I dive in and figure it out.</p>
+                    <div class="social-links">
+                        <a href="https://youtube.com/@SoriSpace" target="_blank" rel="noopener noreferrer" class="tag tag-link">YouTube</a>
+                        <a href="https://github.com/SoriSpace" target="_blank" rel="noopener noreferrer" class="tag tag-link">GitHub</a>
+                        <a href="https://discord.gg/emE7ewSTj" target="_blank" rel="noopener noreferrer" class="tag tag-link">Discord</a>
+                        <a href="https://www.linkedin.com/in/mariana-lugo/" target="_blank" rel="noopener noreferrer" class="tag tag-link">LinkedIn</a>
+                    </div>
+                </article>
+            </div>
+        </div>
 
-        <div class="content-section" id="section-certs" role="tabpanel"><button class="back-btn" onclick="goBack()" aria-label="Return to terminal">← Back to terminal</button><div class="fragments"><article class="fragment fragment-certs"><div class="fragment-header"><span class="fragment-id">CERT-TECH-001</span><span class="fragment-status status-learning">● Learning</span></div><h2 class="fragment-title">Certifications</h2><p class="fragment-desc" data-en="Credentials in progress and completed. Building the paper trail to match the skills." data-es="Credenciales en progreso y completadas. Construyendo el respaldo que acompañe las habilidades.">Credentials in progress and completed. Building the paper trail to match the skills.</p><ul class="cert-list"><li><span class="cert-dot earned" aria-hidden="true"></span><span class="cert-name">Linux Essentials</span><span class="cert-badge badge-earned">Earned</span></li><li><span class="cert-dot pending" aria-hidden="true"></span><span class="cert-name">Google AI Professional Certificate</span><span class="cert-badge badge-pending">Course Done, Exam Pending</span></li><li><span class="cert-dot pending" aria-hidden="true"></span><span class="cert-name">PCAP™ – Certified Associate Python Programmer</span><span class="cert-badge badge-pending">In Progress</span></li><li><span class="cert-dot pending" aria-hidden="true"></span><span class="cert-name">GCP Cloud Engineering</span><span class="cert-badge badge-pending">In Progress</span></li><li><span class="cert-dot pending" aria-hidden="true"></span><span class="cert-name">GCP Generative AI</span><span class="cert-badge badge-pending">In Progress</span></li></ul></article></div></div>
+        <div class="content-section" id="section-certs" role="tabpanel">
+            <button class="back-btn" onclick="goBack()" aria-label="Return to terminal">← Back to terminal</button>
+            <div class="fragments">
+                <article class="fragment fragment-certs">
+                    <div class="fragment-header">
+                        <span class="fragment-id">CERT-TECH-001</span>
+                        <span class="fragment-status status-learning">● Learning</span>
+                    </div>
+                    <h2 class="fragment-title">Certifications</h2>
+                    <p class="fragment-desc" data-en="Credentials in progress and completed. Building the paper trail to match the skills." data-es="Credenciales en progreso y completadas. Construyendo el respaldo que acompañe las habilidades.">Credentials in progress and completed. Building the paper trail to match the skills.</p>
+                    <ul class="cert-list">
+                        <li><span class="cert-dot earned" aria-hidden="true"></span><span class="cert-name">Linux Essentials</span><span class="cert-badge badge-earned">Earned</span></li>
+                        <li><span class="cert-dot pending" aria-hidden="true"></span><span class="cert-name">Google AI Professional Certificate</span><span class="cert-badge badge-pending">Course Done, Exam Pending</span></li>
+                        <li><span class="cert-dot pending" aria-hidden="true"></span><span class="cert-name">PCAP™ – Certified Associate Python Programmer</span><span class="cert-badge badge-pending">In Progress</span></li>
+                        <li><span class="cert-dot pending" aria-hidden="true"></span><span class="cert-name">GCP Cloud Engineering</span><span class="cert-badge badge-pending">In Progress</span></li>
+                        <li><span class="cert-dot pending" aria-hidden="true"></span><span class="cert-name">GCP Generative AI</span><span class="cert-badge badge-pending">In Progress</span></li>
+                    </ul>
+                </article>
+            </div>
+        </div>
 
-        <div class="content-section" id="section-projects" role="tabpanel"><button class="back-btn" onclick="goBack()" aria-label="Return to terminal">← Back to terminal</button>
+        <div class="content-section" id="section-projects" role="tabpanel">
+            <button class="back-btn" onclick="goBack()" aria-label="Return to terminal">← Back to terminal</button>
             <div id="projects-container">
                 <div id="main-categories" class="category-view">
                     <div class="fragments">
-                        <!-- Alfa Anónimo -->
-                        <article class="fragment fragment-alfa" onclick="window.open('https://alfaanonimo.com','_blank')">
-                            <div class="fragment-header"><span class="fragment-id">PROJECT-AA-01</span><span class="fragment-status status-live">● Live</span></div>
-                            <h2 class="fragment-title">Alfa Anónimo</h2>
-                            <p class="fragment-desc" data-en="Built a platform for selling courses. Social media to checkout. Learned about payments, user experience, and what it takes to ship something that actually helps people grow." data-es="Construí una plataforma para vender cursos. De redes sociales al checkout. Aprendí sobre pagos, experiencia de usuario, y lo que se necesita para lanzar algo que realmente ayuda a las personas a crecer.">Built a platform for selling courses. Social media to checkout. Learned about payments, user experience, and what it takes to ship something that actually helps people grow.</p>
-                            <div class="fragment-tags"><span class="tag">Web Platform</span><span class="tag">SMB</span><span class="tag">Multi-tool</span></div>
-                            <a href="https://alfaanonimo.com" target="_blank" rel="noopener noreferrer" class="project-btn btn-alfa">Open Project</a>
+                        <!-- Digital Studio -->
+                        <article class="fragment fragment-alfa" style="border-image: linear-gradient(to bottom, var(--neon-orange), var(--neon-yellow)) 1; border-left: 3px solid; border-image-slice: 1;">
+                            <div class="fragment-header">
+                                <span class="fragment-id">PROJECT-DS-01</span>
+                                <span class="fragment-status status-live">● Live</span>
+                            </div>
+                            <h2 class="fragment-title">Digital Studio</h2>
+                            <p class="fragment-desc" data-en="Projects that bring ideas to life online. From social media to checkout, content creation to community building — digital products that make an impact." data-es="Proyectos que dan vida a las ideas online. De redes sociales al checkout, creación de contenido a construcción de comunidad — productos digitales que generan impacto.">Projects that bring ideas to life online. From social media to checkout, content creation to community building — digital products that make an impact.</p>
+                            <div class="subproject" style="border-left-color: var(--neon-orange); background: rgba(255,140,66,.04);">
+                                <div class="subproject-header">
+                                    <span class="subproject-title" style="color: var(--neon-orange);">▸ Alfa Anónimo</span>
+                                    <span class="subproject-status" style="color: #4ade80; border-color: rgba(74,222,128,.3);">Live</span>
+                                </div>
+                                <p class="subproject-desc">Built a platform for selling courses. Social media to checkout. Learned about payments, user experience, and what it takes to ship something that actually helps people grow.</p>
+                                <div class="subproject-links">
+                                    <a href="https://alfaanonimo.com" target="_blank" style="border-color: rgba(255,140,66,.3); color: var(--neon-orange);">Open Project</a>
+                                </div>
+                            </div>
+                            <div class="subproject-placeholder">
+                                <span>MORE PROJECTS COMING SOON</span>
+                            </div>
+                            <div class="fragment-tags" style="margin-top:18px;">
+                                <span class="tag" style="border-color: var(--neon-orange); color: var(--neon-orange);">E-commerce</span>
+                                <span class="tag" style="border-color: var(--neon-purple); color: var(--neon-purple);">Content</span>
+                                <span class="tag" style="border-color: var(--neon-cyan); color: var(--neon-cyan);">Community</span>
+                                <span class="tag">Digital Products</span>
+                            </div>
                         </article>
 
-                        <!-- Retro-Game Rhapsody -->
-                        <article class="fragment fragment-pi" onclick="window.open('https://github.com/MrsOri','_blank')">
-                            <div class="fragment-header"><span class="fragment-id">PROJECT-RPI-02</span><span class="fragment-status status-experiment-cyan">● Experiment</span></div>
-                            <h2 class="fragment-title">Retro-Game Rhapsody</h2>
-                            <p class="fragment-desc" data-en="Turned a Raspberry Pi into a retro gaming console. Learned about hardware, emulation, power, and heat." data-es="Convertí una Raspberry Pi en una consola de juegos retro. Aprendí sobre hardware, emulación, energía y temperatura.">Turned a Raspberry Pi into a retro gaming console. Learned about hardware, emulation, power, and heat.</p>
-                            <div class="fragment-tags" style="margin-top:15px;"><span class="tag">Raspberry Pi</span><span class="tag">Linux</span><span class="tag">Hardware</span></div>
-                            <a href="https://github.com/MrsOri" target="_blank" rel="noopener noreferrer" class="project-btn btn-pi">Open Project</a>
+                        <!-- Build Basement - AHORA EN AZUL -->
+                        <article class="fragment fragment-basement" style="border-left: 3px solid var(--neon-blue);">
+                            <div class="fragment-header">
+                                <span class="fragment-id" style="color: var(--neon-blue);">PROJECT-BB-01</span>
+                                <span class="fragment-status status-active">● Active</span>
+                            </div>
+                            <h2 class="fragment-title" style="color: #f0e0ff;">Build Basement</h2>
+                            <p class="fragment-desc" data-en="The basement is where I build things for fun. No pressure, no deadlines — just DIY projects, hardware experiments, and the joy of making. Hard-Soft at its core." data-es="El sótano es donde construyo cosas por diversión. Sin presión, sin plazos — solo proyectos DIY, experimentos de hardware y el placer de crear. Hard-Soft en su esencia.">The basement is where I build things for fun. No pressure, no deadlines — just DIY projects, hardware experiments, and the joy of making. Hard-Soft at its core.</p>
+                            <div class="subproject" style="border-left-color: var(--neon-blue); background: rgba(68,136,255,.04);">
+                                <div class="subproject-header">
+                                    <span class="subproject-title" style="color: var(--neon-blue);">▸ Retro-Game Rhapsody</span>
+                                    <span class="subproject-status" style="color: #4ade80; border-color: rgba(74,222,128,.3);">Experiment</span>
+                                </div>
+                                <p class="subproject-desc">Turned a Raspberry Pi into a retro gaming console. Learned about hardware, emulation, power, and heat.</p>
+                                <div class="subproject-links">
+                                    <a href="https://github.com/MrsOri" target="_blank" style="border-color: rgba(68,136,255,.3); color: var(--neon-blue);">GitHub</a>
+                                </div>
+                            </div>
+                            <div class="subproject-placeholder">
+                                <span>MORE DIY EXPERIMENTS COMING SOON</span>
+                            </div>
+                            <div class="fragment-tags" style="margin-top:18px;">
+                                <span class="tag" style="border-color: var(--neon-blue); color: var(--neon-blue);">DIY</span>
+                                <span class="tag" style="border-color: var(--neon-blue); color: var(--neon-blue);">Experiments</span>
+                                <span class="tag" style="border-color: var(--neon-blue); color: var(--neon-blue);">Hard-Soft</span>
+                            </div>
                         </article>
 
-                        <!-- Cloud Architecture (Categoría) -->
+                        <!-- Cloud Architecture - AHORA EN AMARILLO -->
                         <div id="aws-category" class="category-view">
-                            <article class="fragment fragment-aws">
-                                <div class="fragment-header"><span class="fragment-id">PROJECT-AWS-03</span><span class="fragment-status status-completed">● Completed</span></div>
-                                <h2 class="fragment-title">Cloud Architecture</h2>
+                            <article class="fragment fragment-cloud" style="border-left: 3px solid var(--neon-yellow);">
+                                <div class="fragment-header">
+                                    <span class="fragment-id" style="color: var(--neon-yellow);">PROJECT-CLD-03</span>
+                                    <span class="fragment-status status-active-yellow">● Completed</span>
+                                </div>
+                                <h2 class="fragment-title" style="color: #f0e0ff;">Cloud Architecture</h2>
                                 <p class="fragment-desc" data-en="Cloud experiments across different providers. Learned about infrastructure by doing and testing." data-es="Experimentos en la nube con diferentes proveedores. Aprendí sobre infraestructura haciendo y probando.">Cloud experiments across different providers. Learned about infrastructure by doing and testing.</p>
-                                <div class="fragment-tags" style="margin-top:18px;"><span class="tag">AWS</span><span class="tag">GCP</span><span class="tag">Azure</span></div>
-                                <a href="#" onclick="showDetail('aws'); return false;" class="project-btn btn-aws">View All Projects</a>
+                                <div class="fragment-tags" style="margin-top:18px;">
+                                    <span class="tag" style="border-color: var(--neon-yellow); color: var(--neon-yellow);">AWS</span>
+                                    <span class="tag" style="border-color: var(--neon-yellow); color: var(--neon-yellow);">GCP</span>
+                                    <span class="tag" style="border-color: var(--neon-yellow); color: var(--neon-yellow);">Azure</span>
+                                </div>
+                                <a href="#" onclick="showDetail('aws'); return false;" class="project-btn btn-cloud">View All Projects</a>
                             </article>
                         </div>
 
-                        <!-- SecOps & Telemetry (Categoría) -->
+                        <!-- SecOps & Telemetry - EN TURQUESA -->
                         <div id="cyber-category" class="category-view">
-                            <article class="fragment fragment-meta" style="border-left-color: var(--neon-pink);">
-                                <div class="fragment-header"><span class="fragment-id">PROJECT-CYBER-01</span><span class="fragment-status status-experiment-pink">● Experiment</span></div>
+                            <article class="fragment fragment-meta" style="border-left-color: var(--neon-turquoise);">
+                                <div class="fragment-header">
+                                    <span class="fragment-id" style="color: var(--neon-turquoise);">PROJECT-CYBER-01</span>
+                                    <span class="fragment-status status-experiment-cyan">● Experiment</span>
+                                </div>
                                 <h2 class="fragment-title" style="color: #f0e0ff;">SecOps & Telemetry</h2>
                                 <p class="fragment-desc" data-en="I wanted to understand how systems get hacked. That's why I created a safe environment to test, watch, and rebuild." data-es="Quería entender cómo hackean los sistemas. Por eso creé un entorno seguro para probar, observar y reconstruir.">I wanted to understand how systems get hacked. That's why I created a safe environment to test, watch, and rebuild.</p>
-                                <div class="fragment-tags" style="margin-top:18px;"><span class="tag">AI Security</span><span class="tag">Purple Team</span><span class="tag">Cloud Security</span></div>
+                                <div class="fragment-tags" style="margin-top:18px;">
+                                    <span class="tag" style="border-color: var(--neon-turquoise); color: var(--neon-turquoise);">AI Security</span>
+                                    <span class="tag" style="border-color: var(--neon-turquoise); color: var(--neon-turquoise);">Purple Team</span>
+                                    <span class="tag" style="border-color: var(--neon-turquoise); color: var(--neon-turquoise);">Cloud Security</span>
+                                </div>
                                 <a href="#" onclick="showDetail('cyber'); return false;" class="project-btn btn-cyber">Learn More</a>
                             </article>
                         </div>
 
-                        <!-- Scripting Engine (Categoría) -->
+                        <!-- Scripting Engine - EN FUCSIA -->
                         <div id="code-category" class="category-view">
-                            <article class="fragment" style="border-left: 3px solid var(--neon-yellow);">
-                                <div class="fragment-header"><span class="fragment-id">PROJECT-CODESCRP-01</span><span class="fragment-status status-active-yellow">● Active</span></div>
+                            <article class="fragment fragment-scripting" style="border-left: 3px solid var(--neon-pink);">
+                                <div class="fragment-header">
+                                    <span class="fragment-id" style="color: var(--neon-pink);">PROJECT-CODESCRP-01</span>
+                                    <span class="fragment-status status-experiment-pink">● Experiment</span>
+                                </div>
                                 <h2 class="fragment-title" style="color: #f0e0ff;">Scripting Engine</h2>
                                 <p class="fragment-desc" data-en="Trying Python scripts, automation, and tools that connect systems applied with AI. Less manual work, more time for the important stuff: gaming and listening to music." data-es="Probando scripts en Python, automatización y herramientas que conectan sistemas aplicadas con IA. Menos trabajo manual, más tiempo para lo importante: jugar y escuchar música.">Trying Python scripts, automation, and tools that connect systems applied with AI. Less manual work, more time for the important stuff: gaming and listening to music.</p>
-                                <div class="fragment-tags" style="margin-top:18px;"><span class="tag">Orchestration</span><span class="tag">Coding</span><span class="tag">Automation</span><span class="tag">Scripting</span></div>
+                                <div class="fragment-tags" style="margin-top:18px;">
+                                    <span class="tag" style="border-color: var(--neon-pink); color: var(--neon-pink);">Orchestration</span>
+                                    <span class="tag" style="border-color: var(--neon-pink); color: var(--neon-pink);">Coding</span>
+                                    <span class="tag">Automation</span>
+                                    <span class="tag">Scripting</span>
+                                </div>
                                 <a href="#" onclick="showDetail('code'); return false;" class="project-btn btn-code">View All Projects</a>
                             </article>
                         </div>
 
                         <!-- Proyecto Secreto -->
                         <article class="fragment fragment-meta" style="border-left: 3px solid var(--neon-green) !important; border-left-color: var(--neon-green) !important; box-shadow: 0 30px 80px rgba(0,0,0,.6), 0 0 50px rgba(74,222,128,.15), inset 0 0 30px rgba(74,222,128,.03) !important;">
-                            <div class="fragment-header"><span class="fragment-id" style="color: var(--neon-green);">PROJECT-GHOST-04</span><span class="fragment-status status-stealth-green">● Stealth</span></div>
+                            <div class="fragment-header">
+                                <span class="fragment-id" style="color: var(--neon-green);">PROJECT-GHOST-04</span>
+                                <span class="fragment-status status-stealth-green">● Stealth</span>
+                            </div>
                             <h2 class="fragment-title scramble-text" style="color: var(--neon-green); text-shadow: 0 0 20px rgba(74,222,128,.4);">■■■■■■■■■■</h2>
                             <p class="fragment-desc" data-en="Something new is in the works. Can't say more yet, but it's going to be interesting. Stick around." data-es="Algo nuevo está en camino. No puedo decir más todavía, pero va a ser interesante. Quédate cerca.">Something new is in the works. Can't say more yet, but it's going to be interesting. Stick around.</p>
-                            <div class="locked-indicator" style="color: var(--neon-green); text-shadow: 0 0 15px rgba(74,222,128,.5);"><span class="locked-icon" style="border-color: var(--neon-green); box-shadow: 0 0 10px rgba(74,222,128,.6);"></span>ENCRYPTED · ASK DIRECTLY</div>
+                            <div class="locked-indicator" style="color: var(--neon-green); text-shadow: 0 0 15px rgba(74,222,128,.5);">
+                                <span class="locked-icon" style="border-color: var(--neon-green); box-shadow: 0 0 10px rgba(74,222,128,.6);"></span>
+                                ENCRYPTED · ASK DIRECTLY
+                            </div>
                         </article>
                     </div>
                 </div>
 
-                <!-- AWS DETAIL VIEW -->
+                <!-- AWS DETAIL -->
                 <div id="aws-detail" class="detail-view">
                     <button class="back-btn" onclick="showCategory('aws')" style="margin-bottom:20px;">← Back to Projects</button>
                     <div class="fragments" style="gap:30px;">
                         <h2 style="color:#f0e0ff;">Cloud Architecture</h2>
                         <p style="color:#9080b0; text-align:center; margin-bottom:20px;">Cloud experiments across different providers. Learned about infrastructure by doing and testing.</p>
-
-                        <article class="fragment" style="border-left:3px solid var(--neon-blue);">
-                            <div class="fragment-header"><span class="fragment-id" style="color:var(--neon-blue);">S3-001</span><span class="fragment-status" style="color:#4ade80; border-color:rgba(74,222,128,.3);">Live Demo</span></div>
+                        <article class="fragment" style="border-left:3px solid var(--neon-yellow);">
+                            <div class="fragment-header">
+                                <span class="fragment-id" style="color:var(--neon-yellow);">S3-001</span>
+                                <span class="fragment-status" style="color:#4ade80; border-color:rgba(74,222,128,.3);">Live Demo</span>
+                            </div>
                             <h3 style="color:#b0c8d8;">Hosting a Static Website in S3</h3>
                             <p style="color:#9080b0; font-size:.9rem; line-height:1.7;">Setup a static site using S3, configured public access, and learned about ACLs and permissions the hard way.</p>
-                            <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;"><a href="https://github.com/SoriSpace/Hosting-a-website-in-S3" target="_blank" class="tag tag-link" style="border-color:var(--neon-blue); color:var(--neon-blue);">Repo</a><a href="https://github.com/SoriSpace/Hosting-a-website-in-S3" target="_blank" class="tag tag-link" style="border-color:var(--neon-blue); color:var(--neon-blue);">Live Site</a></div>
+                            <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;">
+                                <a href="https://github.com/SoriSpace/Hosting-a-website-in-S3" target="_blank" class="tag tag-link" style="border-color:var(--neon-yellow); color:var(--neon-yellow);">Repo</a>
+                                <a href="https://github.com/SoriSpace/Hosting-a-website-in-S3" target="_blank" class="tag tag-link" style="border-color:var(--neon-yellow); color:var(--neon-yellow);">Live Site</a>
+                            </div>
                         </article>
-
                         <article class="fragment" style="border-left:3px solid rgba(255,255,255,.06); opacity:.4;">
-                            <div class="fragment-header"><span class="fragment-id" style="color:#605070;">EC2-001</span><span class="fragment-status" style="color:#605070; border-color:rgba(255,255,255,.06);">Coming Soon</span></div>
+                            <div class="fragment-header">
+                                <span class="fragment-id" style="color:#605070;">EC2-001</span>
+                                <span class="fragment-status" style="color:#605070; border-color:rgba(255,255,255,.06);">Coming Soon</span>
+                            </div>
                             <h3 style="color:#605070;">EC2 Instance Lab</h3>
                             <p style="color:#605070; font-size:.9rem; line-height:1.7;">Deploying a web server on EC2, security groups, and SSH access.</p>
                         </article>
-
                         <article class="fragment" style="border-left:3px solid rgba(255,255,255,.06); opacity:.4;">
-                            <div class="fragment-header"><span class="fragment-id" style="color:#605070;">IAM-001</span><span class="fragment-status" style="color:#605070; border-color:rgba(255,255,255,.06);">Coming Soon</span></div>
+                            <div class="fragment-header">
+                                <span class="fragment-id" style="color:#605070;">IAM-001</span>
+                                <span class="fragment-status" style="color:#605070; border-color:rgba(255,255,255,.06);">Coming Soon</span>
+                            </div>
                             <h3 style="color:#605070;">IAM Policy Experiments</h3>
                             <p style="color:#605070; font-size:.9rem; line-height:1.7;">Understanding least privilege, roles, and policies.</p>
                         </article>
-
                         <div style="text-align:center; margin-top:10px; opacity:.3; font-size:.6rem; color:#605070; letter-spacing:.1em;">MORE EXPERIMENTS COMING SOON</div>
                     </div>
                 </div>
 
-                <!-- SECOPS & TELEMETRY DETAIL VIEW -->
+                <!-- SECOPS DETAIL - EN TURQUESA -->
                 <div id="cyber-detail" class="detail-view">
                     <button class="back-btn" onclick="showCategory('cyber')" style="margin-bottom:20px;">← Back to Projects</button>
                     <div class="fragments" style="gap:30px;">
                         <h2 style="color:#f0e0ff;">SecOps & Telemetry</h2>
                         <p style="color:#9080b0; text-align:center; margin-bottom:20px;">I wanted to understand how systems get hacked. That's why I created a safe environment to test, watch, and rebuild.</p>
-
-                        <article class="fragment" style="border-left:3px solid var(--neon-pink);">
-                            <div class="fragment-header"><span class="fragment-id" style="color:var(--neon-pink);">SOC-001</span><span class="fragment-status" style="color:#f0c040; border-color:rgba(240,192,64,.4);">In Progress</span></div>
+                        <article class="fragment" style="border-left:3px solid var(--neon-turquoise);">
+                            <div class="fragment-header">
+                                <span class="fragment-id" style="color:var(--neon-turquoise);">SOC-001</span>
+                                <span class="fragment-status" style="color:#f0c040; border-color:rgba(240,192,64,.4);">In Progress</span>
+                            </div>
                             <h3 style="color:#b0c8d8;">SOC Lab</h3>
                             <p style="color:#9080b0; font-size:.9rem; line-height:1.7;">Setting up a Security Operations Center lab with ELK stack. Log analysis, alerting, and incident response.</p>
-                            <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;"><a href="#" class="tag tag-link" style="border-color:var(--neon-pink); color:var(--neon-pink);">Coming Soon</a></div>
+                            <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;">
+                                <a href="#" class="tag tag-link" style="border-color:var(--neon-turquoise); color:var(--neon-turquoise);">Coming Soon</a>
+                            </div>
                         </article>
-
-                        <article class="fragment" style="border-left:3px solid var(--neon-purple);">
-                            <div class="fragment-header"><span class="fragment-id" style="color:var(--neon-purple);">FOR-001</span><span class="fragment-status" style="color:#605070; border-color:rgba(255,255,255,.06);">Planning</span></div>
+                        <article class="fragment" style="border-left:3px solid var(--neon-turquoise);">
+                            <div class="fragment-header">
+                                <span class="fragment-id" style="color:var(--neon-turquoise);">FOR-001</span>
+                                <span class="fragment-status" style="color:#605070; border-color:rgba(255,255,255,.06);">Planning</span>
+                            </div>
                             <h3 style="color:#b0c8d8;">Autopsy Forensics</h3>
                             <p style="color:#9080b0; font-size:.9rem; line-height:1.7;">Using Autopsy for forensic investigation. Disk imaging, timeline analysis, and learning how digital evidence is collected and examined.</p>
-                            <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;"><a href="#" class="tag tag-link" style="border-color:var(--neon-purple); color:var(--neon-purple);">Coming Soon</a></div>
+                            <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;">
+                                <a href="#" class="tag tag-link" style="border-color:var(--neon-turquoise); color:var(--neon-turquoise);">Coming Soon</a>
+                            </div>
                         </article>
-
-                        <article class="fragment" style="border-left:3px solid var(--neon-cyan);">
-                            <div class="fragment-header"><span class="fragment-id" style="color:var(--neon-cyan);">NET-001</span><span class="fragment-status" style="color:#605070; border-color:rgba(255,255,255,.06);">Planning</span></div>
+                        <article class="fragment" style="border-left:3px solid var(--neon-turquoise);">
+                            <div class="fragment-header">
+                                <span class="fragment-id" style="color:var(--neon-turquoise);">NET-001</span>
+                                <span class="fragment-status" style="color:#605070; border-color:rgba(255,255,255,.06);">Planning</span>
+                            </div>
                             <h3 style="color:#b0c8d8;">Network Security Lab</h3>
                             <p style="color:#9080b0; font-size:.9rem; line-height:1.7;">Configuring firewalls, IDS/IPS, and packet analysis with Wireshark and Snort.</p>
-                            <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;"><a href="#" class="tag tag-link" style="border-color:var(--neon-cyan); color:var(--neon-cyan);">Coming Soon</a></div>
+                            <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;">
+                                <a href="#" class="tag tag-link" style="border-color:var(--neon-turquoise); color:var(--neon-turquoise);">Coming Soon</a>
+                            </div>
                         </article>
-
                         <div style="text-align:center; margin-top:10px; opacity:.3; font-size:.6rem; color:#605070; letter-spacing:.1em;">MORE EXPERIMENTS COMING SOON</div>
                     </div>
                 </div>
 
-                <!-- SCRIPTING ENGINE DETAIL VIEW -->
+                <!-- SCRIPTING DETAIL - EN FUCSIA -->
                 <div id="code-detail" class="detail-view">
                     <button class="back-btn" onclick="showCategory('code')" style="margin-bottom:20px;">← Back to Projects</button>
                     <div class="fragments" style="gap:30px;">
                         <h2 style="color:#f0e0ff;">Scripting Engine</h2>
                         <p style="color:#9080b0; text-align:center; margin-bottom:20px;">Trying Python scripts, automation, and tools that connect systems applied with AI. Less manual work, more time for the important stuff: gaming and listening to music.</p>
-
-                        <article class="fragment" style="border-left:3px solid var(--neon-yellow);">
-                            <div class="fragment-header"><span class="fragment-id" style="color:var(--neon-yellow);">ORC-001</span><span class="fragment-status" style="color:#4ade80; border-color:rgba(74,222,128,.3);">Active</span></div>
+                        <article class="fragment" style="border-left:3px solid var(--neon-pink);">
+                            <div class="fragment-header">
+                                <span class="fragment-id" style="color:var(--neon-pink);">ORC-001</span>
+                                <span class="fragment-status" style="color:#4ade80; border-color:rgba(74,222,128,.3);">Active</span>
+                            </div>
                             <h3 style="color:#b0c8d8;">Orchestration Stack</h3>
                             <p style="color:#9080b0; font-size:.9rem; line-height:1.7;">Automating workflows with Python, Caddy, Tailscale, n8n, and Telegram. Connecting services so they work together seamlessly.</p>
-                            <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;"><a href="#" class="tag tag-link" style="border-color:var(--neon-yellow); color:var(--neon-yellow);">Coming Soon</a></div>
+                            <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;">
+                                <a href="#" class="tag tag-link" style="border-color:var(--neon-pink); color:var(--neon-pink);">Coming Soon</a>
+                            </div>
                         </article>
-
-                        <article class="fragment" style="border-left:3px solid var(--neon-green);">
-                            <div class="fragment-header"><span class="fragment-id" style="color:var(--neon-green);">AUTO-001</span><span class="fragment-status" style="color:#4ade80; border-color:rgba(74,222,128,.3);">Active</span></div>
+                        <article class="fragment" style="border-left:3px solid var(--neon-pink);">
+                            <div class="fragment-header">
+                                <span class="fragment-id" style="color:var(--neon-pink);">AUTO-001</span>
+                                <span class="fragment-status" style="color:#4ade80; border-color:rgba(74,222,128,.3);">Active</span>
+                            </div>
                             <h3 style="color:#b0c8d8;">Automation Scripts</h3>
                             <p style="color:#9080b0; font-size:.9rem; line-height:1.7;">A conglomerate of Python scripts for daily tasks. File organization, data parsing, system automation, and more.</p>
-                            <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;"><a href="#" class="tag tag-link" style="border-color:var(--neon-green); color:var(--neon-green);">Coming Soon</a></div>
+                            <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;">
+                                <a href="#" class="tag tag-link" style="border-color:var(--neon-pink); color:var(--neon-pink);">Coming Soon</a>
+                            </div>
                         </article>
-
                         <div style="text-align:center; margin-top:10px; opacity:.3; font-size:.6rem; color:#605070; letter-spacing:.1em;">MORE EXPERIMENTS COMING SOON</div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="content-section" id="section-setup" role="tabpanel"><button class="back-btn" onclick="goBack()" aria-label="Return to terminal">← Back to terminal</button><div class="fragments"><article class="fragment fragment-setup-combined"><div class="fragment-header"><span class="fragment-id">BHM-PC-001</span><span class="fragment-status status-active">● Active</span></div><h2 class="fragment-title">My Tools & Vibes</h2><div class="setup-grid"><div class="setup-column"><div class="setup-subtitle rig">The Rig</div><p class="fragment-desc" style="font-size:.8rem;margin-bottom:10px;">Custom-built battlestation.</p><ul class="spec-list"><li><span>CPU</span><span>Intel I7-14700F</span></li><li><span>GPU</span><span>RTX 4060 8GB</span></li><li><span>RAM</span><span>32GB</span></li><li><span>Storage</span><span>1TB NVMe + 2TB SSD</span></li><li><span>OS</span><span>Win 11 / Ubuntu</span></li></ul></div><div class="setup-column"><div class="setup-subtitle lab">The Lab</div><p class="fragment-desc" style="font-size:.8rem;margin-bottom:10px;">MacBook Pro mobile center.</p><ul class="spec-list"><li><span>Model</span><span>MacBook Pro</span></li><li><span>RAM</span><span>48GB Unified</span></li><li><span>Storage</span><span>1TB SSD</span></li><li><span>OS</span><span>macOS</span></li></ul></div></div><p class="setup-footer-text" data-en="Windows on the desk. macOS on the move. Linux on both. Three operating systems, one brain." data-es="Windows en el escritorio. macOS en movimiento. Linux en ambos. Tres sistemas operativos, un cerebro.">Windows on the desk. macOS on the move. Linux on both. Three operating systems, one brain.</p></article>
+        <div class="content-section" id="section-setup" role="tabpanel">
+            <button class="back-btn" onclick="goBack()" aria-label="Return to terminal">← Back to terminal</button>
+            <div class="fragments">
+                <article class="fragment fragment-setup-combined">
+                    <div class="fragment-header">
+                        <span class="fragment-id">BHM-PC-001</span>
+                        <span class="fragment-status status-active">● Active</span>
+                    </div>
+                    <h2 class="fragment-title">My Tools & Vibes</h2>
+                    <div class="setup-grid">
+                        <div class="setup-column">
+                            <div class="setup-subtitle rig">The Rig</div>
+                            <p class="fragment-desc" style="font-size:.8rem;margin-bottom:10px;">Custom-built battlestation.</p>
+                            <ul class="spec-list">
+                                <li><span>CPU</span><span>Intel I7-14700F</span></li>
+                                <li><span>GPU</span><span>RTX 4060 8GB</span></li>
+                                <li><span>RAM</span><span>32GB</span></li>
+                                <li><span>Storage</span><span>1TB NVMe + 2TB SSD</span></li>
+                                <li><span>OS</span><span>Win 11 / Ubuntu</span></li>
+                            </ul>
+                        </div>
+                        <div class="setup-column">
+                            <div class="setup-subtitle lab">The Lab</div>
+                            <p class="fragment-desc" style="font-size:.8rem;margin-bottom:10px;">MacBook Pro mobile center.</p>
+                            <ul class="spec-list">
+                                <li><span>Model</span><span>MacBook Pro</span></li>
+                                <li><span>RAM</span><span>48GB Unified</span></li>
+                                <li><span>Storage</span><span>1TB SSD</span></li>
+                                <li><span>OS</span><span>macOS</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <p class="setup-footer-text" data-en="Windows on the desk. macOS on the move. Linux on both. Three operating systems, one brain." data-es="Windows en el escritorio. macOS en movimiento. Linux en ambos. Tres sistemas operativos, un cerebro.">Windows on the desk. macOS on the move. Linux on both. Three operating systems, one brain.</p>
+                </article>
 
-        <article class="fragment fragment-music">
-            <div class="fragment-header"><span class="fragment-id">SIGNAL-MU-001</span><span class="fragment-status status-playing">● Playing</span></div>
-            <h2 class="fragment-title">Sound System</h2>
-            <p class="fragment-desc" data-en="Every project has its own soundtrack. Code runs on electronic. Late nights need lo-fi. Hardware work demands rock. The right music at the right time." data-es="Cada proyecto tiene su propia banda sonora. El código corre con electrónica. Las madrugadas necesitan lo-fi. El hardware exige rock. La música correcta en el momento correcto.">Every project has its own soundtrack. Code runs on electronic. Late nights need lo-fi. Hardware work demands rock. The right music at the right time.</p>
-            <div style="margin: 20px auto; max-width: 500px; border-radius: 12px; overflow: hidden; box-shadow: 0 0 30px rgba(255,85,0,0.15); background: rgba(0,0,0,0.3);">
-                <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay; encrypted-media" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/soundcloud%253Aplaylists%253A1629833398&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true"></iframe>
+                <!-- Sound System -->
+                <article class="fragment fragment-music">
+                    <div class="fragment-header">
+                        <span class="fragment-id">SIGNAL-MU-001</span>
+                        <span class="fragment-status status-playing">● Playing</span>
+                    </div>
+                    <h2 class="fragment-title">Sound System</h2>
+                    <p class="fragment-desc" data-en="Every project has its own soundtrack. Code runs on electronic. Late nights need lo-fi. Hardware work demands rock. The right music at the right time." data-es="Cada proyecto tiene su propia banda sonora. El código corre con electrónica. Las madrugadas necesitan lo-fi. El hardware exige rock. La música correcta en el momento correcto.">Every project has its own soundtrack. Code runs on electronic. Late nights need lo-fi. Hardware work demands rock. The right music at the right time.</p>
+                    <div style="margin: 20px auto; max-width: 500px; border-radius: 12px; overflow: hidden; box-shadow: 0 0 30px rgba(255,85,0,0.15); background: rgba(0,0,0,0.3);">
+                        <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay; encrypted-media" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/soundcloud%253Aplaylists%253A1629833398&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true"></iframe>
+                    </div>
+                    <div style="font-size: 10px; color: #605070; text-align: center; margin-top: 8px; letter-spacing: 0.1em; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif; font-weight: 100; line-break: anywhere; word-break: normal; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                        <a href="https://soundcloud.com/mariana-lugo-221507793" title="Mrs Ori" target="_blank" style="color: #605070; text-decoration: none;">Mrs Ori</a> · 
+                        <a href="https://soundcloud.com/mariana-lugo-221507793/sets/mrs-oris-melodies" title="Mrs Ori's Rhapsodies" target="_blank" style="color: #605070; text-decoration: none;">Mrs Ori's Rhapsodies</a>
+                    </div>
+                    <div style="text-align: center; margin-top: 4px;">
+                        <a href="https://soundcloud.com/mariana-lugo-221507793/sets/mrs-oris-melodies" target="_blank" style="display: inline-block; padding: 5px 14px; border: 1px solid rgba(255,85,0,0.25); border-radius: 16px; color: #ff5500; text-decoration: none; font-size: 10px; font-weight: bold; letter-spacing: 0.08em; transition: all 0.3s;">🎵 Open in SoundCloud</a>
+                    </div>
+                    <div class="fragment-tags" style="margin-top:16px;">
+                        <span class="tag">Electronic</span>
+                        <span class="tag">Lo-Fi</span>
+                        <span class="tag">Rock</span>
+                        <span class="tag">Synthwave</span>
+                    </div>
+                </article>
             </div>
-            <div style="font-size: 10px; color: #605070; text-align: center; margin-top: 8px; letter-spacing: 0.1em; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif; font-weight: 100; line-break: anywhere; word-break: normal; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
-                <a href="https://soundcloud.com/mariana-lugo-221507793" title="Mrs Ori" target="_blank" style="color: #605070; text-decoration: none;">Mrs Ori</a> · <a href="https://soundcloud.com/mariana-lugo-221507793/sets/mrs-oris-melodies" title="Mrs Ori's Rhapsodies" target="_blank" style="color: #605070; text-decoration: none;">Mrs Ori's Rhapsodies</a>
+        </div>
+
+        <div class="content-section" id="section-blog" role="tabpanel">
+            <button class="back-btn" onclick="goBack()" aria-label="Return to terminal">← Back to terminal</button>
+            <div class="fragments">
+                <article class="fragment fragment-blog">
+                    <div class="fragment-header">
+                        <span class="fragment-id">TECH-BLOG-001</span>
+                        <span class="fragment-status status-drafting">● Drafting</span>
+                    </div>
+                    <h2 class="fragment-title">Sketchbook</h2>
+                    <p class="fragment-desc" data-en="Sometimes I write things down. What I'm building, what I'm learning, what's on my mind. No pressure, no schedule. Just me, my thoughts, and synthwave or EDM on my headphones." data-es="A veces escribo cosas. Lo que construyo, lo que aprendo, lo que tengo en mente. Sin presión, sin horario. Solo yo, mis pensamientos, y synthwave o EDM en mis audífonos.">Sometimes I write things down. What I'm building, what I'm learning, what's on my mind. No pressure, no schedule. Just me, my thoughts, and synthwave or EDM on my headphones.</p>
+                    <div class="fragment-tags">
+                        <span class="tag">Writing</span>
+                        <span class="tag">Dev Logs</span>
+                        <span class="tag">Soon</span>
+                    </div>
+                </article>
             </div>
-            <div style="text-align: center; margin-top: 4px;"><a href="https://soundcloud.com/mariana-lugo-221507793/sets/mrs-oris-melodies" target="_blank" style="display: inline-block; padding: 5px 14px; border: 1px solid rgba(255,85,0,0.25); border-radius: 16px; color: #ff5500; text-decoration: none; font-size: 10px; font-weight: bold; letter-spacing: 0.08em; transition: all 0.3s;">🎵 Open in SoundCloud</a></div>
-            <div class="fragment-tags" style="margin-top:16px;"><span class="tag">Electronic</span><span class="tag">Lo-Fi</span><span class="tag">Rock</span><span class="tag">Synthwave</span></div>
-        </article>
-    </div></div>
+        </div>
 
-        <div class="content-section" id="section-blog" role="tabpanel"><button class="back-btn" onclick="goBack()" aria-label="Return to terminal">← Back to terminal</button><div class="fragments"><article class="fragment fragment-blog"><div class="fragment-header"><span class="fragment-id">TECH-BLOG-001</span><span class="fragment-status status-drafting">● Drafting</span></div><h2 class="fragment-title">Sketchbook</h2><p class="fragment-desc" data-en="Sometimes I write things down. What I'm building, what I'm learning, what's on my mind. No pressure, no schedule. Just me, my thoughts, and synthwave or EDM on my headphones." data-es="A veces escribo cosas. Lo que construyo, lo que aprendo, lo que tengo en mente. Sin presión, sin horario. Solo yo, mis pensamientos, y synthwave o EDM en mis audífonos.">Sometimes I write things down. What I'm building, what I'm learning, what's on my mind. No pressure, no schedule. Just me, my thoughts, and synthwave or EDM on my headphones.</p><div class="fragment-tags"><span class="tag">Writing</span><span class="tag">Dev Logs</span><span class="tag">Soon</span></div></article></div></div>
+        <div class="content-section" id="section-contact" role="tabpanel">
+            <button class="back-btn" onclick="goBack()" aria-label="Return to terminal">← Back to terminal</button>
+            <div class="fragments">
+                <article class="fragment fragment-about">
+                    <div class="fragment-header">
+                        <span class="fragment-id">COFFEE-TIME-01</span>
+                        <span class="fragment-status status-transmitting">● Transmitting</span>
+                    </div>
+                    <h2 class="fragment-title">Let's Connect</h2>
+                    <p class="fragment-desc">Find me here.</p>
+                    <div class="social-links">
+                        <a href="https://youtube.com/@SoriSpace" target="_blank" rel="noopener noreferrer" class="tag tag-link">YouTube</a>
+                        <a href="https://github.com/SoriSpace" target="_blank" rel="noopener noreferrer" class="tag tag-link">GitHub</a>
+                        <a href="https://discord.gg/emE7ewSTj" target="_blank" rel="noopener noreferrer" class="tag tag-link">Discord</a>
+                        <a href="https://www.linkedin.com/in/mariana-lugo/" target="_blank" rel="noopener noreferrer" class="tag tag-link">LinkedIn</a>
+                    </div>
+                </article>
+            </div>
+        </div>
 
-        <div class="content-section" id="section-contact" role="tabpanel"><button class="back-btn" onclick="goBack()" aria-label="Return to terminal">← Back to terminal</button><div class="fragments"><article class="fragment fragment-about"><div class="fragment-header"><span class="fragment-id">COFFEE-TIME-01</span><span class="fragment-status status-transmitting">● Transmitting</span></div><h2 class="fragment-title">Let's Connect</h2><p class="fragment-desc">Find me here.</p><div class="social-links"><a href="https://youtube.com/@SoriSpace" target="_blank" rel="noopener noreferrer" class="tag tag-link">YouTube</a><a href="https://github.com/SoriSpace" target="_blank" rel="noopener noreferrer" class="tag tag-link">GitHub</a><a href="https://discord.gg/emE7ewSTj" target="_blank" rel="noopener noreferrer" class="tag tag-link">Discord</a><a href="https://www.linkedin.com/in/mariana-lugo/" target="_blank" rel="noopener noreferrer" class="tag tag-link">LinkedIn</a></div></article></div></div>
-
-        <footer class="footer"><p>SoriSpace — Building things, one space at a time.</p></footer>
+        <footer class="footer">
+            <p>SoriSpace — Building things, one space at a time.</p>
+        </footer>
     </main>
 
     <script>
-        // ==========================================
-        // NAVEGACIÓN DE PROYECTOS (AHORA FUNCIONA)
-        // ==========================================
+        // ===== FUNCIONES DE NAVEGACIÓN =====
         function showDetail(category) {
-            document.getElementById('main-categories').style.display = 'none';
-            document.querySelectorAll('.detail-view').forEach(el => {
+            document.querySelectorAll('.category-view, .detail-view').forEach(el => {
                 el.style.display = 'none';
             });
             document.getElementById(category + '-detail').style.display = 'block';
@@ -501,6 +725,9 @@
         function showCategory(category) {
             document.querySelectorAll('.detail-view').forEach(el => {
                 el.style.display = 'none';
+            });
+            document.querySelectorAll('.category-view').forEach(el => {
+                el.style.display = 'block';
             });
             document.getElementById('main-categories').style.display = 'block';
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -513,32 +740,7 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // ==========================================
-        // MATRIX RAIN BACKGROUND
-        // ==========================================
-        (function() {
-            const canvas = document.getElementById('matrix-canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-            const chars = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン0123456789@#$%&';
-            const fontSize = 18; const columns = canvas.width / fontSize; const drops = [];
-            const colors = ['#00e5ff', '#b537f2', '#ff2d95'];
-            for(let x = 0; x < columns; x++) drops[x] = 1;
-            setInterval(() => {
-                ctx.fillStyle = 'rgba(13, 2, 33, 0.1)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-                for(let i = 0; i < drops.length; i++) {
-                    ctx.fillStyle = colors[Math.floor(Math.random() * colors.length)];
-                    ctx.font = fontSize + 'px monospace';
-                    ctx.fillText(chars[Math.floor(Math.random() * chars.length)], i * fontSize, drops[i] * fontSize);
-                    if(drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-                    drops[i]++;
-                }
-            }, 30);
-        })();
-
-        // ==========================================
-        // EFECTO GHOST (Scramble)
-        // ==========================================
+        // ===== EFECTO SCRAMBLE =====
         (function() {
             const st = document.querySelector('.scramble-text');
             if (st) {
@@ -569,153 +771,77 @@
             }
         })();
 
-        // ==========================================
-        // BOOT SEQUENCE
-        // ==========================================
-        const titleEl = document.getElementById('animated-title');
-        const cursorEl = document.getElementById('cursor-title');
-        const terminalOutput = document.getElementById('terminalOutput');
-        const terminalInputLine = document.getElementById('terminalInputLine');
-        const finalText = "SoriSpace";
-        const bootMessages = [
-            "[SYSTEM] Loading kernel... OK",
-            "[NETWORK] Interface eth0: UP",
-            "[SECURITY] User sori authenticated.",
-            "[FILESYSTEM] Mounting volumes... DONE"
-        ];
-
-        function writeTitle() {
-            cursorEl.style.display = "inline-block";
-            let i = 0;
-            const interval = setInterval(() => {
-                i++;
-                titleEl.innerText = finalText.substring(0, i);
-                if (i === finalText.length) {
-                    clearInterval(interval);
-                    setTimeout(() => { titleEl.style.opacity = "0.4"; }, 300);
-                    setTimeout(() => { titleEl.style.opacity = "1"; }, 400);
-                    setTimeout(() => { titleEl.style.opacity = "0.7"; }, 500);
-                    setTimeout(() => { titleEl.style.opacity = "1"; }, 600);
-                    cursorEl.style.display = "none";
-                    setTimeout(showWelcome, 1000);
-                }
-            }, 150);
-        }
-
-        function typeLine(text, callback) {
-            const div = document.createElement('div');
-            div.className = 'line response';
-            div.style.color = '#00e5ff'; 
-            terminalOutput.appendChild(div);
-            let i = 0;
-            const interval = setInterval(() => {
-                div.innerHTML = text.substring(0, i+1);
-                i++;
-                terminalOutput.scrollTop = terminalOutput.scrollHeight;
-                if (i === text.length) {
-                    clearInterval(interval);
-                    if (callback) callback();
-                }
-            }, 25);
-        }
-
-        function startBoot() {
-            let index = 0;
-            function addMessage() {
-                if (index < bootMessages.length) {
-                    typeLine(bootMessages[index], () => {
-                        index++;
-                        setTimeout(addMessage, 400);
-                    });
-                } else {
-                    setTimeout(removeLines, 800);
-                }
+        // ===== ESTRELLAS Y MOUSE =====
+        (function(){
+            const sc = document.getElementById('stars');
+            for (let i = 0; i < 150; i++) {
+                const s = document.createElement('div');
+                s.className = 'star';
+                let l, t;
+                const z = Math.random();
+                if (z < 0.30) { l = Math.random() * 100; t = Math.random() * 22; }
+                else if (z < 0.55) { l = Math.random() * 100; t = 55 + Math.random() * 45; }
+                else if (z < 0.75) { l = Math.random() * 10; t = 22 + Math.random() * 78; }
+                else { l = 90 + Math.random() * 10; t = 22 + Math.random() * 78; }
+                s.style.left = l + '%';
+                s.style.top = t + '%';
+                const sz = Math.random() * 2.2 + 0.8;
+                s.style.width = sz + 'px';
+                s.style.height = sz + 'px';
+                s.style.animationDelay = Math.random() * 5 + 's';
+                s.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                s.style.opacity = Math.random() * 0.45 + 0.12;
+                sc.appendChild(s);
             }
 
-            function removeLines() {
-                const lines = terminalOutput.querySelectorAll('.line.response');
-                if (lines.length > 0) {
-                    lines[0].style.transition = 'opacity 0.4s ease';
-                    lines[0].style.opacity = '0';
-                    setTimeout(() => {
-                        lines[0].remove();
-                        setTimeout(removeLines, 300);
-                    }, 400);
-                } else {
-                    setTimeout(writeTitle, 500);
-                }
-            }
+            const mg = document.getElementById('mouseGlow');
+            document.addEventListener('mousemove', e => {
+                mg.style.left = e.clientX + 'px';
+                mg.style.top = e.clientY + 'px';
+                mg.style.opacity = '1';
+            });
+            document.addEventListener('mouseleave', () => {
+                mg.style.opacity = '0';
+            });
+        })();
 
-            addMessage();
-        }
-
-        function showWelcome() {
-            const welcomeLines = [
-                "Welcome to my Bohemian World!",
-                "All systems are ready! Let's begin?",
-                "Press <span class='highlight'>help</span> to see available commands."
-            ];
-
-            let lineIndex = 0;
-            function writeWelcomeLine() {
-                if (lineIndex < welcomeLines.length) {
-                    const div = document.createElement('div');
-                    div.className = 'line response';
-                    div.style.color = '#b0a0d0';
-                    terminalOutput.appendChild(div);
-                    let i = 0;
-                    const interval = setInterval(() => {
-                        div.innerHTML = welcomeLines[lineIndex].substring(0, i+1);
-                        i++;
-                        terminalOutput.scrollTop = terminalOutput.scrollHeight;
-                        if (i === welcomeLines[lineIndex].length) {
-                            clearInterval(interval);
-                            lineIndex++;
-                            setTimeout(writeWelcomeLine, 400);
-                        }
-                    }, 30);
-                } else {
-                    terminalInputLine.classList.add('active');
-                    document.getElementById('terminalInput').focus();
-                }
-            }
-            setTimeout(writeWelcomeLine, 500);
-        }
-
-        setTimeout(startBoot, 400);
-
-        // ==========================================
-        // TERMINAL COMMANDS & LOGIC
-        // ==========================================
+        // ===== TERMINAL =====
+        const to = document.getElementById('terminalOutput');
         const ti = document.getElementById('terminalInput');
         const tc = document.getElementById('terminal');
         const tw = document.getElementById('terminalWrapper');
         const lb = document.getElementById('loadingBar');
         const lt = document.getElementById('loadingText');
         const bf = document.getElementById('barFill');
-        const sm = { about: 'section-about', certs: 'section-certs', projects: 'section-projects', setup: 'section-setup', blog: 'section-blog', contact: 'section-contact' };
+        const counter = document.getElementById('cmdCounter');
+        let cmdCount = 0;
 
-        function addOutput(html, c = 'response') {
-            const l = document.createElement('div');
-            l.className = 'line ' + c;
-            l.innerHTML = html;
-            terminalOutput.appendChild(l);
-            tc.scrollTop = tc.scrollHeight;
-        }
-
-        function addCommandLine(c) {
-            const l = document.createElement('div');
-            l.className = 'line cmd-line';
-            l.textContent = 'sori@space:~$ ' + c;
-            terminalOutput.appendChild(l);
-            tc.scrollTop = tc.scrollHeight;
-        }
+        const sm = {
+            about: 'section-about',
+            certs: 'section-certs',
+            projects: 'section-projects',
+            setup: 'section-setup',
+            blog: 'section-blog',
+            contact: 'section-contact'
+        };
 
         window.animateLoading = function(cb) {
-            lb.classList.add('active'); bf.style.width = '0%'; lt.textContent = 'Loading...';
-            let p = 0; const iv = setInterval(() => {
+            lb.classList.add('active');
+            bf.style.width = '0%';
+            lt.textContent = 'Loading...';
+            let p = 0;
+            const iv = setInterval(() => {
                 p += Math.random() * 25 + 10;
-                if (p >= 100) { p = 100; clearInterval(iv); lt.textContent = 'Access granted. Opening section...'; setTimeout(() => { lb.classList.remove('active'); bf.style.width = '0%'; if (cb) cb(); }, 300); }
+                if (p >= 100) {
+                    p = 100;
+                    clearInterval(iv);
+                    lt.textContent = 'Access granted. Opening section...';
+                    setTimeout(() => {
+                        lb.classList.remove('active');
+                        bf.style.width = '0%';
+                        if (cb) cb();
+                    }, 300);
+                }
                 bf.style.width = p + '%';
             }, 80);
         };
@@ -728,19 +854,69 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         };
 
+        function addOutput(html, c = 'response') {
+            const l = document.createElement('div');
+            l.className = 'line ' + c;
+            l.innerHTML = html;
+            to.appendChild(l);
+            tc.scrollTop = tc.scrollHeight;
+        }
+
+        function addCommandLine(c) {
+            const l = document.createElement('div');
+            l.className = 'line cmd-line';
+            l.textContent = 'sorispace:~$ ' + c;
+            to.appendChild(l);
+            tc.scrollTop = tc.scrollHeight;
+        }
+
+        let sudoActive = false;
+
         ti.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 const c = ti.value.trim().toLowerCase();
                 if (c === '') return;
                 addCommandLine(c);
                 ti.value = '';
-                if (c === 'clear') { terminalOutput.innerHTML = ''; return; }
+                cmdCount++;
+                counter.textContent = 'COMMANDS EXECUTED: ' + cmdCount;
+
+                if (c === 'sudo') {
+                    sudoActive = !sudoActive;
+                    if (sudoActive) {
+                        addOutput('<span class="gold">🔓 SUDO MODE ACTIVATED. You have been granted root privileges.</span>');
+                        addOutput('<span class="dim">You can now access the hidden realm. Try <span class="highlight">hack</span> or <span class="highlight">ghost</span>.</span>');
+                    } else {
+                        addOutput('<span class="dim">🔒 SUDO MODE DEACTIVATED. Returning to user space.</span>');
+                    }
+                    return;
+                }
+
+                if (c === 'hack' && sudoActive) {
+                    addOutput('<span class="highlight">🌀 ACCESSING THE MATRIX...</span>');
+                    addOutput('<span class="gold">You found the Easter Egg! 🥚</span>');
+                    addOutput('<span class="success">SoriSpace is watching you. 👁️</span>');
+                    addOutput('<span class="dim">Try <span class="highlight">ghost</span> for a special message.</span>');
+                    return;
+                }
+
+                if (c === 'ghost' && sudoActive) {
+                    addOutput('<span class="highlight">👻 GHOST PROTOCOL ACTIVATED</span>');
+                    addOutput('<span class="success">SoriSpace says: Keep building, keep exploring. The best projects are yet to come.</span>');
+                    addOutput('<span class="dim">— Mrs Ori</span>');
+                    return;
+                }
+
+                if (c === 'clear') { to.innerHTML = ''; return; }
                 if (c === 'exit') {
                     addOutput('<span class="gold">Terminating session...</span>');
                     addOutput('<span class="dim">Session closed. Come back anytime.</span>');
                     setTimeout(() => {
                         try { window.open('', '_self', ''); window.close(); } catch (e) {}
-                        if (!window.closed) { addOutput('<span class="dim">(Browser security prevents auto-close. You can close this tab manually.)</span>'); ti.focus(); }
+                        if (!window.closed) {
+                            addOutput('<span class="dim">(Browser security prevents auto-close. You can close this tab manually.)</span>');
+                            ti.focus();
+                        }
                     }, 1000);
                     return;
                 }
@@ -755,6 +931,8 @@
                     addOutput('  <span class="highlight">clear</span>      Clear terminal');
                     addOutput('  <span class="highlight">exit</span>       Close session');
                     addOutput('  <span class="highlight">help</span>       This message');
+                    addOutput('  <span class="dim">— Secret commands —</span>');
+                    addOutput('  <span class="highlight">sudo</span>       Enter admin mode (try <span class="highlight">hack</span> or <span class="highlight">ghost</span> after)');
                     return;
                 }
                 if (sm[c]) {
@@ -768,45 +946,40 @@
 
         tc.addEventListener('click', () => ti.focus());
 
-        // Language & Other Effects
-        (function(){
-            const sc = document.getElementById('stars');
-            for (let i = 0; i < 150; i++) {
-                const s = document.createElement('div'); s.className = 'star';
-                let l, t; const z = Math.random();
-                if (z < 0.30) { l = Math.random() * 100; t = Math.random() * 22; }
-                else if (z < 0.55) { l = Math.random() * 100; t = 55 + Math.random() * 45; }
-                else if (z < 0.75) { l = Math.random() * 10; t = 22 + Math.random() * 78; }
-                else { l = 90 + Math.random() * 10; t = 22 + Math.random() * 78; }
-                s.style.left = l + '%'; s.style.top = t + '%';
-                const sz = Math.random() * 2.2 + 0.8; s.style.width = sz + 'px'; s.style.height = sz + 'px';
-                s.style.animationDelay = Math.random() * 5 + 's';
-                s.style.animationDuration = (Math.random() * 3 + 2) + 's';
-                s.style.opacity = Math.random() * 0.45 + 0.12; sc.appendChild(s);
-            }
-            const mg = document.getElementById('mouseGlow');
-            document.addEventListener('mousemove', e => { mg.style.left = e.clientX + 'px'; mg.style.top = e.clientY + 'px'; mg.style.opacity = '1'; });
-            document.addEventListener('mouseleave', () => { mg.style.opacity = '0'; });
-        })();
+        // ===== IDIOMA =====
+        let cl = 'en';
+        const bE = document.getElementById('btnEN');
+        const bS = document.getElementById('btnES');
 
-        let cl = 'en'; const bE = document.getElementById('btnEN'); const bS = document.getElementById('btnES');
         function switchLang(l) {
-            cl = l; bE.classList.toggle('active', l === 'en'); bS.classList.toggle('active', l === 'es');
-            bE.setAttribute('aria-pressed', l === 'en'); bS.setAttribute('aria-pressed', l === 'es');
-            document.querySelectorAll('[data-en][data-es]').forEach(el => { const t = el.getAttribute('data-' + l); if (t !== null) el.textContent = t; });
+            cl = l;
+            bE.classList.toggle('active', l === 'en');
+            bS.classList.toggle('active', l === 'es');
+            bE.setAttribute('aria-pressed', l === 'en');
+            bS.setAttribute('aria-pressed', l === 'es');
+            document.querySelectorAll('[data-en][data-es]').forEach(el => {
+                const t = el.getAttribute('data-' + l);
+                if (t !== null) el.textContent = t;
+            });
         }
-        bE.addEventListener('click', () => switchLang('en')); bS.addEventListener('click', () => switchLang('es'));
 
+        bE.addEventListener('click', () => switchLang('en'));
+        bS.addEventListener('click', () => switchLang('es'));
+
+        // ===== CLICK EN FRAGMENTOS =====
         document.querySelectorAll('.fragment').forEach(f => {
             f.addEventListener('click', function(e) {
                 if (e.target.closest('a')) return;
                 this.style.transform = 'scale(.97)';
                 setTimeout(() => { this.style.transform = ''; }, 150);
+                const fl = document.createElement('div');
+                fl.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:300;background:rgba(255,255,255,.03);transition:opacity .6s;';
+                document.body.appendChild(fl);
+                setTimeout(() => { fl.style.opacity = '0'; setTimeout(() => fl.remove(), 600); }, 30);
             });
         });
 
         console.log("🚀 SoriSpace — Building things, one space at a time.");
     </script>
 </body>
-</html>
 </html>
