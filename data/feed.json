@@ -1,0 +1,21 @@
+{
+  "generated": "2026-08-14T22:16:14+00:00",
+  "categories": {
+    "scripting": [
+      "META-001"
+    ]
+  },
+  "entries": [
+    {
+      "ticket": "META-001",
+      "prefix": "META",
+      "project": "Metamorph",
+      "category": "scripting",
+      "title": "Levantar Plane en sorilab",
+      "status": "done",
+      "learned": "LISTEN_HTTP_PORT publica el puerto al host, SITE_ADDRESS es el interno del contenedor. Son dos cosas distintas y hay que tocar la primera si el 80 esta ocupado",
+      "trap": "setup.sh v1.4.1 no lee el release de GitHub porque el grep asume un espacio en el JSON. Hay que parchear la linea 60 para usar python3",
+      "closed_on": "2026-08-14"
+    }
+  ]
+}
