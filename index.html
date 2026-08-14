@@ -395,6 +395,7 @@
     </style>
 </head>
 <body>
+    <!-- ====== FONDOS Y EFECTOS VISUALES ====== -->
     <div class="sky"></div>
     <div class="stars" id="stars"></div>
     <div class="grid-floor"><div class="grid-lines"></div></div>
@@ -403,6 +404,7 @@
     <div class="vignette"></div>
     <div class="mouse-glow" id="mouseGlow"></div>
 
+    <!-- ====== SELECTOR DE IDIOMA ====== -->
     <div class="lang-toggle" role="group" aria-label="Language selector">
         <button class="lang-btn active" data-lang="en" id="btnEN" aria-pressed="true">EN</button>
         <button class="lang-btn" data-lang="es" id="btnES" aria-pressed="false">ES</button>
@@ -413,6 +415,7 @@
             <h1 class="hero-name">SoriSpace</h1>
         </header>
 
+        <!-- ====== TERMINAL ====== -->
         <section class="terminal-wrapper" id="terminalWrapper" aria-label="Terminal interface">
             <div class="terminal-container" id="terminal" role="log" aria-live="polite">
                 <div class="terminal-output" id="terminalOutput">
@@ -432,9 +435,7 @@
             </div>
         </section>
 
-        <!-- ============================================================ -->
-        <!-- ABOUT -->
-        <!-- ============================================================ -->
+        <!-- ====== ABOUT ====== -->
         <div class="content-section" id="section-about" role="tabpanel">
             <button class="back-btn" onclick="goBack()" aria-label="Return to terminal">← Back to terminal</button>
             <div class="fragments">
@@ -455,9 +456,7 @@
             </div>
         </div>
 
-        <!-- ============================================================ -->
-        <!-- CERTS -->
-        <!-- ============================================================ -->
+        <!-- ====== CERTS ====== -->
         <div class="content-section" id="section-certs" role="tabpanel">
             <button class="back-btn" onclick="goBack()" aria-label="Return to terminal">← Back to terminal</button>
             <div class="fragments">
@@ -479,9 +478,7 @@
             </div>
         </div>
 
-        <!-- ============================================================ -->
-        <!-- PROJECTS -->
-        <!-- ============================================================ -->
+        <!-- ====== PROJECTS ====== -->
         <div class="content-section" id="section-projects" role="tabpanel">
             <button class="back-btn" onclick="goBack()" aria-label="Return to terminal">← Back to terminal</button>
             <div id="projects-container">
@@ -495,12 +492,11 @@
                                 <span class="fragment-status status-live">● Live</span>
                             </div>
                             <h2 class="fragment-title">Digital Studio</h2>
-                            <p class="fragment-desc" data-en="Projects that bring ideas to life online. From social media to checkout, content creation to community building — digital products that make an impact." data-es="Proyectos que dan vida a las ideas online. De redes sociales al checkout, creación de contenido a construcción de comunidad — productos digitales que generan impacto.">Projects that bring ideas to life online. From social media to checkout, content creation to community building — digital products that make an impact.</p>
+                            <p class="fragment-desc" data-en="Digital Studio is where I build things that matter. Social media, content, communities, products. I just build whatever feels creative and unique." data-es="Digital Studio es donde construyo cosas que importan. Redes sociales, contenido, comunidades, productos. Solo construyo lo que se siente creativo y único.">Digital Studio is where I build things that matter. Social media, content, communities, products. I just build whatever feels creative and unique.</p>
                             <div class="fragment-tags" style="margin-top:18px;">
                                 <span class="tag" style="border-color: var(--neon-orange); color: var(--neon-orange);">E-commerce</span>
-                                <span class="tag" style="border-color: var(--neon-purple); color: var(--neon-purple);">Content</span>
-                                <span class="tag" style="border-color: var(--neon-cyan); color: var(--neon-cyan);">Community</span>
-                                <span class="tag">Digital Products</span>
+                                <span class="tag" style="border-color: var(--neon-orange); color: var(--neon-orange);">Community</span>
+                                <span class="tag" style="border-color: var(--neon-orange); color: var(--neon-orange);">Digital Products</span>
                             </div>
                             <a href="#" onclick="showDetail('alfa'); return false;" class="project-btn btn-alfa">View All Projects</a>
                         </article>
@@ -512,7 +508,7 @@
                                 <span class="fragment-status status-active">● Active</span>
                             </div>
                             <h2 class="fragment-title">Build Basement</h2>
-                            <p class="fragment-desc" data-en="The basement is where I build things for fun. No pressure, no deadlines — just DIY projects, hardware experiments, and the joy of making. Hard-Soft at its core." data-es="El sótano es donde construyo cosas por diversión. Sin presión, sin plazos — solo proyectos DIY, experimentos de hardware y el placer de crear. Hard-Soft en su esencia.">The basement is where I build things for fun. No pressure, no deadlines — just DIY projects, hardware experiments, and the joy of making. Hard-Soft at its core.</p>
+                            <p class="fragment-desc" data-en="The basement is my world. No rush. No expectations. No deadlines. Just me, my headphones, music, coffee, and something to build." data-es="El sótano es mi mundo. Sin prisas. Sin expectativas. Sin plazos. Solo yo, mis auriculares, música, café y algo que construir.">The basement is my world. No rush. No expectations. No deadlines. Just me, my headphones, music, coffee, and something to build.</p>
                             <div class="fragment-tags" style="margin-top:18px;">
                                 <span class="tag" style="border-color: var(--neon-blue); color: var(--neon-blue);">DIY</span>
                                 <span class="tag" style="border-color: var(--neon-blue); color: var(--neon-blue);">Experiments</span>
@@ -560,19 +556,16 @@
                                 <span class="fragment-status status-experiment-pink">● Experiment</span>
                             </div>
                             <h2 class="fragment-title" style="color: #f0e0ff;">Scripting Engine</h2>
-                            <p class="fragment-desc" data-en="Trying Python scripts, automation, and tools that connect systems applied with AI. Less manual work, more time for the important stuff: gaming and listening to music." data-es="Probando scripts en Python, automatización y herramientas que conectan sistemas aplicadas con IA. Menos trabajo manual, más tiempo para lo importante: jugar y escuchar música.">Trying Python scripts, automation, and tools that connect systems applied with AI. Less manual work, more time for the important stuff: gaming and listening to music.</p>
+                            <p class="fragment-desc" data-en="Trying Python scripts, automation, and tools that connect systems. Less manual work, more time for the important stuff: gaming and listening to music." data-es="Probando scripts en Python, automatización y herramientas que conectan sistemas. Menos trabajo manual, más tiempo para lo importante: jugar y escuchar música.">Trying Python scripts, automation, and tools that connect systems. Less manual work, more time for the important stuff: gaming and listening to music.</p>
                             <div class="fragment-tags" style="margin-top:18px;">
                                 <span class="tag" style="border-color: var(--neon-pink); color: var(--neon-pink);">Orchestration</span>
                                 <span class="tag" style="border-color: var(--neon-pink); color: var(--neon-pink);">Coding</span>
-                                <span class="tag">Automation</span>
-                                <span class="tag">Scripting</span>
+                                <span class="tag" style="border-color: var(--neon-pink); color: var(--neon-pink);">Automation</span>
                             </div>
                             <a href="#" onclick="showDetail('code'); return false;" class="project-btn btn-code">View All Projects</a>
                         </article>
 
-                        <!-- ============================================================ -->
-                        <!-- PROYECTO SECRETO - Con clase ghost-project para el verde -->
-                        <!-- ============================================================ -->
+                        <!-- Proyecto Secreto -->
                         <article class="fragment fragment-meta ghost-project">
                             <div class="fragment-header">
                                 <span class="fragment-id" style="color: var(--neon-green); text-shadow: 0 0 20px rgba(74,222,128,0.6) !important;">PROJECT-GHOST-04</span>
@@ -601,7 +594,7 @@
                                 <span class="fragment-status" style="color:#4ade80; border-color:rgba(74,222,128,.3);">Live</span>
                             </div>
                             <h3 style="color:#b0c8d8;">Alfa Anónimo</h3>
-                            <p style="color:#9080b0; font-size:.9rem; line-height:1.7;">Built a platform for selling courses. Social media to checkout. Learned about payments, user experience, and what it takes to ship something that actually helps people grow.</p>
+                            <p style="color:#9080b0; font-size:.9rem; line-height:1.7;">Alfa Anónimo is a platform for selling courses through social media. Built to create a new path because some jobs don't pay nearly enough.</p>
                             <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;">
                                 <a href="https://alfaanonimo.com" target="_blank" class="tag tag-link" style="border-color:var(--neon-orange); color:var(--neon-orange);">Open Project</a>
                             </div>
@@ -706,7 +699,7 @@
                     <button class="back-btn" onclick="showCategory('code')" style="margin-bottom:20px;">← Back to Projects</button>
                     <div class="fragments" style="gap:30px;">
                         <h2 style="color:#f0e0ff;">Scripting Engine</h2>
-                        <p style="color:#9080b0; text-align:center; margin-bottom:20px;">Python scripts, automation, and tools applied with AI.</p>
+                        <p style="color:#9080b0; text-align:center; margin-bottom:20px;">Python scripts, automation, and tools that connect systems.</p>
                         <article class="fragment" style="border-left:3px solid var(--neon-pink);">
                             <div class="fragment-header">
                                 <span class="fragment-id" style="color:var(--neon-pink);">ORC-001</span>
@@ -735,9 +728,7 @@
             </div>
         </div>
 
-        <!-- ============================================================ -->
-        <!-- SETUP -->
-        <!-- ============================================================ -->
+        <!-- ====== SETUP ====== -->
         <div class="content-section" id="section-setup" role="tabpanel">
             <button class="back-btn" onclick="goBack()" aria-label="Return to terminal">← Back to terminal</button>
             <div class="fragments">
@@ -801,9 +792,7 @@
             </div>
         </div>
 
-        <!-- ============================================================ -->
-        <!-- BLOG -->
-        <!-- ============================================================ -->
+        <!-- ====== BLOG ====== -->
         <div class="content-section" id="section-blog" role="tabpanel">
             <button class="back-btn" onclick="goBack()" aria-label="Return to terminal">← Back to terminal</button>
             <div class="fragments">
@@ -818,29 +807,6 @@
                         <span class="tag">Writing</span>
                         <span class="tag">Dev Logs</span>
                         <span class="tag">Soon</span>
-                    </div>
-                </article>
-            </div>
-        </div>
-
-        <!-- ============================================================ -->
-        <!-- CONTACT -->
-        <!-- ============================================================ -->
-        <div class="content-section" id="section-contact" role="tabpanel">
-            <button class="back-btn" onclick="goBack()" aria-label="Return to terminal">← Back to terminal</button>
-            <div class="fragments">
-                <article class="fragment fragment-about">
-                    <div class="fragment-header">
-                        <span class="fragment-id">COFFEE-TIME-01</span>
-                        <span class="fragment-status status-transmitting">● Transmitting</span>
-                    </div>
-                    <h2 class="fragment-title">Let's Connect</h2>
-                    <p class="fragment-desc">Find me here.</p>
-                    <div class="social-links">
-                        <a href="https://youtube.com/@SoriSpace" target="_blank" rel="noopener noreferrer" class="tag tag-link">YouTube</a>
-                        <a href="https://github.com/SoriSpace" target="_blank" rel="noopener noreferrer" class="tag tag-link">GitHub</a>
-                        <a href="https://discord.gg/emE7ewSTj" target="_blank" rel="noopener noreferrer" class="tag tag-link">Discord</a>
-                        <a href="https://www.linkedin.com/in/mariana-lugo/" target="_blank" rel="noopener noreferrer" class="tag tag-link">LinkedIn</a>
                     </div>
                 </article>
             </div>
@@ -968,8 +934,7 @@
             certs: 'section-certs',
             projects: 'section-projects',
             setup: 'section-setup',
-            blog: 'section-blog',
-            contact: 'section-contact'
+            blog: 'section-blog'
         };
 
         window.animateLoading = function(cb) {
@@ -1074,7 +1039,6 @@
                     addOutput('  <span class="highlight">projects</span>   What I\'m Building');
                     addOutput('  <span class="highlight">setup</span>      My Tools & Vibes');
                     addOutput('  <span class="highlight">blog</span>       Sketchbook');
-                    addOutput('  <span class="highlight">contact</span>    Let\'s Connect');
                     addOutput('  <span class="highlight">clear</span>      Clear terminal');
                     addOutput('  <span class="highlight">exit</span>       Close session');
                     addOutput('  <span class="highlight">help</span>       This message');
