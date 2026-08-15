@@ -17,7 +17,8 @@
         *{margin:0;padding:0;box-sizing:border-box}
         html{width:100%;overflow-x:hidden}
         body{width:100%;max-width:100vw;overflow-x:hidden;background:var(--bg-deep);color:var(--text);font-family:var(--font-mono);min-height:100vh;cursor:crosshair;display:flex;align-items:center;justify-content:center}
-        :root{--bg-deep:#0d0221;--neon-pink:#ff2d95;--neon-cyan:#00e5ff;--neon-purple:#b537f2;--neon-green:#4ade80;--neon-orange:#ff8c42;--neon-yellow:#f5e56c;--neon-blue:#4488ff;--neon-turquoise:#00f5d4;--mac-silver:#c8d6e0;--blog-teal:#2dd4bf;--grid-color:rgba(181,55,242,.3);--text:#e0d0f0;--font-display:'Caveat',cursive;--font-mono:'Courier New','Consolas',monospace}
+        :root{--bg-deep:#0d0221;--neon-pink:#ff2d95;--neon-cyan:#00e5ff;--neon-purple:#b537f2;--neon-green:#4ade80;--neon-orange:#ff8c42;--neon-yellow:#f5e56c;--neon-blue:#4488ff;--mac-silver:#c8d6e0;--blog-teal:#2dd4bf;--grid-color:rgba(181,55,242,.3);--text:#e0d0f0;--font-display:'Caveat',cursive;--font-mono:'Courier New','Consolas',monospace}
+        
         .sky{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;background:linear-gradient(180deg,#0d0221 0,#1a0a3a 40%,#1a0a3a 60%,#0d0221 100%)}
         .grid-floor{position:fixed;bottom:0;left:0;width:100%;height:70%;pointer-events:none;z-index:0;perspective:400px;overflow:hidden}
         .grid-lines{position:absolute;bottom:-50%;left:50%;transform:translateX(-50%) rotateX(60deg);width:200%;height:200%;background-image:repeating-linear-gradient(0deg,transparent,transparent 40px,var(--grid-color) 40px,var(--grid-color) 41px),repeating-linear-gradient(90deg,transparent,transparent 40px,var(--grid-color) 40px,var(--grid-color) 41px);mask-image:linear-gradient(to top,rgba(0,0,0,.8) 0,rgba(0,0,0,.4) 30%,rgba(0,0,0,0) 60%);animation:gridMove 20s linear infinite}
@@ -29,21 +30,97 @@
         @keyframes noiseShift{0%,100%{transform:translate(0,0)}33%{transform:translate(-3px,2px)}66%{transform:translate(2px,-1px)}}
         .scanlines{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:99;opacity:.08;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.5) 3px,rgba(0,0,0,.5) 4px)}
         .vignette{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:98;background:radial-gradient(ellipse at center,transparent 50%,rgba(5,0,15,.6) 100%)}
+        
+        #matrix-fullscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.2;
+            transition: opacity 2s ease-out;
+        }
+
         .lang-toggle{position:fixed;top:20px;right:25px;z-index:200;display:flex;gap:2px;font-family:var(--font-mono);font-size:.65rem;font-weight:700;letter-spacing:.1em}
         .lang-btn{background:rgba(15,6,30,.7);border:1px solid rgba(255,255,255,.15);color:#9080b0;cursor:pointer;padding:6px 12px;text-transform:uppercase;transition:all .3s;font-family:inherit;font-size:inherit;font-weight:inherit;letter-spacing:inherit}
         .lang-btn:first-child{border-radius:4px 0 0 4px}.lang-btn:last-child{border-radius:0 4px 4px 0}
         .lang-btn.active{background:rgba(181,55,242,.25);border-color:var(--neon-purple);color:#fff;text-shadow:0 0 8px rgba(181,55,242,.5)}
         .lang-btn:hover{border-color:rgba(255,255,255,.4);color:#d0c0f0}
         .main-container{position:relative;z-index:2;max-width:800px;width:100%;margin:0 auto;padding:40px 20px;text-align:center;box-sizing:border-box}
-        .hero{margin-bottom:30px}
-        .hero-name{font-family:var(--font-display);font-size:clamp(2.8rem,7vw,5.5rem);font-weight:700;letter-spacing:.03em;line-height:1.4;display:inline-block;padding:.2em .3em;background:linear-gradient(180deg,#f5e56c 0,#f0d060 18%,#e8b848 35%,#e09040 50%,#d06060 65%,#c04080 80%,#b537f2 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 15px rgba(245,229,108,.5)) drop-shadow(0 0 40px rgba(200,100,180,.3)) drop-shadow(0 0 80px rgba(181,55,242,.3));animation:titleGlow 4s ease-in-out infinite;will-change:filter}
-        @keyframes titleGlow{0%,100%{filter:drop-shadow(0 0 15px rgba(245,229,108,.5)) drop-shadow(0 0 40px rgba(200,100,180,.3)) drop-shadow(0 0 80px rgba(181,55,242,.3))}50%{filter:drop-shadow(0 0 28px rgba(245,229,108,.7)) drop-shadow(0 0 60px rgba(200,100,180,.5)) drop-shadow(0 0 110px rgba(181,55,242,.4))}}
+        .hero{margin-bottom:30px;min-height:80px}
+        
+        #animated-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.8rem, 7vw, 5.5rem);
+            font-weight: 700;
+            letter-spacing: .03em;
+            line-height: 1.4;
+            display: inline-block;
+            padding: .2em .3em;
+            background: linear-gradient(180deg, #f5e56c 0, #f0d060 18%, #e8b848 35%, #e09040 50%, #d06060 65%, #c04080 80%, #b537f2 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 15px rgba(245,229,108,.5)) drop-shadow(0 0 40px rgba(200,100,180,.3)) drop-shadow(0 0 80px rgba(181,55,242,.3));
+            animation: titleGlow 4s ease-in-out infinite;
+            will-change: filter;
+            position: relative;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        #animated-title.visible {
+            opacity: 1;
+        }
+        #cursor-title {
+            display: none;
+            width: 3px;
+            height: 0.8em;
+            background-color: #ffcc00;
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+            margin-left: 5px;
+        }
+        #cursor-title.visible {
+            display: inline-block;
+        }
+        @keyframes titleGlow {
+            0%,100%{filter:drop-shadow(0 0 15px rgba(245,229,108,.5)) drop-shadow(0 0 40px rgba(200,100,180,.3)) drop-shadow(0 0 80px rgba(181,55,242,.3))}
+            50%{filter:drop-shadow(0 0 28px rgba(245,229,108,.7)) drop-shadow(0 0 60px rgba(200,100,180,.5)) drop-shadow(0 0 110px rgba(181,55,242,.4))}
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
         .terminal-wrapper{text-align:center}
-        .terminal-container{display:inline-block;text-align:left;padding:25px 30px;max-width:650px;width:100%;min-height:160px;max-height:320px;overflow-y:auto;font-family:var(--font-mono);font-size:1rem;font-weight:700;line-height:1.9;color:#b0a0d0;scrollbar-width:thin;scrollbar-color:rgba(181,55,242,.3) transparent}
+        .terminal-container{
+            display:inline-block;
+            text-align:left;
+            padding:25px 30px;
+            max-width:650px;
+            width:100%;
+            min-height:160px;
+            max-height:320px;
+            overflow-y:auto;
+            font-family:var(--font-mono);
+            font-size:1rem;
+            font-weight:700;
+            line-height:1.9;
+            color:#b0a0d0;
+            scrollbar-width:thin;
+            scrollbar-color:rgba(181,55,242,.3) transparent;
+            position:relative;
+            overflow:hidden;
+            background: transparent;
+            backdrop-filter: none;
+            border: none;
+        }
         .terminal-container::-webkit-scrollbar{width:4px}
         .terminal-container::-webkit-scrollbar-track{background:transparent}
         .terminal-container::-webkit-scrollbar-thumb{background:rgba(181,55,242,.3);border-radius:4px}
-        .terminal-output{margin-bottom:10px}
+        .terminal-output{margin-bottom:10px;position:relative;z-index:2}
         .terminal-output .line{white-space:pre-wrap;word-break:break-word}
         .terminal-output .cmd-line{color:var(--neon-green)}
         .terminal-output .response{color:#b0a0d0}
@@ -52,9 +129,20 @@
         .terminal-output .gold{color:var(--neon-yellow)}
         .terminal-output .success{color:#4ade80}
         .terminal-output .dim{color:#6a5a90;font-weight:400}
-        .terminal-input-line{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-        .terminal-prompt-text{color:var(--neon-green);white-space:nowrap}
+
+        .terminal-input-line{display:flex;align-items:center;gap:8px;flex-wrap:wrap;position:relative;z-index:2}
+        .terminal-prompt-text {
+            color: var(--neon-yellow);
+            white-space: nowrap;
+            font-weight: 700;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+        }
+        .terminal-prompt-text.visible {
+            opacity: 1;
+        }
         .terminal-input{flex:1;min-width:100px;background:transparent;border:none;color:#c0b0e0;font-family:inherit;font-size:inherit;font-weight:700;outline:0;caret-color:var(--neon-cyan)}
+        
         .content-section{display:none;animation:channelFadeIn .5s ease-out}
         .content-section.active{display:block}
         @keyframes channelFadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
@@ -63,187 +151,80 @@
         .loading-bar .bar-track{width:100%;height:4px;background:rgba(255,255,255,.05);border-radius:2px;margin-top:4px;overflow:hidden}
         .loading-bar .bar-fill{height:100%;width:0;background:var(--neon-cyan);border-radius:2px;transition:width .1s;box-shadow:0 0 8px rgba(0,229,255,.4)}
         .fragments{display:flex;flex-direction:column;gap:60px;margin-top:20px;width:100%}
-        .fragment{position:relative;padding:45px;background:rgba(15,6,30,.75);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);border:1px solid rgba(255,255,255,.06);transition:all .5s cubic-bezier(.25,.8,.25,1.2);clip-path:polygon(0 0,100% 0,100% 94%,97% 100%,0 100%);cursor:pointer;overflow:hidden;contain:layout paint;width:100%;box-sizing:border-box;max-width:100%}
+        .fragment{position:relative;padding:45px;background:rgba(15,6,30,.85);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);border:1px solid rgba(255,255,255,.06);transition:all .5s cubic-bezier(.25,.8,.25,1.2);clip-path:polygon(0 0,100% 0,100% 94%,97% 100%,0 100%);cursor:pointer;overflow:hidden;contain:layout paint;width:100%;box-sizing:border-box;max-width:100%}
         .fragment::before{content:'';position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:-1;transition:opacity .5s;opacity:0}
         .fragment:hover::before{opacity:1}
         .fragment:hover{transform:translateY(-6px);border-color:rgba(255,255,255,.2)}
-
-        /* ================================================================
-           EFECTO SENSOR UNIFICADO - TODAS LAS TARJETAS
-           ================================================================ */
-
-        /* --- ESTADO APAGADO (normal): borde tenue --- */
-        .fragment-about { border-left: 3px solid rgba(181,55,242,0.25); transition: all 0.3s ease; }
-        .fragment-certs { border-left: 3px solid rgba(240,192,64,0.25); transition: all 0.3s ease; }
-
-        /* Digital Studio - gradiente con pseudo-elemento */
-        .fragment-alfa {
-            border-left: 3px solid transparent;
-            position: relative;
-            transition: all 0.3s ease;
+        
+        /* === TODOS LOS BORDES APAGADOS POR DEFECTO === */
+        .fragment {
+            border-left-width: 3px;
+            border-left-style: solid;
+            border-left-color: transparent !important;
+            transition: border-left-color 0.6s ease, box-shadow 0.6s ease, transform 0.5s cubic-bezier(.25,.8,.25,1.2);
         }
-        .fragment-alfa .gradient-border {
-            position: absolute;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            width: 3px;
-            background: linear-gradient(to bottom, var(--neon-orange), var(--neon-yellow));
-            pointer-events: none;
-            opacity: 0.25;
-            transition: all 0.3s ease;
-        }
-
-        /* El resto de las tarjetas con borde izquierdo tenue */
-        .fragment-basement { border-left: 3px solid rgba(68,136,255,0.25); transition: all 0.3s ease; }
-        .fragment-cloud { border-left: 3px solid rgba(245,229,108,0.25); transition: all 0.3s ease; }
-        .fragment-meta { border-left: 3px solid rgba(0,245,212,0.25); transition: all 0.3s ease; }
-        .fragment-scripting { border-left: 3px solid rgba(255,45,149,0.25); transition: all 0.3s ease; }
-        .fragment-setup-combined { border-left: 3px solid rgba(74,222,128,0.25); transition: all 0.3s ease; }
-        .fragment-music { border-left: 3px solid rgba(245,229,108,0.25); transition: all 0.3s ease; }
-        .fragment-blog { border-left: 3px solid rgba(45,212,191,0.25); transition: all 0.3s ease; }
-
-        /* --- ESTADO ENCENDIDO (hover): borde neón + glow + ID iluminado --- */
-
-        /* About - Púrpura */
-        .fragment-about:hover {
-            border-left-color: var(--neon-purple);
-            box-shadow: 0 0 40px rgba(181,55,242,0.2), inset 0 0 30px rgba(181,55,242,0.05);
-        }
-        .fragment-about:hover .fragment-id {
-            color: var(--neon-purple) !important;
-            text-shadow: 0 0 20px rgba(181,55,242,0.6);
-        }
-
-        /* Certs - Dorado */
-        .fragment-certs:hover {
-            border-left-color: #f0c040;
-            box-shadow: 0 0 40px rgba(240,192,64,0.2), inset 0 0 30px rgba(240,192,64,0.05);
-        }
-        .fragment-certs:hover .fragment-id {
-            color: #f0c040 !important;
-            text-shadow: 0 0 20px rgba(240,192,64,0.6);
-        }
-
-        /* Digital Studio - Gradiente Naranja→Amarillo */
-        .fragment-alfa:hover .gradient-border {
-            opacity: 1;
-            box-shadow: 0 0 40px rgba(255,140,66,0.3);
-        }
-        .fragment-alfa:hover .fragment-id {
-            color: var(--neon-orange) !important;
-            text-shadow: 0 0 20px rgba(255,140,66,0.6);
-        }
-
-        /* Build Basement - AZUL */
-        .fragment-basement:hover {
-            border-left-color: var(--neon-blue);
-            box-shadow: 0 0 40px rgba(68,136,255,0.2), inset 0 0 30px rgba(68,136,255,0.05);
-        }
-        .fragment-basement:hover .fragment-id {
-            color: var(--neon-blue) !important;
-            text-shadow: 0 0 20px rgba(68,136,255,0.6);
-        }
-
-        /* Cloud Architecture - AMARILLO */
-        .fragment-cloud:hover {
-            border-left-color: var(--neon-yellow);
-            box-shadow: 0 0 40px rgba(245,229,108,0.2), inset 0 0 30px rgba(245,229,108,0.05);
-        }
-        .fragment-cloud:hover .fragment-id {
-            color: var(--neon-yellow) !important;
-            text-shadow: 0 0 20px rgba(245,229,108,0.6);
-        }
-
-        /* SecOps - TURQUESA */
-        .fragment-meta:hover {
-            border-left-color: var(--neon-turquoise);
-            box-shadow: 0 0 40px rgba(0,245,212,0.2), inset 0 0 30px rgba(0,245,212,0.05);
-        }
-        .fragment-meta:hover .fragment-id {
-            color: var(--neon-turquoise) !important;
-            text-shadow: 0 0 20px rgba(0,245,212,0.6);
-        }
-
-        /* Scripting Engine - FUCSIA */
-        .fragment-scripting:hover {
-            border-left-color: var(--neon-pink);
-            box-shadow: 0 0 40px rgba(255,45,149,0.2), inset 0 0 30px rgba(255,45,149,0.05);
-        }
-        .fragment-scripting:hover .fragment-id {
-            color: var(--neon-pink) !important;
-            text-shadow: 0 0 20px rgba(255,45,149,0.6);
-        }
-
-        /* Setup - VERDE */
-        .fragment-setup-combined:hover {
-            border-left-color: var(--neon-green);
-            box-shadow: 0 0 40px rgba(74,222,128,0.2), inset 0 0 30px rgba(74,222,128,0.05);
-        }
-        .fragment-setup-combined:hover .fragment-id {
-            color: var(--neon-green) !important;
-            text-shadow: 0 0 20px rgba(74,222,128,0.6);
-        }
-
-        /* Music - AMARILLO */
-        .fragment-music:hover {
-            border-left-color: var(--neon-yellow);
-            box-shadow: 0 0 40px rgba(245,229,108,0.2), inset 0 0 30px rgba(245,229,108,0.05);
-        }
-        .fragment-music:hover .fragment-id {
-            color: var(--neon-yellow) !important;
-            text-shadow: 0 0 20px rgba(245,229,108,0.6);
-        }
-
-        /* Blog - TEAL */
-        .fragment-blog:hover {
-            border-left-color: var(--blog-teal);
-            box-shadow: 0 0 40px rgba(45,212,191,0.2), inset 0 0 30px rgba(45,212,191,0.05);
-        }
-        .fragment-blog:hover .fragment-id {
-            color: var(--blog-teal) !important;
-            text-shadow: 0 0 20px rgba(45,212,191,0.6);
-        }
-
-        /* ================================================================
-           PROYECTO SECRETO - VERDE SIEMPRE ENCENDIDO
-           ================================================================ */
-        .ghost-project {
-            border-left: 3px solid var(--neon-green) !important;
-            box-shadow: 0 0 40px rgba(74,222,128,0.3), inset 0 0 30px rgba(74,222,128,0.05) !important;
-        }
-        .ghost-project .fragment-id {
-            color: var(--neon-green) !important;
-            text-shadow: 0 0 20px rgba(74,222,128,0.6) !important;
-        }
-        .ghost-project:hover {
-            border-left-color: var(--neon-green) !important;
-            box-shadow: 0 0 40px rgba(74,222,128,0.4), inset 0 0 30px rgba(74,222,128,0.08) !important;
-        }
-        .ghost-project:hover .fragment-id {
-            color: var(--neon-green) !important;
-            text-shadow: 0 0 30px rgba(74,222,128,0.8) !important;
-        }
-
+        
+        /* === COLORES DE BORDE POR PROYECTO === */
+        .fragment-digital-studio { border-left-color: transparent !important; }
+        .fragment-digital-studio:hover { border-left-color: var(--neon-orange) !important; box-shadow: 0 30px 80px rgba(0,0,0,.6), 0 0 50px rgba(255,140,66,.15), inset 0 0 30px rgba(255,140,66,.03); }
+        .fragment-digital-studio::before { background: radial-gradient(ellipse at 20% 50%, rgba(255,140,66,.1) 0, transparent 60%); }
+        
+        .fragment-build-basement { border-left-color: transparent !important; }
+        .fragment-build-basement:hover { border-left-color: var(--neon-blue) !important; box-shadow: 0 30px 80px rgba(0,0,0,.6), 0 0 50px rgba(68,136,255,.15), inset 0 0 30px rgba(68,136,255,.03); }
+        .fragment-build-basement::before { background: radial-gradient(ellipse at 20% 50%, rgba(68,136,255,.1) 0, transparent 60%); }
+        
+        .fragment-cloud { border-left-color: transparent !important; }
+        .fragment-cloud:hover { border-left-color: var(--neon-yellow) !important; box-shadow: 0 30px 80px rgba(0,0,0,.6), 0 0 50px rgba(245,229,108,.15), inset 0 0 30px rgba(245,229,108,.03); }
+        .fragment-cloud::before { background: radial-gradient(ellipse at 20% 50%, rgba(245,229,108,.1) 0, transparent 60%); }
+        
+        .fragment-secops { border-left-color: transparent !important; }
+        .fragment-secops:hover { border-left-color: var(--neon-cyan) !important; box-shadow: 0 30px 80px rgba(0,0,0,.6), 0 0 50px rgba(0,229,255,.15), inset 0 0 30px rgba(0,229,255,.03); }
+        .fragment-secops::before { background: radial-gradient(ellipse at 20% 50%, rgba(0,229,255,.1) 0, transparent 60%); }
+        
+        .fragment-scripting { border-left-color: transparent !important; }
+        .fragment-scripting:hover { border-left-color: var(--neon-pink) !important; box-shadow: 0 30px 80px rgba(0,0,0,.6), 0 0 50px rgba(255,45,149,.15), inset 0 0 30px rgba(255,45,149,.03); }
+        .fragment-scripting::before { background: radial-gradient(ellipse at 20% 50%, rgba(255,45,149,.1) 0, transparent 60%); }
+        
+        .fragment-ghost { border-left-color: transparent !important; }
+        .fragment-ghost:hover { border-left-color: var(--neon-green) !important; box-shadow: 0 30px 80px rgba(0,0,0,.6), 0 0 50px rgba(74,222,128,.15), inset 0 0 30px rgba(74,222,128,.03); }
+        .fragment-ghost::before { background: radial-gradient(ellipse at 20% 50%, rgba(74,222,128,.1) 0, transparent 60%); }
+        
+        .fragment-about { border-left-color: transparent !important; }
+        .fragment-about:hover { border-left-color: var(--neon-purple) !important; box-shadow: 0 30px 80px rgba(0,0,0,.6), 0 0 50px rgba(181,55,242,.15), inset 0 0 30px rgba(181,55,242,.03); }
+        .fragment-about::before { background: radial-gradient(ellipse at 20% 50%, rgba(181,55,242,.1) 0, transparent 60%); }
+        
+        .fragment-certs { border-left-color: transparent !important; }
+        .fragment-certs:hover { border-left-color: #f0c040 !important; box-shadow: 0 30px 80px rgba(0,0,0,.6), 0 0 50px rgba(240,192,64,.12), inset 0 0 30px rgba(240,192,64,.03); }
+        .fragment-certs::before { background: radial-gradient(ellipse at 20% 50%, rgba(240,192,64,.08) 0, transparent 60%); }
+        .fragment-certs .fragment-id { color: #f0c040; }
+        
+        .fragment-setup-combined { border-left-color: transparent !important; }
+        .fragment-setup-combined:hover { border-left-color: var(--neon-green) !important; box-shadow: 0 30px 80px rgba(0,0,0,.6), 0 0 50px rgba(74,222,128,.15), inset 0 0 30px rgba(74,222,128,.03); }
+        .fragment-setup-combined::before { background: radial-gradient(ellipse at 20% 50%, rgba(74,222,128,.08) 0, transparent 60%); }
+        .fragment-setup-combined .fragment-id { color: var(--neon-green); }
+        
+        .fragment-music { border-left-color: transparent !important; }
+        .fragment-music:hover { border-left-color: var(--neon-yellow) !important; box-shadow: 0 30px 80px rgba(0,0,0,.6), 0 0 50px rgba(245,229,108,.15), inset 0 0 30px rgba(245,229,108,.03); }
+        .fragment-music::before { background: radial-gradient(ellipse at 20% 50%, rgba(245,229,108,.1) 0, transparent 60%); }
+        
+        .fragment-blog { border-left-color: transparent !important; }
+        .fragment-blog:hover { border-left-color: var(--blog-teal) !important; box-shadow: 0 30px 80px rgba(0,0,0,.6), 0 0 50px rgba(45,212,191,.15), inset 0 0 30px rgba(45,212,191,.03); }
+        .fragment-blog::before { background: radial-gradient(ellipse at 20% 50%, rgba(45,212,191,.08) 0, transparent 60%); }
+        .fragment-blog .fragment-id { color: var(--blog-teal); }
+        
         .fragment-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px}
-        .fragment-id{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:#605070!important;word-break:break-word;transition:all .3s ease}
+        .fragment-id{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:#605070!important;word-break:break-word}
         .fragment-status{font-size:.6rem;letter-spacing:.2em;padding:5px 14px;border:1px solid;text-transform:uppercase;text-shadow:0 0 6px currentColor;border-radius:12px;white-space:nowrap}
-        .status-live{color:var(--neon-orange);border-color:var(--neon-orange);box-shadow:0 0 10px rgba(255,140,66,.2);animation:statusPulse 2s ease-in-out infinite}
-        .status-experiment-cyan{color:var(--neon-cyan);border-color:var(--neon-cyan);box-shadow:0 0 10px rgba(0,229,255,.2)}
-        .status-completed{color:var(--neon-blue);border-color:var(--neon-blue);box-shadow:0 0 10px rgba(68,136,255,.2)}
-        .status-experiment-pink{color:var(--neon-pink);border-color:var(--neon-pink);box-shadow:0 0 10px rgba(255,45,149,.2)}
-        .status-active-yellow{color:var(--neon-yellow);border-color:var(--neon-yellow);box-shadow:0 0 10px rgba(245,229,108,.2);animation:statusPulse 2.5s ease-in-out infinite}
-        .status-stealth-green{color:var(--neon-green);border-color:var(--neon-green);box-shadow:0 0 10px rgba(74,222,128,.2)}
-        .status-active{color:#4ade80;border-color:rgba(74,222,128,.4);box-shadow:0 0 10px rgba(74,222,128,.2)}
-        .status-learning{color:#f0c040;border-color:rgba(240,192,64,.4);box-shadow:0 0 10px rgba(240,192,64,.2)}
-        .status-transmitting{color:var(--neon-purple);border-color:var(--neon-purple);box-shadow:0 0 10px rgba(181,55,242,.2)}
-        .status-drafting{color:var(--blog-teal);border-color:var(--blog-teal);box-shadow:0 0 10px rgba(45,212,191,.2)}
-        .status-playing{color:var(--neon-yellow);border-color:var(--neon-yellow);box-shadow:0 0 10px rgba(245,229,108,.2);animation:statusPulse 2s ease-in-out infinite}
+        .status-live{animation:statusPulse 2s ease-in-out infinite;box-shadow:0 0 10px rgba(255,140,66,.2)}
+        .status-active{animation:statusPulse 2s ease-in-out infinite;box-shadow:0 0 10px rgba(68,136,255,.2)}
+        .status-completed{box-shadow:0 0 10px rgba(245,229,108,.2)}
+        .status-experiment{animation:statusPulse 2s ease-in-out infinite;box-shadow:0 0 10px rgba(0,229,255,.2)}
+        .status-stealth-green{box-shadow:0 0 10px rgba(74,222,128,.2)}
         @keyframes statusPulse{0%,100%{box-shadow:0 0 10px rgba(74,222,128,.2)}50%{box-shadow:0 0 25px rgba(74,222,128,.5)}}
         .fragment-title{font-size:1.8rem;font-weight:700;letter-spacing:.06em;margin-bottom:14px;color:#f0e0ff;text-shadow:0 0 15px rgba(200,180,255,.3);word-break:break-word}
         .fragment-desc{font-size:.95rem;line-height:1.8;color:#a090c0;margin-bottom:20px;max-width:600px;margin-left:auto;margin-right:auto;word-break:break-word;width:100%}
         .fragment-tags{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:18px;width:100%}
-        .tag{font-size:.65rem;letter-spacing:.12em;padding:6px 16px;border:1px solid rgba(255,255,255,.12);color:#9080b0;transition:all .3s;text-transform:uppercase;text-decoration:none;cursor:default;border-radius:20px;white-space:nowrap;font-weight:700}
+        .tag{font-size:.65rem;letter-spacing:.12em;padding:6px 16px;border:1px solid rgba(255,255,255,.12);transition:all .3s;text-transform:uppercase;text-decoration:none;cursor:default;border-radius:20px;white-space:nowrap;font-weight:700;color:#9080b0}
         .fragment:hover .tag{border-color:rgba(255,255,255,.25);color:#c0b0e0}
         .tag-link{cursor:pointer;border-color:rgba(181,55,242,.4);color:#b0a0d0;text-decoration:none;border-radius:20px;font-weight:700}
         .tag-link:hover{border-color:var(--neon-purple);color:#fff;text-shadow:0 0 10px rgba(181,55,242,.6);background:rgba(181,55,242,.08)}
@@ -261,16 +242,19 @@
         .badge-pending{color:#f0c040;border-color:rgba(240,192,64,.4)}
         .project-btn{display:inline-flex;align-items:center;gap:8px;margin-top:5px;padding:8px 20px;font-family:var(--font-mono);font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;border:1px solid;border-radius:20px;transition:all .3s;cursor:pointer;word-break:break-word;text-align:center;justify-content:center}
         .project-btn:hover{transform:translateX(4px);box-shadow:0 0 25px rgba(255,255,255,.05)}
-        .btn-alfa{color:var(--neon-orange);border-color:rgba(255,140,66,.3)}
-        .btn-alfa:hover{background:rgba(255,140,66,.1);border-color:var(--neon-orange);box-shadow:0 0 25px rgba(255,140,66,.15)}
-        .btn-basement{color:var(--neon-blue);border-color:rgba(68,136,255,.3)}
-        .btn-basement:hover{background:rgba(68,136,255,.1);border-color:var(--neon-blue);box-shadow:0 0 25px rgba(68,136,255,.15)}
-        .btn-cloud{color:var(--neon-yellow);border-color:rgba(245,229,108,.3)}
-        .btn-cloud:hover{background:rgba(245,229,108,.1);border-color:var(--neon-yellow);box-shadow:0 0 25px rgba(245,229,108,.15)}
-        .btn-cyber{color:var(--neon-turquoise);border-color:rgba(0,245,212,.3)}
-        .btn-cyber:hover{background:rgba(0,245,212,.1);border-color:var(--neon-turquoise);box-shadow:0 0 25px rgba(0,245,212,.15)}
-        .btn-code{color:var(--neon-pink);border-color:rgba(255,45,149,.3)}
-        .btn-code:hover{background:rgba(255,45,149,.1);border-color:var(--neon-pink);box-shadow:0 0 25px rgba(255,45,149,.15)}
+        
+        /* Botones por color */
+        .btn-orange{color:var(--neon-orange);border-color:rgba(255,140,66,.3)}
+        .btn-orange:hover{background:rgba(255,140,66,.1);border-color:var(--neon-orange);box-shadow:0 0 25px rgba(255,140,66,.15)}
+        .btn-blue{color:var(--neon-blue);border-color:rgba(68,136,255,.3)}
+        .btn-blue:hover{background:rgba(68,136,255,.1);border-color:var(--neon-blue);box-shadow:0 0 25px rgba(68,136,255,.15)}
+        .btn-yellow{color:var(--neon-yellow);border-color:rgba(245,229,108,.3)}
+        .btn-yellow:hover{background:rgba(245,229,108,.1);border-color:var(--neon-yellow);box-shadow:0 0 25px rgba(245,229,108,.15)}
+        .btn-cyan{color:var(--neon-cyan);border-color:rgba(0,229,255,.3)}
+        .btn-cyan:hover{background:rgba(0,229,255,.1);border-color:var(--neon-cyan);box-shadow:0 0 25px rgba(0,229,255,.15)}
+        .btn-pink{color:var(--neon-pink);border-color:rgba(255,45,149,.3)}
+        .btn-pink:hover{background:rgba(255,45,149,.1);border-color:var(--neon-pink);box-shadow:0 0 25px rgba(255,45,149,.15)}
+        
         .subproject{background:rgba(68,136,255,.05);border-left:3px solid var(--neon-blue);border-radius:4px;padding:16px 18px;margin:16px 0 12px 0;text-align:left;transition:all .3s;width:100%;box-sizing:border-box;overflow-wrap:break-word;word-wrap:break-word}
         .subproject:hover{background:rgba(68,136,255,.08)}
         .subproject-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
@@ -284,8 +268,8 @@
         .subproject-placeholder span{font-size:.6rem;color:#605070;letter-spacing:.12em;text-transform:uppercase}
         .improvement-notes{display:none}
         .scramble-text{color:#f0e0ff;text-shadow:0 0 15px rgba(255,45,149,.3);font-family:var(--font-mono);letter-spacing:0.1em;transition:all 0.3s ease;display:inline-block}
-        .fragment-meta:hover .scramble-text{animation:scrambleHard 0.3s steps(1) 4;text-shadow:0 0 30px rgba(255,45,149,.6),0 0 60px rgba(255,45,149,.3)}
-        @keyframes scrambleHard{0%,100%{color:#f0e0ff}25%{color:var(--neon-pink)}50%{color:var(--neon-cyan)}75%{color:#fff}}
+        .fragment-ghost:hover .scramble-text{animation:scrambleHard 0.3s steps(1) 4;text-shadow:0 0 30px rgba(74,222,128,.6),0 0 60px rgba(74,222,128,.3)}
+        @keyframes scrambleHard{0%,100%{color:#f0e0ff}25%{color:var(--neon-green)}50%{color:var(--neon-cyan)}75%{color:#fff}}
         .locked-indicator{display:inline-flex;align-items:center;gap:10px;margin-top:18px;font-size:.75rem;color:var(--neon-pink);letter-spacing:.2em;text-shadow:0 0 10px rgba(255,45,149,.5);opacity:.8;flex-wrap:wrap;justify-content:center}
         .locked-icon{width:12px;height:16px;border:2px solid var(--neon-pink);border-radius:2px;position:relative;box-shadow:0 0 8px rgba(255,45,149,.4);flex-shrink:0}
         .locked-icon::after{content:'';position:absolute;top:-7px;left:50%;transform:translateX(-50%);width:7px;height:7px;border:2px solid var(--neon-pink);border-radius:50%;border-bottom:none}
@@ -320,10 +304,19 @@
         .category-view{display:block;width:100%}
         .detail-view{display:none;width:100%}
         .detail-view .fragments{gap:30px}
-        .detail-view .fragment{padding:30px}
+        .detail-view .fragment{padding:30px;text-align:left}
         .detail-view h2{font-size:2rem;text-align:center;letter-spacing:.06em;margin-bottom:6px;color:#f0e0ff!important}
-        .detail-view h3{font-size:1.3rem;margin-bottom:8px;color:#b0c8d8}
-        .cmd-counter{font-size:.6rem;color:#605070;letter-spacing:.1em;padding-top:8px;border-top:1px solid rgba(255,255,255,.04);margin-top:6px;text-align:right}
+        .detail-view .subtitle{color:#9080b0;text-align:center;margin-bottom:30px;font-size:.95rem}
+        .detail-view .subproject-item{border-left:3px solid;padding:20px 24px;margin-bottom:20px;background:rgba(15,6,30,.5);border-radius:4px;transition:all .3s}
+        .detail-view .subproject-item:hover{background:rgba(15,6,30,.8)}
+        .detail-view .subproject-item .item-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:8px}
+        .detail-view .subproject-item .item-id{font-size:.6rem;letter-spacing:.15em;color:#605070;font-weight:700}
+        .detail-view .subproject-item .item-status{font-size:.5rem;letter-spacing:.1em;padding:3px 12px;border:1px solid;text-transform:uppercase;border-radius:12px;white-space:nowrap}
+        .detail-view .subproject-item h3{color:#b0c8d8;font-size:1.1rem;margin-bottom:6px;font-weight:700}
+        .detail-view .subproject-item p{color:#9080b0;font-size:.85rem;line-height:1.7;margin-bottom:12px}
+        .detail-view .subproject-item .item-links{display:flex;gap:10px;flex-wrap:wrap}
+        .detail-view .subproject-item .item-links a{text-decoration:none;font-size:.65rem;font-weight:600;letter-spacing:.08em;padding:4px 14px;border:1px solid;border-radius:16px;transition:all .3s}
+        .detail-view .subproject-item .item-links a:hover{background:rgba(255,255,255,.05)}
 
         @media(max-width:768px){
             .main-container{padding:20px 12px}
@@ -331,7 +324,7 @@
             .fragment-title{font-size:1.3rem}
             .fragment-desc{font-size:.85rem;padding:0 4px}
             .hero{margin-bottom:25px}
-            .hero-name{font-size:clamp(2.2rem,8vw,3.5rem)}
+            #animated-title {font-size:clamp(2.2rem,8vw,3.5rem);}
             .fragments{gap:35px}
             .terminal-container{padding:15px 12px;font-size:.8rem;max-height:220px;min-height:120px}
             .lang-toggle{top:10px;right:10px}
@@ -341,24 +334,19 @@
             .setup-column{padding:0}
             .cert-list{text-align:left}
             .fragment-desc{text-align:center}
-            .subproject-header{flex-direction:column;align-items:flex-start}
-            .subproject-links{width:100%}
             .fragment-header{flex-direction:column;align-items:flex-start}
             .fragment-status{white-space:normal;font-size:.5rem;padding:3px 10px}
             .project-btn{font-size:.6rem;padding:6px 14px;width:auto;min-width:120px}
             .tag{font-size:.55rem;padding:4px 10px}
             .cert-list li{font-size:.75rem}
             .cert-badge{font-size:.45rem;padding:2px 8px}
-            .subproject{padding:12px 12px}
-            .subproject-title{font-size:.8rem}
-            .subproject-desc{font-size:.75rem}
-            .subproject-status{font-size:.5rem;padding:2px 8px}
-            .subproject-links a{font-size:.6rem;padding:3px 10px}
             .music-visual{height:30px}
             .music-bar{width:4px}
             .detail-view .fragment{padding:18px 12px}
             .detail-view h2{font-size:1.5rem!important}
-            .detail-view h3{font-size:1.1rem!important}
+            .detail-view .subproject-item{padding:14px 16px}
+            .detail-view .subproject-item h3{font-size:.95rem}
+            .detail-view .subproject-item p{font-size:.8rem}
             .social-links{gap:6px}
             .locked-indicator{font-size:.65rem}
             .spec-list li{font-size:.7rem}
@@ -369,7 +357,6 @@
             .terminal-input{min-width:60px}
             .terminal-prompt-text{font-size:.8rem}
             .scramble-text{font-size:1.3rem}
-            .cmd-counter{font-size:.5rem}
         }
 
         @media(max-width:480px){
@@ -377,34 +364,31 @@
             .fragment{padding:16px 10px}
             .fragment-title{font-size:1.1rem}
             .fragment-desc{font-size:.8rem}
-            .hero-name{font-size:clamp(1.8rem,7vw,2.8rem)}
+            #animated-title {font-size:clamp(1.8rem,7vw,2.8rem);}
             .terminal-container{padding:12px 8px;font-size:.75rem;max-height:180px}
             .lang-btn{padding:3px 6px;font-size:.5rem}
             .tag{font-size:.5rem;padding:3px 8px}
             .project-btn{font-size:.55rem;padding:5px 10px;min-width:100px}
-            .subproject{padding:10px 10px}
-            .subproject-title{font-size:.75rem}
-            .subproject-desc{font-size:.7rem}
             .cert-list li{font-size:.7rem;flex-wrap:wrap}
             .cert-badge{font-size:.4rem;padding:2px 6px}
             .fragment-status{font-size:.45rem;padding:2px 8px}
             .back-btn{font-size:.55rem;padding:4px 10px}
             .scramble-text{font-size:1.1rem}
-            .cmd-counter{font-size:.45rem}
+            .detail-view .subproject-item{padding:12px 12px}
+            .detail-view .subproject-item h3{font-size:.85rem}
+            .detail-view .subproject-item p{font-size:.75rem}
         }
     </style>
 </head>
 <body>
-    <!-- ====== FONDOS Y EFECTOS VISUALES ====== -->
     <div class="sky"></div>
     <div class="stars" id="stars"></div>
     <div class="grid-floor"><div class="grid-lines"></div></div>
     <div class="noise"></div>
     <div class="scanlines"></div>
     <div class="vignette"></div>
+    <canvas id="matrix-fullscreen"></canvas>
     <div class="mouse-glow" id="mouseGlow"></div>
-
-    <!-- ====== SELECTOR DE IDIOMA ====== -->
     <div class="lang-toggle" role="group" aria-label="Language selector">
         <button class="lang-btn active" data-lang="en" id="btnEN" aria-pressed="true">EN</button>
         <button class="lang-btn" data-lang="es" id="btnES" aria-pressed="false">ES</button>
@@ -412,18 +396,14 @@
 
     <main class="main-container">
         <header class="hero">
-            <h1 class="hero-name">SoriSpace</h1>
+            <h1 id="animated-title"></h1>
+            <span id="cursor-title"></span>
         </header>
 
-        <!-- ====== TERMINAL ====== -->
         <section class="terminal-wrapper" id="terminalWrapper" aria-label="Terminal interface">
             <div class="terminal-container" id="terminal" role="log" aria-live="polite">
-                <div class="terminal-output" id="terminalOutput">
-                    <div class="line response">Welcome to my Bohemian World.</div>
-                    <div class="line response">Type <span class="highlight">help</span> to see what's here.</div>
-                    <div class="line response">───</div>
-                </div>
-                <div class="terminal-input-line">
+                <div class="terminal-output" id="terminalOutput"></div>
+                <div class="terminal-input-line" id="terminalInputLine" style="display:none;">
                     <span class="terminal-prompt-text" aria-hidden="true">sorispace:~$</span>
                     <input type="text" class="terminal-input" id="terminalInput" autofocus autocomplete="off" spellcheck="false" aria-label="Terminal command input">
                 </div>
@@ -431,18 +411,17 @@
                     <span id="loadingText">Loading...</span>
                     <div class="bar-track"><div class="bar-fill" id="barFill" style="width:0%"></div></div>
                 </div>
-                <div class="cmd-counter" id="cmdCounter">COMMANDS EXECUTED: 0</div>
             </div>
         </section>
 
-        <!-- ====== ABOUT ====== -->
+        <!-- About -->
         <div class="content-section" id="section-about" role="tabpanel">
             <button class="back-btn" onclick="goBack()" aria-label="Return to terminal">← Back to terminal</button>
             <div class="fragments">
                 <article class="fragment fragment-about">
                     <div class="fragment-header">
                         <span class="fragment-id">PPF-00-000</span>
-                        <span class="fragment-status status-transmitting">● Transmitting</span>
+                        <span class="fragment-status" style="color:var(--neon-purple);border-color:var(--neon-purple);">● Transmitting</span>
                     </div>
                     <h2 class="fragment-title">About Me</h2>
                     <p class="fragment-desc" data-en="I'm a builder. Websites, hardware, everything in between. I go where the ideas and curiosity take me. If something sparks my interest, I dive in and figure it out." data-es="Soy una constructora. Webs, hardware, todo lo que hay en medio. Voy a donde me llevan las ideas y la curiosidad. Si algo despierta mi interés, me sumerjo y lo resuelvo.">I'm a builder. Websites, hardware, everything in between. I go where the ideas and curiosity take me. If something sparks my interest, I dive in and figure it out.</p>
@@ -456,14 +435,14 @@
             </div>
         </div>
 
-        <!-- ====== CERTS ====== -->
+        <!-- Certs -->
         <div class="content-section" id="section-certs" role="tabpanel">
             <button class="back-btn" onclick="goBack()" aria-label="Return to terminal">← Back to terminal</button>
             <div class="fragments">
                 <article class="fragment fragment-certs">
                     <div class="fragment-header">
                         <span class="fragment-id">CERT-TECH-001</span>
-                        <span class="fragment-status status-learning">● Learning</span>
+                        <span class="fragment-status" style="color:#f0c040;border-color:#f0c040;">● Learning</span>
                     </div>
                     <h2 class="fragment-title">Certifications</h2>
                     <p class="fragment-desc" data-en="Credentials in progress and completed. Building the paper trail to match the skills." data-es="Credenciales en progreso y completadas. Construyendo el respaldo que acompañe las habilidades.">Credentials in progress and completed. Building the paper trail to match the skills.</p>
@@ -478,100 +457,99 @@
             </div>
         </div>
 
-        <!-- ====== PROJECTS ====== -->
+        <!-- Projects -->
         <div class="content-section" id="section-projects" role="tabpanel">
             <button class="back-btn" onclick="goBack()" aria-label="Return to terminal">← Back to terminal</button>
             <div id="projects-container">
                 <div id="main-categories" class="category-view">
                     <div class="fragments">
-                        <!-- Digital Studio -->
-                        <article class="fragment fragment-alfa">
-                            <div class="gradient-border"></div>
+                        <!-- DIGITAL STUDIO - Naranja -->
+                        <article class="fragment fragment-digital-studio">
                             <div class="fragment-header">
                                 <span class="fragment-id">PROJECT-DS-01</span>
-                                <span class="fragment-status status-live">● Live</span>
+                                <span class="fragment-status status-live" style="color:var(--neon-orange);border-color:var(--neon-orange);">● LIVE</span>
                             </div>
                             <h2 class="fragment-title">Digital Studio</h2>
                             <p class="fragment-desc" data-en="Digital Studio is where I build things that matter. Social media, content, communities, products. I just build whatever feels creative and unique." data-es="Digital Studio es donde construyo cosas que importan. Redes sociales, contenido, comunidades, productos. Solo construyo lo que se siente creativo y único.">Digital Studio is where I build things that matter. Social media, content, communities, products. I just build whatever feels creative and unique.</p>
-                            <div class="fragment-tags" style="margin-top:18px;">
-                                <span class="tag" style="border-color: var(--neon-orange); color: var(--neon-orange);">E-commerce</span>
-                                <span class="tag" style="border-color: var(--neon-orange); color: var(--neon-orange);">Community</span>
-                                <span class="tag" style="border-color: var(--neon-orange); color: var(--neon-orange);">Digital Products</span>
+                            <div class="fragment-tags">
+                                <span class="tag" style="border-color:rgba(255,140,66,.3);color:var(--neon-orange);">E-COMMERCE</span>
+                                <span class="tag" style="border-color:rgba(255,140,66,.3);color:var(--neon-orange);">COMMUNITY</span>
+                                <span class="tag" style="border-color:rgba(255,140,66,.3);color:var(--neon-orange);">DIGITAL PRODUCTS</span>
                             </div>
-                            <a href="#" onclick="showDetail('alfa'); return false;" class="project-btn btn-alfa">View All Projects</a>
+                            <a href="#" onclick="showDetail('digital-studio'); return false;" class="project-btn btn-orange">VIEW ALL PROJECTS</a>
                         </article>
 
-                        <!-- Build Basement -->
-                        <article class="fragment fragment-basement">
+                        <!-- BUILD BASEMENT - Azul -->
+                        <article class="fragment fragment-build-basement">
                             <div class="fragment-header">
-                                <span class="fragment-id" style="color: var(--neon-blue);">PROJECT-BB-01</span>
-                                <span class="fragment-status status-active">● Active</span>
+                                <span class="fragment-id">PROJECT-BB-01</span>
+                                <span class="fragment-status status-active" style="color:var(--neon-blue);border-color:var(--neon-blue);">● ACTIVE</span>
                             </div>
                             <h2 class="fragment-title">Build Basement</h2>
-                            <p class="fragment-desc" data-en="The basement is my world. No rush. No expectations. No deadlines. Just me, my headphones, music, coffee, and something to build." data-es="El sótano es mi mundo. Sin prisas. Sin expectativas. Sin plazos. Solo yo, mis auriculares, música, café y algo que construir.">The basement is my world. No rush. No expectations. No deadlines. Just me, my headphones, music, coffee, and something to build.</p>
-                            <div class="fragment-tags" style="margin-top:18px;">
-                                <span class="tag" style="border-color: var(--neon-blue); color: var(--neon-blue);">DIY</span>
-                                <span class="tag" style="border-color: var(--neon-blue); color: var(--neon-blue);">Experiments</span>
-                                <span class="tag" style="border-color: var(--neon-blue); color: var(--neon-blue);">Hard-Soft</span>
+                            <p class="fragment-desc" data-en="The basement is my world. No rush. No expectations. No deadlines. Just me, my headphones, music, coffee, and something to build." data-es="El sótano es mi mundo. Sin prisas. Sin expectativas. Sin plazos. Solo yo, mis auriculares, música, café, y algo para construir.">The basement is my world. No rush. No expectations. No deadlines. Just me, my headphones, music, coffee, and something to build.</p>
+                            <div class="fragment-tags">
+                                <span class="tag" style="border-color:rgba(68,136,255,.3);color:var(--neon-blue);">DIY</span>
+                                <span class="tag" style="border-color:rgba(68,136,255,.3);color:var(--neon-blue);">EXPERIMENTS</span>
+                                <span class="tag" style="border-color:rgba(68,136,255,.3);color:var(--neon-blue);">HARD-SOFT</span>
                             </div>
-                            <a href="#" onclick="showDetail('basement'); return false;" class="project-btn btn-basement">View All Projects</a>
+                            <a href="#" onclick="showDetail('build-basement'); return false;" class="project-btn btn-blue">VIEW ALL PROJECTS</a>
                         </article>
 
-                        <!-- Cloud Architecture -->
+                        <!-- CLOUD ARCHITECTURE - Amarillo -->
                         <article class="fragment fragment-cloud">
                             <div class="fragment-header">
-                                <span class="fragment-id" style="color: var(--neon-yellow);">PROJECT-CLD-03</span>
-                                <span class="fragment-status status-active-yellow">● Completed</span>
+                                <span class="fragment-id">PROJECT-CLD-03</span>
+                                <span class="fragment-status status-completed" style="color:var(--neon-yellow);border-color:var(--neon-yellow);">● COMPLETED</span>
                             </div>
                             <h2 class="fragment-title">Cloud Architecture</h2>
                             <p class="fragment-desc" data-en="Cloud experiments across different providers. Learned about infrastructure by doing and testing." data-es="Experimentos en la nube con diferentes proveedores. Aprendí sobre infraestructura haciendo y probando.">Cloud experiments across different providers. Learned about infrastructure by doing and testing.</p>
-                            <div class="fragment-tags" style="margin-top:18px;">
-                                <span class="tag" style="border-color: var(--neon-yellow); color: var(--neon-yellow);">AWS</span>
-                                <span class="tag" style="border-color: var(--neon-yellow); color: var(--neon-yellow);">GCP</span>
-                                <span class="tag" style="border-color: var(--neon-yellow); color: var(--neon-yellow);">Azure</span>
+                            <div class="fragment-tags">
+                                <span class="tag" style="border-color:rgba(245,229,108,.3);color:var(--neon-yellow);">AWS</span>
+                                <span class="tag" style="border-color:rgba(245,229,108,.3);color:var(--neon-yellow);">GCP</span>
+                                <span class="tag" style="border-color:rgba(245,229,108,.3);color:var(--neon-yellow);">AZURE</span>
                             </div>
-                            <a href="#" onclick="showDetail('cloud'); return false;" class="project-btn btn-cloud">View All Projects</a>
+                            <a href="#" onclick="showDetail('cloud'); return false;" class="project-btn btn-yellow">VIEW ALL PROJECTS</a>
                         </article>
 
-                        <!-- SecOps & Telemetry -->
-                        <article class="fragment fragment-meta">
+                        <!-- SECOPS & TELEMETRY - Turquesa (TODO TURQUESA) -->
+                        <article class="fragment fragment-secops">
                             <div class="fragment-header">
-                                <span class="fragment-id" style="color: var(--neon-turquoise);">PROJECT-CYBER-01</span>
-                                <span class="fragment-status status-experiment-cyan">● Experiment</span>
+                                <span class="fragment-id">PROJECT-CYBER-01</span>
+                                <span class="fragment-status status-experiment" style="color:var(--neon-cyan);border-color:var(--neon-cyan);">● EXPERIMENT</span>
                             </div>
-                            <h2 class="fragment-title" style="color: #f0e0ff;">SecOps & Telemetry</h2>
+                            <h2 class="fragment-title">SecOps & Telemetry</h2>
                             <p class="fragment-desc" data-en="I wanted to understand how systems get hacked. That's why I created a safe environment to test, watch, and rebuild." data-es="Quería entender cómo hackean los sistemas. Por eso creé un entorno seguro para probar, observar y reconstruir.">I wanted to understand how systems get hacked. That's why I created a safe environment to test, watch, and rebuild.</p>
-                            <div class="fragment-tags" style="margin-top:18px;">
-                                <span class="tag" style="border-color: var(--neon-turquoise); color: var(--neon-turquoise);">AI Security</span>
-                                <span class="tag" style="border-color: var(--neon-turquoise); color: var(--neon-turquoise);">Purple Team</span>
-                                <span class="tag" style="border-color: var(--neon-turquoise); color: var(--neon-turquoise);">Cloud Security</span>
+                            <div class="fragment-tags">
+                                <span class="tag" style="border-color:rgba(0,229,255,.3);color:var(--neon-cyan);">AI SECURITY</span>
+                                <span class="tag" style="border-color:rgba(0,229,255,.3);color:var(--neon-cyan);">PURPLE TEAM</span>
+                                <span class="tag" style="border-color:rgba(0,229,255,.3);color:var(--neon-cyan);">CLOUD SECURITY</span>
                             </div>
-                            <a href="#" onclick="showDetail('cyber'); return false;" class="project-btn btn-cyber">Learn More</a>
+                            <a href="#" onclick="showDetail('secops'); return false;" class="project-btn btn-cyan">LEARN MORE</a>
                         </article>
 
-                        <!-- Scripting Engine -->
+                        <!-- SCRIPTING ENGINE - TODO FUCSIA -->
                         <article class="fragment fragment-scripting">
                             <div class="fragment-header">
-                                <span class="fragment-id" style="color: var(--neon-pink);">PROJECT-CODESCRP-01</span>
-                                <span class="fragment-status status-experiment-pink">● Experiment</span>
+                                <span class="fragment-id">PROJECT-CODESCRP-01</span>
+                                <span class="fragment-status status-experiment" style="color:var(--neon-pink);border-color:var(--neon-pink);">● EXPERIMENT</span>
                             </div>
-                            <h2 class="fragment-title" style="color: #f0e0ff;">Scripting Engine</h2>
+                            <h2 class="fragment-title">Scripting Engine</h2>
                             <p class="fragment-desc" data-en="Trying Python scripts, automation, and tools that connect systems. Less manual work, more time for the important stuff: gaming and listening to music." data-es="Probando scripts en Python, automatización y herramientas que conectan sistemas. Menos trabajo manual, más tiempo para lo importante: jugar y escuchar música.">Trying Python scripts, automation, and tools that connect systems. Less manual work, more time for the important stuff: gaming and listening to music.</p>
-                            <div class="fragment-tags" style="margin-top:18px;">
-                                <span class="tag" style="border-color: var(--neon-pink); color: var(--neon-pink);">Orchestration</span>
-                                <span class="tag" style="border-color: var(--neon-pink); color: var(--neon-pink);">Coding</span>
-                                <span class="tag" style="border-color: var(--neon-pink); color: var(--neon-pink);">Automation</span>
+                            <div class="fragment-tags">
+                                <span class="tag" style="border-color:rgba(255,45,149,.3);color:var(--neon-pink);">ORCHESTRATION</span>
+                                <span class="tag" style="border-color:rgba(255,45,149,.3);color:var(--neon-pink);">CODING</span>
+                                <span class="tag" style="border-color:rgba(255,45,149,.3);color:var(--neon-pink);">AUTOMATION</span>
                             </div>
-                            <a href="#" onclick="showDetail('code'); return false;" class="project-btn btn-code">View All Projects</a>
+                            <a href="#" onclick="showDetail('scripting'); return false;" class="project-btn btn-pink">VIEW ALL PROJECTS</a>
                         </article>
 
-                        <!-- Proyecto Secreto -->
-                        <article class="fragment fragment-meta ghost-project">
+                        <!-- PROYECTO SECRETO - Verde -->
+                        <article class="fragment fragment-ghost">
                             <div class="fragment-header">
-                                <span class="fragment-id" style="color: var(--neon-green); text-shadow: 0 0 20px rgba(74,222,128,0.6) !important;">PROJECT-GHOST-04</span>
-                                <span class="fragment-status status-stealth-green">● Stealth</span>
+                                <span class="fragment-id">PROJECT-GHOST-04</span>
+                                <span class="fragment-status status-stealth-green" style="color:var(--neon-green);border-color:var(--neon-green);">● STEALTH</span>
                             </div>
-                            <h2 class="fragment-title scramble-text" style="color: var(--neon-green); text-shadow: 0 0 20px rgba(74,222,128,.4);">■■■■■■■■■■</h2>
+                            <h2 class="fragment-title scramble-text">■■■■■■■■■■</h2>
                             <p class="fragment-desc" data-en="Something new is in the works. Can't say more yet, but it's going to be interesting. Stick around." data-es="Algo nuevo está en camino. No puedo decir más todavía, pero va a ser interesante. Quédate cerca.">Something new is in the works. Can't say more yet, but it's going to be interesting. Stick around.</p>
                             <div class="locked-indicator" style="color: var(--neon-green); text-shadow: 0 0 15px rgba(74,222,128,.5);">
                                 <span class="locked-icon" style="border-color: var(--neon-green); box-shadow: 0 0 10px rgba(74,222,128,.6);"></span>
@@ -581,161 +559,143 @@
                     </div>
                 </div>
 
-                <!-- ========== DETALLES DE PROYECTOS ========== -->
-                <!-- ALFA DETAIL -->
-                <div id="alfa-detail" class="detail-view">
-                    <button class="back-btn" onclick="showCategory('alfa')" style="margin-bottom:20px;">← Back to Projects</button>
+                <!-- DIGITAL STUDIO DETAIL -->
+                <div id="digital-studio-detail" class="detail-view">
+                    <button class="back-btn" onclick="showCategory('digital-studio')" style="margin-bottom:20px;">← BACK TO PROJECTS</button>
                     <div class="fragments" style="gap:30px;">
                         <h2 style="color:#f0e0ff;">Digital Studio</h2>
-                        <p style="color:#9080b0; text-align:center; margin-bottom:20px;">Projects that bring ideas to life online.</p>
-                        <article class="fragment" style="border-left:3px solid var(--neon-orange);">
-                            <div class="fragment-header">
-                                <span class="fragment-id" style="color:var(--neon-orange);">DS-001</span>
-                                <span class="fragment-status" style="color:#4ade80; border-color:rgba(74,222,128,.3);">Live</span>
+                        <p class="subtitle">Projects that bring ideas to life online.</p>
+                        <div class="subproject-item" style="border-left-color:var(--neon-orange);">
+                            <div class="item-header">
+                                <span class="item-id">DS-001</span>
+                                <span class="item-status" style="color:var(--neon-orange);border-color:var(--neon-orange);">● LIVE</span>
                             </div>
-                            <h3 style="color:#b0c8d8;">Alfa Anónimo</h3>
-                            <p style="color:#9080b0; font-size:.9rem; line-height:1.7;">Alfa Anónimo is a platform for selling courses through social media. Built to create a new path because some jobs don't pay nearly enough.</p>
-                            <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
-                                <a href="https://alfaanonimo.com" target="_blank" class="tag tag-link" style="border-color:var(--neon-orange); color:var(--neon-orange);">Open Project</a>
+                            <h3>Alfa Anonimo</h3>
+                            <p>Alfa Anonimo is a platform for selling courses through social media. Built to create a new path because some jobs don't pay nearly enough.</p>
+                            <div class="item-links">
+                                <a href="https://alfaanonimo.com" target="_blank" style="color:var(--neon-orange);border-color:rgba(255,140,66,.3);">OPEN PROJECT</a>
                             </div>
-                        </article>
-                        <div style="text-align:left; margin-top:10px; opacity:.3; font-size:.6rem; color:#605070; letter-spacing:.1em;">MORE PROJECTS COMING SOON</div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- BASEMENT DETAIL -->
-                <div id="basement-detail" class="detail-view">
-                    <button class="back-btn" onclick="showCategory('basement')" style="margin-bottom:20px;">← Back to Projects</button>
+                <!-- BUILD BASEMENT DETAIL -->
+                <div id="build-basement-detail" class="detail-view">
+                    <button class="back-btn" onclick="showCategory('build-basement')" style="margin-bottom:20px;">← BACK TO PROJECTS</button>
                     <div class="fragments" style="gap:30px;">
                         <h2 style="color:#f0e0ff;">Build Basement</h2>
-                        <p style="color:#9080b0; text-align:center; margin-bottom:20px;">DIY projects, hardware experiments, and the joy of making.</p>
-                        <article class="fragment" style="border-left:3px solid var(--neon-blue);">
-                            <div class="fragment-header">
-                                <span class="fragment-id" style="color:var(--neon-blue);">BB-001</span>
-                                <span class="fragment-status" style="color:#4ade80; border-color:rgba(74,222,128,.3);">Experiment</span>
+                        <p class="subtitle">DIY projects, hardware experiments, and the joy of making.</p>
+                        <div class="subproject-item" style="border-left-color:var(--neon-blue);">
+                            <div class="item-header">
+                                <span class="item-id">BB-001</span>
+                                <span class="item-status" style="color:var(--neon-cyan);border-color:var(--neon-cyan);">● EXPERIMENT</span>
                             </div>
-                            <h3 style="color:#b0c8d8;">Retro-Game Rhapsody</h3>
-                            <p style="color:#9080b0; font-size:.9rem; line-height:1.7;">Turned a Raspberry Pi into a retro gaming console. Learned about hardware, emulation, power, and heat.</p>
-                            <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
-                                <a href="https://github.com/SoriSpace/Retro-Game-Rhapsody" target="_blank" class="tag tag-link" style="border-color:var(--neon-blue); color:var(--neon-blue);">GitHub</a>
+                            <h3>Retro-Game Rhapsody</h3>
+                            <p>Turned a Raspberry Pi into a retro gaming console. Learned about hardware, emulation, power, and heat.</p>
+                            <div class="item-links">
+                                <a href="https://github.com/MrsOri" target="_blank" style="color:#c8d6e0;border-color:rgba(200,214,224,.3);">GITHUB</a>
                             </div>
-                        </article>
-                        <div style="text-align:left; margin-top:10px; opacity:.3; font-size:.6rem; color:#605070; letter-spacing:.1em;">MORE EXPERIMENTS COMING SOON</div>
+                        </div>
                     </div>
                 </div>
 
                 <!-- CLOUD DETAIL -->
                 <div id="cloud-detail" class="detail-view">
-                    <button class="back-btn" onclick="showCategory('cloud')" style="margin-bottom:20px;">← Back to Projects</button>
+                    <button class="back-btn" onclick="showCategory('cloud')" style="margin-bottom:20px;">← BACK TO PROJECTS</button>
                     <div class="fragments" style="gap:30px;">
                         <h2 style="color:#f0e0ff;">Cloud Architecture</h2>
-                        <p style="color:#9080b0; text-align:center; margin-bottom:20px;">Cloud experiments across different providers.</p>
-                        <article class="fragment" style="border-left:3px solid var(--neon-yellow);">
-                            <div class="fragment-header">
-                                <span class="fragment-id" style="color:var(--neon-yellow);">S3-001</span>
-                                <span class="fragment-status" style="color:#4ade80; border-color:rgba(74,222,128,.3);">Live Demo</span>
+                        <p class="subtitle">Cloud experiments across different providers. Learned about infrastructure by doing and testing.</p>
+                        <div class="subproject-item" style="border-left-color:var(--neon-yellow);">
+                            <div class="item-header">
+                                <span class="item-id">S3-001</span>
+                                <span class="item-status" style="color:#4ade80;border-color:rgba(74,222,128,.3);">LIVE DEMO</span>
                             </div>
-                            <h3 style="color:#b0c8d8;">Hosting a Static Website in S3</h3>
-                            <p style="color:#9080b0; font-size:.9rem; line-height:1.7;">Setup a static site using S3, configured public access, and learned about ACLs and permissions the hard way.</p>
-                            <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
-                                <a href="https://github.com/SoriSpace/Hosting-a-website-in-S3" target="_blank" class="tag tag-link" style="border-color:var(--neon-yellow); color:var(--neon-yellow);">Repo</a>
-                                <a href="https://github.com/SoriSpace/Hosting-a-website-in-S3" target="_blank" class="tag tag-link" style="border-color:var(--neon-yellow); color:var(--neon-yellow);">Live Site</a>
+                            <h3>Hosting a Static Website in S3</h3>
+                            <p>Setup a static site using S3, configured public access, and learned about ACLs and permissions the hard way.</p>
+                            <div class="item-links">
+                                <a href="https://github.com/SoriSpace/Hosting-a-website-in-S3" target="_blank" style="color:var(--neon-yellow);border-color:rgba(245,229,108,.3);">REPO</a>
                             </div>
-                        </article>
-                        <article class="fragment" style="border-left:3px solid rgba(255,255,255,.06); opacity:.4;">
-                            <div class="fragment-header">
-                                <span class="fragment-id" style="color:#605070;">EC2-001</span>
-                                <span class="fragment-status" style="color:#605070; border-color:rgba(255,255,255,.06);">Coming Soon</span>
-                            </div>
-                            <h3 style="color:#605070;">EC2 Instance Lab</h3>
-                            <p style="color:#605070; font-size:.9rem; line-height:1.7;">Deploying a web server on EC2, security groups, and SSH access.</p>
-                        </article>
-                        <article class="fragment" style="border-left:3px solid rgba(255,255,255,.06); opacity:.4;">
-                            <div class="fragment-header">
-                                <span class="fragment-id" style="color:#605070;">IAM-001</span>
-                                <span class="fragment-status" style="color:#605070; border-color:rgba(255,255,255,.06);">Coming Soon</span>
-                            </div>
-                            <h3 style="color:#605070;">IAM Policy Experiments</h3>
-                            <p style="color:#605070; font-size:.9rem; line-height:1.7;">Understanding least privilege, roles, and policies.</p>
-                        </article>
-                        <div style="text-align:left; margin-top:10px; opacity:.3; font-size:.6rem; color:#605070; letter-spacing:.1em;">MORE EXPERIMENTS COMING SOON</div>
+                        </div>
+                        <div style="text-align:center; margin-top:10px; opacity:.3; font-size:.6rem; color:#605070; letter-spacing:.1em;">MORE EXPERIMENTS COMING SOON</div>
                     </div>
                 </div>
 
-                <!-- SECOPS DETAIL -->
-                <div id="cyber-detail" class="detail-view">
-                    <button class="back-btn" onclick="showCategory('cyber')" style="margin-bottom:20px;">← Back to Projects</button>
+                <!-- SECOPS & TELEMETRY DETAIL -->
+                <div id="secops-detail" class="detail-view">
+                    <button class="back-btn" onclick="showCategory('secops')" style="margin-bottom:20px;">← BACK TO PROJECTS</button>
                     <div class="fragments" style="gap:30px;">
                         <h2 style="color:#f0e0ff;">SecOps & Telemetry</h2>
-                        <p style="color:#9080b0; text-align:center; margin-bottom:20px;">Understanding how systems get hacked.</p>
-                        <article class="fragment" style="border-left:3px solid var(--neon-turquoise);">
-                            <div class="fragment-header">
-                                <span class="fragment-id" style="color:var(--neon-turquoise);">SOC-001</span>
-                                <span class="fragment-status" style="color:#f0c040; border-color:rgba(240,192,64,.4);">In Progress</span>
+                        <p class="subtitle">Understanding how systems get hacked.</p>
+                        
+                        <div class="subproject-item" style="border-left-color:var(--neon-cyan);">
+                            <div class="item-header">
+                                <span class="item-id">SOC-001</span>
+                                <span class="item-status" style="color:#f0c040;border-color:rgba(240,192,64,.4);">● IN PROGRESS</span>
                             </div>
-                            <h3 style="color:#b0c8d8;">SOC Lab</h3>
-                            <p style="color:#9080b0; font-size:.9rem; line-height:1.7;">Setting up a Security Operations Center lab with ELK stack. Log analysis, alerting, and incident response.</p>
-                            <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
-                                <span class="tag" style="border-color:var(--neon-turquoise); color:var(--neon-turquoise); cursor:default;">Coming Soon</span>
+                            <h3>SOC Lab</h3>
+                            <p>Setting up a Security Operations Center lab with ELK stack. Log analysis, alerting, and incident response.</p>
+                            <div class="item-links">
+                                <a href="#" style="color:var(--neon-cyan);border-color:rgba(0,229,255,.3);">COMING SOON</a>
                             </div>
-                        </article>
-                        <article class="fragment" style="border-left:3px solid var(--neon-turquoise);">
-                            <div class="fragment-header">
-                                <span class="fragment-id" style="color:var(--neon-turquoise);">FOR-001</span>
-                                <span class="fragment-status" style="color:#605070; border-color:rgba(255,255,255,.06);">Planning</span>
+                        </div>
+
+                        <div class="subproject-item" style="border-left-color:var(--neon-cyan);">
+                            <div class="item-header">
+                                <span class="item-id">FOR-001</span>
+                                <span class="item-status" style="color:#605070;border-color:rgba(255,255,255,.06);">● PLANNING</span>
                             </div>
-                            <h3 style="color:#b0c8d8;">Autopsy Forensics</h3>
-                            <p style="color:#9080b0; font-size:.9rem; line-height:1.7;">Using Autopsy for forensic investigation. Disk imaging, timeline analysis, and learning how digital evidence is collected and examined.</p>
-                            <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
-                                <span class="tag" style="border-color:var(--neon-turquoise); color:var(--neon-turquoise); cursor:default;">Coming Soon</span>
+                            <h3>Autopsy Forensics</h3>
+                            <p>Using Autopsy for forensic investigation. Disk imaging, timeline analysis, and learning how digital evidence is collected and examined.</p>
+                            <div class="item-links">
+                                <a href="#" style="color:var(--neon-cyan);border-color:rgba(0,229,255,.3);">COMING SOON</a>
                             </div>
-                        </article>
-                        <div style="text-align:left; margin-top:10px; opacity:.3; font-size:.6rem; color:#605070; letter-spacing:.1em;">MORE EXPERIMENTS COMING SOON</div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- SCRIPTING DETAIL -->
-                <div id="code-detail" class="detail-view">
-                    <button class="back-btn" onclick="showCategory('code')" style="margin-bottom:20px;">← Back to Projects</button>
+                <!-- SCRIPTING ENGINE DETAIL -->
+                <div id="scripting-detail" class="detail-view">
+                    <button class="back-btn" onclick="showCategory('scripting')" style="margin-bottom:20px;">← BACK TO PROJECTS</button>
                     <div class="fragments" style="gap:30px;">
                         <h2 style="color:#f0e0ff;">Scripting Engine</h2>
-                        <p style="color:#9080b0; text-align:center; margin-bottom:20px;">Python scripts, automation, and tools that connect systems.</p>
-                        <article class="fragment" style="border-left:3px solid var(--neon-pink);">
-                            <div class="fragment-header">
-                                <span class="fragment-id" style="color:var(--neon-pink);">ORC-001</span>
-                                <span class="fragment-status" style="color:#4ade80; border-color:rgba(74,222,128,.3);">Active</span>
+                        <p class="subtitle">Python scripts, automation, and tools that connect systems.</p>
+                        
+                        <div class="subproject-item" style="border-left-color:var(--neon-pink);">
+                            <div class="item-header">
+                                <span class="item-id">ORC-001</span>
+                                <span class="item-status" style="color:#4ade80;border-color:rgba(74,222,128,.3);">● ACTIVE</span>
                             </div>
-                            <h3 style="color:#b0c8d8;">Orchestration Stack</h3>
-                            <p style="color:#9080b0; font-size:.9rem; line-height:1.7;">Automating workflows with Python, Caddy, Tailscale, n8n, and Telegram. Connecting services so they work together seamlessly.</p>
-                            <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
-                                <span class="tag" style="border-color:var(--neon-pink); color:var(--neon-pink); cursor:default;">Coming Soon</span>
+                            <h3>Orchestration Stack</h3>
+                            <p>Automating workflows with Python, Caddy, Tailscale, n8n, and Telegram. Connecting services so they work together seamlessly.</p>
+                            <div class="item-links">
+                                <a href="#" style="color:var(--neon-pink);border-color:rgba(255,45,149,.3);">COMING SOON</a>
                             </div>
-                        </article>
-                        <article class="fragment" style="border-left:3px solid var(--neon-pink);">
-                            <div class="fragment-header">
-                                <span class="fragment-id" style="color:var(--neon-pink);">AUTO-001</span>
-                                <span class="fragment-status" style="color:#4ade80; border-color:rgba(74,222,128,.3);">Active</span>
+                        </div>
+
+                        <div class="subproject-item" style="border-left-color:var(--neon-pink);">
+                            <div class="item-header">
+                                <span class="item-id">AUTO-001</span>
+                                <span class="item-status" style="color:#4ade80;border-color:rgba(74,222,128,.3);">● ACTIVE</span>
                             </div>
-                            <h3 style="color:#b0c8d8;">Automation Scripts</h3>
-                            <p style="color:#9080b0; font-size:.9rem; line-height:1.7;">A conglomerate of Python scripts for daily tasks. File organization, data parsing, system automation, and more.</p>
-                            <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
-                                <span class="tag" style="border-color:var(--neon-pink); color:var(--neon-pink); cursor:default;">Coming Soon</span>
+                            <h3>Automation Scripts</h3>
+                            <p>A conglomerate of Python scripts for daily tasks. File organization, data parsing, system automation, and more.</p>
+                            <div class="item-links">
+                                <a href="#" style="color:var(--neon-pink);border-color:rgba(255,45,149,.3);">COMING SOON</a>
                             </div>
-                        </article>
-                        <div style="text-align:left; margin-top:10px; opacity:.3; font-size:.6rem; color:#605070; letter-spacing:.1em;">MORE EXPERIMENTS COMING SOON</div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ====== SETUP ====== -->
+        <!-- Setup -->
         <div class="content-section" id="section-setup" role="tabpanel">
             <button class="back-btn" onclick="goBack()" aria-label="Return to terminal">← Back to terminal</button>
             <div class="fragments">
                 <article class="fragment fragment-setup-combined">
                     <div class="fragment-header">
                         <span class="fragment-id">BHM-PC-001</span>
-                        <span class="fragment-status status-active">● Active</span>
+                        <span class="fragment-status" style="color:var(--neon-green);border-color:var(--neon-green);">● Active</span>
                     </div>
                     <h2 class="fragment-title">My Tools & Vibes</h2>
                     <div class="setup-grid">
@@ -768,7 +728,7 @@
                 <article class="fragment fragment-music">
                     <div class="fragment-header">
                         <span class="fragment-id">SIGNAL-MU-001</span>
-                        <span class="fragment-status status-playing">● Playing</span>
+                        <span class="fragment-status" style="color:var(--neon-yellow);border-color:var(--neon-yellow);">● Playing</span>
                     </div>
                     <h2 class="fragment-title">Sound System</h2>
                     <p class="fragment-desc" data-en="Every project has its own soundtrack. Code runs on electronic. Late nights need lo-fi. Hardware work demands rock. The right music at the right time." data-es="Cada proyecto tiene su propia banda sonora. El código corre con electrónica. Las madrugadas necesitan lo-fi. El hardware exige rock. La música correcta en el momento correcto.">Every project has its own soundtrack. Code runs on electronic. Late nights need lo-fi. Hardware work demands rock. The right music at the right time.</p>
@@ -782,31 +742,52 @@
                     <div style="text-align: center; margin-top: 4px;">
                         <a href="https://soundcloud.com/mariana-lugo-221507793/sets/mrs-oris-melodies" target="_blank" style="display: inline-block; padding: 5px 14px; border: 1px solid rgba(255,85,0,0.25); border-radius: 16px; color: #ff5500; text-decoration: none; font-size: 10px; font-weight: bold; letter-spacing: 0.08em; transition: all 0.3s;">🎵 Open in SoundCloud</a>
                     </div>
-                    <div class="fragment-tags" style="margin-top:16px;">
-                        <span class="tag">Electronic</span>
-                        <span class="tag">Lo-Fi</span>
-                        <span class="tag">Rock</span>
-                        <span class="tag">Synthwave</span>
+                    <div class="fragment-tags">
+                        <span class="tag" style="border-color:rgba(245,229,108,.3);color:var(--neon-yellow);">Electronic</span>
+                        <span class="tag" style="border-color:rgba(245,229,108,.3);color:var(--neon-yellow);">Lo-Fi</span>
+                        <span class="tag" style="border-color:rgba(245,229,108,.3);color:var(--neon-yellow);">Rock</span>
+                        <span class="tag" style="border-color:rgba(245,229,108,.3);color:var(--neon-yellow);">Synthwave</span>
                     </div>
                 </article>
             </div>
         </div>
 
-        <!-- ====== BLOG ====== -->
+        <!-- Blog -->
         <div class="content-section" id="section-blog" role="tabpanel">
             <button class="back-btn" onclick="goBack()" aria-label="Return to terminal">← Back to terminal</button>
             <div class="fragments">
                 <article class="fragment fragment-blog">
                     <div class="fragment-header">
                         <span class="fragment-id">TECH-BLOG-001</span>
-                        <span class="fragment-status status-drafting">● Drafting</span>
+                        <span class="fragment-status" style="color:var(--blog-teal);border-color:var(--blog-teal);">● Drafting</span>
                     </div>
                     <h2 class="fragment-title">Sketchbook</h2>
                     <p class="fragment-desc" data-en="Sometimes I write things down. What I'm building, what I'm learning, what's on my mind. No pressure, no schedule. Just me, my thoughts, and synthwave or EDM on my headphones." data-es="A veces escribo cosas. Lo que construyo, lo que aprendo, lo que tengo en mente. Sin presión, sin horario. Solo yo, mis pensamientos, y synthwave o EDM en mis audífonos.">Sometimes I write things down. What I'm building, what I'm learning, what's on my mind. No pressure, no schedule. Just me, my thoughts, and synthwave or EDM on my headphones.</p>
                     <div class="fragment-tags">
-                        <span class="tag">Writing</span>
-                        <span class="tag">Dev Logs</span>
-                        <span class="tag">Soon</span>
+                        <span class="tag" style="border-color:rgba(45,212,191,.3);color:var(--blog-teal);">Writing</span>
+                        <span class="tag" style="border-color:rgba(45,212,191,.3);color:var(--blog-teal);">Dev Logs</span>
+                        <span class="tag" style="border-color:rgba(45,212,191,.3);color:var(--blog-teal);">Soon</span>
+                    </div>
+                </article>
+            </div>
+        </div>
+
+        <!-- Contact -->
+        <div class="content-section" id="section-contact" role="tabpanel">
+            <button class="back-btn" onclick="goBack()" aria-label="Return to terminal">← Back to terminal</button>
+            <div class="fragments">
+                <article class="fragment fragment-about">
+                    <div class="fragment-header">
+                        <span class="fragment-id">COFFEE-TIME-01</span>
+                        <span class="fragment-status" style="color:var(--neon-purple);border-color:var(--neon-purple);">● Transmitting</span>
+                    </div>
+                    <h2 class="fragment-title">Let's Connect</h2>
+                    <p class="fragment-desc">Find me here.</p>
+                    <div class="social-links">
+                        <a href="https://youtube.com/@SoriSpace" target="_blank" rel="noopener noreferrer" class="tag tag-link">YouTube</a>
+                        <a href="https://github.com/SoriSpace" target="_blank" rel="noopener noreferrer" class="tag tag-link">GitHub</a>
+                        <a href="https://discord.gg/emE7ewSTj" target="_blank" rel="noopener noreferrer" class="tag tag-link">Discord</a>
+                        <a href="https://www.linkedin.com/in/mariana-lugo/" target="_blank" rel="noopener noreferrer" class="tag tag-link">LinkedIn</a>
                     </div>
                 </article>
             </div>
@@ -818,9 +799,186 @@
     </main>
 
     <script>
-        // ================================================================
+        // ==========================================
+        // ANIMACIÓN DEL TÍTULO
+        // ==========================================
+        (function() {
+            const titleEl = document.getElementById('animated-title');
+            const cursorEl = document.getElementById('cursor-title');
+            const finalText = "SoriSpace";
+            let interval;
+
+            function revealTitle() {
+                cursorEl.style.display = "inline-block";
+                let i = 0;
+                interval = setInterval(() => {
+                    i++;
+                    titleEl.textContent = finalText.substring(0, i);
+                    if (i === finalText.length) {
+                        clearInterval(interval);
+                        cursorEl.style.display = "none";
+                        setTimeout(() => { titleEl.style.opacity = "0.3"; }, 500);
+                        setTimeout(() => { titleEl.style.opacity = "1"; }, 600);
+                        setTimeout(() => { titleEl.style.opacity = "0.6"; }, 700);
+                        setTimeout(() => { titleEl.style.opacity = "1"; }, 800);
+                    }
+                }, 180);
+            }
+            window.revealTitle = revealTitle;
+        })();
+
+        // ==========================================
+        // MATRIX + SECUENCIA DE INICIO
+        // ==========================================
+        (function() {
+            const canvas = document.getElementById('matrix-fullscreen');
+            const ctx = canvas.getContext('2d');
+            const to = document.getElementById('terminalOutput');
+            const inputLine = document.getElementById('terminalInputLine');
+            const ti = document.getElementById('terminalInput');
+            const titleEl = document.getElementById('animated-title');
+
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:,.<>?/~`';
+            const fontSize = 18;
+            const columns = Math.floor(canvas.width / fontSize);
+            const drops = [];
+            for (let i = 0; i < columns; i++) {
+                drops[i] = Math.random() * -100;
+            }
+
+            function drawMatrix() {
+                ctx.fillStyle = 'rgba(13, 2, 33, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#00e5ff';
+                ctx.font = fontSize + 'px monospace';
+                for (let i = 0; i < drops.length; i++) {
+                    const char = chars[Math.floor(Math.random() * chars.length)];
+                    const x = i * fontSize;
+                    const y = drops[i] * fontSize;
+                    ctx.fillText(char, x, y);
+                    if (y > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
+            }
+
+            let matrixInterval = setInterval(drawMatrix, 35);
+            inputLine.style.display = 'none';
+
+            const bootLines = [
+                '> ACCESSING SORISPACE NETWORK...',
+                '> AUTHENTICATING IDENTITY...',
+                '> CONNECTING TO NEON NODE...',
+                '> LOADING NEURAL INTERFACE...',
+                '> DECRYPTING DATA STREAMS...',
+                '> SORISPACE OS v3.0 INITIALIZED.'
+            ];
+
+            const welcomeLines = [
+                'Welcome to my Bohemian World.',
+                'Type <span class="highlight">help</span> to see what\'s here.',
+                '───'
+            ];
+
+            let currentLine = 0;
+            let currentWelcome = 0;
+            const tc = document.getElementById('terminal');
+
+            function addBootLine(text) {
+                const line = document.createElement('div');
+                line.className = 'line highlight';
+                line.textContent = text;
+                line.style.opacity = '0';
+                line.style.transform = 'translateY(20px)';
+                line.style.transition = 'all 1s ease-out';
+                to.appendChild(line);
+                tc.scrollTop = tc.scrollHeight;
+                setTimeout(() => {
+                    line.style.opacity = '1';
+                    line.style.transform = 'translateY(0)';
+                }, 100);
+                setTimeout(() => {
+                    line.style.opacity = '0';
+                    line.style.transform = 'translateY(-50px)';
+                    setTimeout(() => {
+                        line.style.display = 'none';
+                    }, 1000);
+                }, 2500);
+            }
+
+            function addWelcomeLine(html, className = 'response') {
+                const line = document.createElement('div');
+                line.className = 'line ' + className;
+                line.innerHTML = html;
+                line.style.opacity = '0';
+                line.style.transition = 'opacity 0.8s ease-out';
+                to.appendChild(line);
+                tc.scrollTop = tc.scrollHeight;
+                setTimeout(() => {
+                    line.style.opacity = '1';
+                }, 100);
+            }
+
+            function startBootSequence() {
+                if (currentLine < bootLines.length) {
+                    addBootLine(bootLines[currentLine]);
+                    currentLine++;
+                    setTimeout(startBootSequence, 2000);
+                } else {
+                    canvas.style.transition = 'opacity 2s ease-out';
+                    canvas.style.opacity = '0';
+                    setTimeout(() => {
+                        clearInterval(matrixInterval);
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        titleEl.classList.add('visible');
+                        if (window.revealTitle) {
+                            window.revealTitle();
+                        }
+                        setTimeout(() => {
+                            function showNextWelcome() {
+                                if (currentWelcome < welcomeLines.length) {
+                                    addWelcomeLine(welcomeLines[currentWelcome]);
+                                    currentWelcome++;
+                                    setTimeout(showNextWelcome, 600);
+                                } else {
+                                    inputLine.style.display = 'flex';
+                                    const promptText = document.querySelector('.terminal-prompt-text');
+                                    if (promptText) {
+                                        promptText.classList.add('visible');
+                                    }
+                                    ti.focus();
+                                }
+                            }
+                            showNextWelcome();
+                        }, 500);
+                    }, 2000);
+                }
+            }
+
+            setTimeout(startBootSequence, 1500);
+
+            function addOutput(html, c = 'response') {
+                const l = document.createElement('div');
+                l.className = 'line ' + c;
+                l.innerHTML = html;
+                l.style.opacity = '1';
+                to.appendChild(l);
+                tc.scrollTop = tc.scrollHeight;
+            }
+            window.addOutput = addOutput;
+        })();
+
+        // ==========================================
         // FUNCIONES DE NAVEGACIÓN
-        // ================================================================
+        // ==========================================
         function showDetail(category) {
             document.querySelectorAll('.category-view, .detail-view').forEach(el => {
                 el.style.display = 'none';
@@ -847,16 +1005,14 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // ================================================================
-        // EFECTO SCRAMBLE
-        // ================================================================
+        // ===== EFECTO SCRAMBLE =====
         (function() {
             const st = document.querySelector('.scramble-text');
             if (st) {
                 const original = '■■■■■■■■■■';
                 const chars = '!@#$%^&*()_+-=[]{}|;:,.<>?/~`¢£¥€';
                 let intervalId;
-                const fragment = st.closest('.fragment-meta');
+                const fragment = st.closest('.fragment-ghost');
                 if (fragment) {
                     fragment.addEventListener('mouseenter', function() {
                         let i = 0;
@@ -880,9 +1036,7 @@
             }
         })();
 
-        // ================================================================
-        // ESTRELLAS Y MOUSE
-        // ================================================================
+        // ===== ESTRELLAS Y MOUSE =====
         (function(){
             const sc = document.getElementById('stars');
             for (let i = 0; i < 150; i++) {
@@ -916,9 +1070,7 @@
             });
         })();
 
-        // ================================================================
-        // TERMINAL
-        // ================================================================
+        // ===== TERMINAL =====
         const to = document.getElementById('terminalOutput');
         const ti = document.getElementById('terminalInput');
         const tc = document.getElementById('terminal');
@@ -926,28 +1078,40 @@
         const lb = document.getElementById('loadingBar');
         const lt = document.getElementById('loadingText');
         const bf = document.getElementById('barFill');
-        const counter = document.getElementById('cmdCounter');
         let cmdCount = 0;
+        let sudoActive = false;
 
         const sm = {
             about: 'section-about',
             certs: 'section-certs',
             projects: 'section-projects',
             setup: 'section-setup',
-            blog: 'section-blog'
+            blog: 'section-blog',
+            contact: 'section-contact'
         };
 
+        const originalAddOutput = window.addOutput || function(html, c) {
+            const l = document.createElement('div');
+            l.className = 'line ' + c;
+            l.innerHTML = html;
+            to.appendChild(l);
+            tc.scrollTop = tc.scrollHeight;
+        };
+
+        window.addOutput = originalAddOutput;
+
+        // ===== ANIMATE LOADING CON TEXTO EN AMARILLO =====
         window.animateLoading = function(cb) {
             lb.classList.add('active');
             bf.style.width = '0%';
-            lt.textContent = 'Loading...';
+            lt.innerHTML = '<span style="color:var(--neon-yellow);">Loading...</span>';
             let p = 0;
             const iv = setInterval(() => {
                 p += Math.random() * 25 + 10;
                 if (p >= 100) {
                     p = 100;
                     clearInterval(iv);
-                    lt.textContent = 'Access granted. Opening section...';
+                    lt.innerHTML = '<span style="color:var(--neon-yellow);">Access granted. Opening section...</span>';
                     setTimeout(() => {
                         lb.classList.remove('active');
                         bf.style.width = '0%';
@@ -966,14 +1130,6 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         };
 
-        function addOutput(html, c = 'response') {
-            const l = document.createElement('div');
-            l.className = 'line ' + c;
-            l.innerHTML = html;
-            to.appendChild(l);
-            tc.scrollTop = tc.scrollHeight;
-        }
-
         function addCommandLine(c) {
             const l = document.createElement('div');
             l.className = 'line cmd-line';
@@ -982,8 +1138,6 @@
             tc.scrollTop = tc.scrollHeight;
         }
 
-        let sudoActive = false;
-
         ti.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 const c = ti.value.trim().toLowerCase();
@@ -991,75 +1145,76 @@
                 addCommandLine(c);
                 ti.value = '';
                 cmdCount++;
-                counter.textContent = 'COMMANDS EXECUTED: ' + cmdCount;
 
+                // === EASTER EGGS ===
                 if (c === 'sudo') {
                     sudoActive = !sudoActive;
                     if (sudoActive) {
-                        addOutput('<span class="gold">🔓 SUDO MODE ACTIVATED. You have been granted root privileges.</span>');
-                        addOutput('<span class="dim">You can now access the hidden realm. Try <span class="highlight">hack</span> or <span class="highlight">ghost</span>.</span>');
+                        originalAddOutput('<span class="gold">🔓 SUDO MODE ACTIVATED. You have been granted root privileges.</span>');
+                        originalAddOutput('<span class="dim">You can now access the hidden realm. Try <span class="highlight">hack</span> or <span class="highlight">ghost</span>.</span>');
                     } else {
-                        addOutput('<span class="dim">🔒 SUDO MODE DEACTIVATED. Returning to user space.</span>');
+                        originalAddOutput('<span class="dim">🔒 SUDO MODE DEACTIVATED. Returning to user space.</span>');
                     }
                     return;
                 }
 
                 if (c === 'hack' && sudoActive) {
-                    addOutput('<span class="highlight">🌀 ACCESSING THE MATRIX...</span>');
-                    addOutput('<span class="gold">🎉 You unlocked a secret!</span>');
-                    addOutput('<span class="gold">You\'ve found the Easter Egg 🥚</span>');
-                    addOutput('<span class="dim">Try <span class="highlight">ghost</span> for a special message.</span>');
+                    originalAddOutput('<span class="highlight">🌀 ACCESSING THE MATRIX...</span>');
+                    originalAddOutput('<span class="gold">You unlocked a secret! 🎉</span>');
+                    originalAddOutput('<span class="gold">You\'ve found the Easter Egg 🥚</span>');
+                    originalAddOutput('<span class="dim">Try <span class="highlight">ghost</span> for a special message.</span>');
                     return;
                 }
 
                 if (c === 'ghost' && sudoActive) {
-                    addOutput('<span class="highlight">👻 GHOST PROTOCOL ACTIVATED</span>');
-                    addOutput('<span class="gold">SoriSpace says: Keep building, keep exploring. The best projects are yet to come.</span>');
-                    addOutput('<span class="dim">— Mrs Ori</span>');
+                    originalAddOutput('<span class="highlight">👻 GHOST PROTOCOL ACTIVATED</span>');
+                    originalAddOutput('<span class="gold">Sori says: keep building, keep exploring, keep trying. The best projects are unexpected! 🎉</span>');
+                    originalAddOutput('<span class="dim">— Mrs Ori</span>');
                     return;
                 }
 
                 if (c === 'clear') { to.innerHTML = ''; return; }
                 if (c === 'exit') {
-                    addOutput('<span class="gold">Terminating session...</span>');
-                    addOutput('<span class="dim">Session closed. Come back anytime.</span>');
+                    originalAddOutput('<span class="gold">Terminating session...</span>');
+                    originalAddOutput('<span class="dim">Session closed. Come back anytime.</span>');
                     setTimeout(() => {
                         try { window.open('', '_self', ''); window.close(); } catch (e) {}
                         if (!window.closed) {
-                            addOutput('<span class="dim">(Browser security prevents auto-close. You can close this tab manually.)</span>');
+                            originalAddOutput('<span class="dim">(Browser security prevents auto-close. You can close this tab manually.)</span>');
                             ti.focus();
                         }
                     }, 1000);
                     return;
                 }
                 if (c === 'help') {
-                    addOutput('<span class="gold">Available commands:</span>');
-                    addOutput('  <span class="highlight">about</span>      About Me');
-                    addOutput('  <span class="highlight">certs</span>      Certifications');
-                    addOutput('  <span class="highlight">projects</span>   What I\'m Building');
-                    addOutput('  <span class="highlight">setup</span>      My Tools & Vibes');
-                    addOutput('  <span class="highlight">blog</span>       Sketchbook');
-                    addOutput('  <span class="highlight">clear</span>      Clear terminal');
-                    addOutput('  <span class="highlight">exit</span>       Close session');
-                    addOutput('  <span class="highlight">help</span>       This message');
-                    addOutput('  <span class="dim">— Secret commands —</span>');
-                    addOutput('  <span class="highlight">sudo</span>       Enter admin mode (try <span class="highlight">hack</span> or <span class="highlight">ghost</span> after)');
+                    originalAddOutput('<span class="gold">Available commands:</span>');
+                    originalAddOutput('  <span class="highlight">about</span>      About Me');
+                    originalAddOutput('  <span class="highlight">certs</span>      Certifications');
+                    originalAddOutput('  <span class="highlight">projects</span>   What I\'m Building');
+                    originalAddOutput('  <span class="highlight">setup</span>      My Tools & Vibes');
+                    originalAddOutput('  <span class="highlight">blog</span>       Sketchbook');
+                    originalAddOutput('  <span class="highlight">contact</span>    Let\'s Connect');
+                    originalAddOutput('  <span class="highlight">clear</span>      Clear terminal');
+                    originalAddOutput('  <span class="highlight">exit</span>       Close session');
+                    originalAddOutput('  <span class="highlight">help</span>       This message');
+                    originalAddOutput('  <span class="dim">— Secret commands —</span>');
+                    originalAddOutput('  <span class="highlight">sudo</span>       Enter admin mode (try <span class="highlight">hack</span> or <span class="highlight">ghost</span> after)');
                     return;
                 }
                 if (sm[c]) {
-                    addOutput('<span class="success">Opening ' + c + '...</span>');
+                    // Mensaje de apertura en AMARILLO
+                    originalAddOutput('<span class="gold">Opening ' + c + '...</span>');
+                    
                     window.animateLoading(() => window.showSection(sm[c]));
                     return;
                 }
-                addOutput('<span class="error">command not found: ' + c + '</span> Type <span class="highlight">help</span> to see available commands.', 'error');
+                originalAddOutput('<span class="error">command not found: ' + c + '</span> Type <span class="highlight">help</span> to see available commands.', 'error');
             }
         });
 
         tc.addEventListener('click', () => ti.focus());
 
-        // ================================================================
-        // IDIOMA
-        // ================================================================
+        // ===== IDIOMA =====
         let cl = 'en';
         const bE = document.getElementById('btnEN');
         const bS = document.getElementById('btnES');
@@ -1079,9 +1234,7 @@
         bE.addEventListener('click', () => switchLang('en'));
         bS.addEventListener('click', () => switchLang('es'));
 
-        // ================================================================
-        // CLICK EN FRAGMENTOS (efecto flash)
-        // ================================================================
+        // ===== CLICK EN FRAGMENTOS =====
         document.querySelectorAll('.fragment').forEach(f => {
             f.addEventListener('click', function(e) {
                 if (e.target.closest('a')) return;
